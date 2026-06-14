@@ -153,6 +153,56 @@ it("renders fled and loot-free victory outcomes", () => {
     />,
   );
   expect(screen.getByText("Gained 10 XP and 4 gold.")).toBeInTheDocument();
+
+  rerender(
+    <CombatPanel
+      combat={{
+        ...state,
+        status: "VICTORY",
+        rewards: { experience: 10, gold: 4, items: ["Iron Sword"] },
+      }}
+      skills={[]}
+      inventory={emptyInventory}
+      busy={false}
+      onAction={vi.fn()}
+      onFlee={vi.fn()}
+      onReturn={onReturn}
+    />,
+  );
+  expect(screen.getByText(/Loot: Iron Sword/)).toBeInTheDocument();
+
+  rerender(
+    <CombatPanel
+      combat={{ ...state, status: "DEFEAT" }}
+      skills={[]}
+      inventory={emptyInventory}
+      busy={false}
+      onAction={vi.fn()}
+      onFlee={vi.fn()}
+      onReturn={onReturn}
+    />,
+  );
+  expect(
+    screen.getByText(
+      "The party was defeated. The character returns with 1 HP.",
+    ),
+  ).toBeInTheDocument();
+
   fireEvent.click(screen.getByRole("button", { name: "Return to archive" }));
   expect(onReturn).toHaveBeenCalledOnce();
+});
+
+it("renders without potion in inventory", () => {
+  render(
+    <CombatPanel
+      combat={state}
+      skills={[]}
+      inventory={emptyInventory}
+      busy={false}
+      onAction={vi.fn()}
+      onFlee={vi.fn()}
+      onReturn={vi.fn()}
+    />,
+  );
+  expect(screen.queryByText(/Potion/)).not.toBeInTheDocument();
 });

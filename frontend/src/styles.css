@@ -58,6 +58,39 @@ main {
   border-bottom: 1px solid #50604e;
 }
 
+.masthead > div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.kenney-panel {
+  background-image: url("assets/ui/rpg/panel_beige.png");
+  background-size: 100% 100%;
+  padding: 2rem;
+  border: none;
+}
+
+.portrait-preview {
+  width: 64px;
+  height: 64px;
+  overflow: hidden;
+  border: 4px solid #50604e;
+  margin: 1rem 0;
+}
+
+.portrait-preview img {
+  width: 256px;
+  height: 256px;
+  object-fit: none;
+  object-position: 0 0;
+}
+
 .eyebrow {
   margin: 0 0 0.55rem;
   color: #aebe91;
@@ -279,9 +312,19 @@ li strong {
 .dialogue-box {
   margin-top: 1rem;
   padding: 1.2rem;
-  border: 1px solid #a89464;
-  background: linear-gradient(145deg, #111a14, #080c0a);
-  box-shadow: inset 0 0 0 3px #0b100d;
+}
+
+.dialogue-content {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin: 1rem 0;
+}
+
+.dialogue-icon {
+  width: 24px;
+  height: 24px;
+  margin-top: 0.4rem;
 }
 .dialogue-heading,
 .section-heading {
@@ -312,6 +355,26 @@ li strong {
   padding: 0.5rem 0;
   color: #b9cb9e;
   font-weight: 800;
+}
+
+.save-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.save-toolbar button {
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+}
+
+.game-canvas-container {
+  width: 800px;
+  height: 400px;
+  margin: 1rem auto;
+  border: 4px solid #485747;
+  background: #000;
 }
 
 .combat-shell {

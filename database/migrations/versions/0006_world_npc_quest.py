@@ -24,6 +24,10 @@ DUNGEON_ID = "73000000-0000-0000-0000-000000000001"
 NPC_ID = "74000000-0000-0000-0000-000000000001"
 QUEST_ID = "75000000-0000-0000-0000-000000000001"
 
+OUTSKIRTS_ID = "56000000-0000-0000-0000-000000000001"
+STONEWATCH_ID = "56000000-0000-0000-0000-000000000003"
+VALERIS_ID = "56000000-0000-0000-0000-000000000005"
+
 
 def _audit_columns() -> list[sa.Column[object]]:
     return [
@@ -286,9 +290,29 @@ def _seed_content() -> None:
         [
             {
                 "id": FACTION_ID,
-                "name": "Frontier Wardens",
-                "description": "Scouts and protectors who keep the frontier roads open.",
-            }
+                "name": "Valerian Wardens",
+                "description": "Elite scouts and protectors of the Kingdom of Valeria.",
+            },
+            {
+                "id": "72000000-0000-0000-0000-000000000002",
+                "name": "Merchant League",
+                "description": "A powerful guild controlling trade across Aurelia.",
+            },
+            {
+                "id": "72000000-0000-0000-0000-000000000003",
+                "name": "Arcane Council",
+                "description": "Masters of magic and keepers of ancient scrolls.",
+            },
+            {
+                "id": "72000000-0000-0000-0000-000000000004",
+                "name": "Holy Church",
+                "description": "Dedicated to healing and opposing darkness.",
+            },
+            {
+                "id": "72000000-0000-0000-0000-000000000005",
+                "name": "Shadow Syndicate",
+                "description": "A secretive network of information and smuggling.",
+            },
         ],
     )
     dungeons = sa.table(
@@ -308,7 +332,35 @@ def _seed_content() -> None:
                 "description": "A sealed hollow beneath the old crossroads.",
                 "location_id": CROSSROADS_ID,
                 "recommended_level": 1,
-            }
+            },
+            {
+                "id": "73000000-0000-0000-0000-000000000002",
+                "name": "Stonewatch Depths",
+                "description": "The lowest levels of the mine, abandoned to monsters.",
+                "location_id": STONEWATCH_ID,
+                "recommended_level": 3,
+            },
+            {
+                "id": "73000000-0000-0000-0000-000000000003",
+                "name": "Valeris Sewers",
+                "description": "A labyrinthine network beneath the capital.",
+                "location_id": VALERIS_ID,
+                "recommended_level": 2,
+            },
+            {
+                "id": "73000000-0000-0000-0000-000000000004",
+                "name": "Ancient Valerian Crypt",
+                "description": "Resting place of the first kings of Valeria.",
+                "location_id": VALERIS_ID,
+                "recommended_level": 5,
+            },
+            {
+                "id": "73000000-0000-0000-0000-000000000005",
+                "name": "Dragon's Nest",
+                "description": "A high peak overlooking the forest.",
+                "location_id": GREENWOOD_ID,
+                "recommended_level": 10,
+            },
         ],
     )
     npcs = sa.table(
@@ -330,11 +382,11 @@ def _seed_content() -> None:
         [
             {
                 "id": NPC_ID,
-                "name": "Warden Elian",
+                "name": "Warden Elara",
                 "race_id": HUMAN_ID,
                 "faction_id": FACTION_ID,
                 "home_location_id": GREENWOOD_ID,
-                "occupation": "Frontier Warden",
+                "occupation": "Valerian Warden",
                 "role": "QUEST_GIVER",
                 "personality_profile": {
                     "archetype": "watchful_scout",
@@ -351,7 +403,95 @@ def _seed_content() -> None:
                     "topics": ["rootbound_hollow", "frontier_patrol"],
                 },
                 "is_alive": True,
-            }
+            },
+            {
+                "id": "74000000-0000-0000-0000-000000000002",
+                "name": "Merchant Silas",
+                "race_id": HUMAN_ID,
+                "faction_id": None,
+                "home_location_id": VALERIS_ID,
+                "occupation": "Traveling Merchant",
+                "role": "MERCHANT",
+                "personality_profile": {
+                    "archetype": "jovial_trader",
+                    "traits": ["greedy", "talkative"],
+                    "speech_style": "persuasive",
+                    "values": ["profit", "reputation"],
+                },
+                "schedule": [{"start_hour": 8, "end_hour": 20, "location_id": VALERIS_ID}],
+                "knowledge": {
+                    "locations": [VALERIS_ID, OUTSKIRTS_ID],
+                    "factions": [],
+                    "topics": ["market_prices", "rare_artifacts"],
+                },
+                "is_alive": True,
+            },
+            {
+                "id": "74000000-0000-0000-0000-000000000003",
+                "name": "Foreman Bram",
+                "race_id": "51000000-0000-0000-0000-000000000003",  # Dwarf
+                "faction_id": None,
+                "home_location_id": STONEWATCH_ID,
+                "occupation": "Mine Foreman",
+                "role": "QUEST_GIVER",
+                "personality_profile": {
+                    "archetype": "stern_leader",
+                    "traits": ["hardworking", "blunt"],
+                    "speech_style": "gruff",
+                    "values": ["efficiency", "safety"],
+                },
+                "schedule": [{"start_hour": 6, "end_hour": 22, "location_id": STONEWATCH_ID}],
+                "knowledge": {
+                    "locations": [STONEWATCH_ID],
+                    "factions": [],
+                    "topics": ["mining_techniques", "ore_veins"],
+                },
+                "is_alive": True,
+            },
+            {
+                "id": "74000000-0000-0000-0000-000000000004",
+                "name": "Captain Marcus",
+                "race_id": HUMAN_ID,
+                "faction_id": None,
+                "home_location_id": OUTSKIRTS_ID,
+                "occupation": "Guard Captain",
+                "role": "QUEST_GIVER",
+                "personality_profile": {
+                    "archetype": "dutiful_soldier",
+                    "traits": ["brave", "orderly"],
+                    "speech_style": "formal",
+                    "values": ["discipline", "loyalty"],
+                },
+                "schedule": [{"start_hour": 0, "end_hour": 24, "location_id": OUTSKIRTS_ID}],
+                "knowledge": {
+                    "locations": [OUTSKIRTS_ID, VALERIS_ID],
+                    "factions": [],
+                    "topics": ["local_security", "recruitment"],
+                },
+                "is_alive": True,
+            },
+            {
+                "id": "74000000-0000-0000-0000-000000000005",
+                "name": "Hermit Myra",
+                "race_id": "51000000-0000-0000-0000-000000000002",  # Elf
+                "faction_id": None,
+                "home_location_id": CROSSROADS_ID,
+                "occupation": "Seer",
+                "role": "QUEST_GIVER",
+                "personality_profile": {
+                    "archetype": "mystic_loner",
+                    "traits": ["wise", "cryptic"],
+                    "speech_style": "metaphorical",
+                    "values": ["knowledge", "balance"],
+                },
+                "schedule": [{"start_hour": 0, "end_hour": 24, "location_id": CROSSROADS_ID}],
+                "knowledge": {
+                    "locations": [CROSSROADS_ID, GREENWOOD_ID],
+                    "factions": ["72000000-0000-0000-0000-000000000003"],
+                    "topics": ["ancient_history", "ley_lines"],
+                },
+                "is_alive": True,
+            },
         ],
     )
     quests = sa.table(
@@ -373,7 +513,7 @@ def _seed_content() -> None:
             {
                 "id": QUEST_ID,
                 "title": "The Rootbound Watch",
-                "description": "Aid Warden Elian, then secure the Rootbound Hollow.",
+                "description": "Aid Warden Elara, then secure the Rootbound Hollow.",
                 "location_id": GREENWOOD_ID,
                 "giver_npc_id": NPC_ID,
                 "faction_id": FACTION_ID,
@@ -381,7 +521,43 @@ def _seed_content() -> None:
                 "prerequisites": [],
                 "rewards": {"experience": 120, "gold": 45, "reputation": 20},
                 "repeatable": False,
-            }
+            },
+            {
+                "id": "75000000-0000-0000-0000-000000000002",
+                "title": "Iron for the Crown",
+                "description": "The Stonewatch Mine needs to fulfill a major order for Valeris.",
+                "location_id": STONEWATCH_ID,
+                "giver_npc_id": "74000000-0000-0000-0000-000000000003",
+                "faction_id": None,
+                "minimum_level": 2,
+                "prerequisites": [],
+                "rewards": {"experience": 200, "gold": 150, "reputation": 0},
+                "repeatable": False,
+            },
+            {
+                "id": "75000000-0000-0000-0000-000000000003",
+                "title": "The First Step",
+                "description": "Prove your worth to the Outskirts guard.",
+                "location_id": OUTSKIRTS_ID,
+                "giver_npc_id": "74000000-0000-0000-0000-000000000004",
+                "faction_id": None,
+                "minimum_level": 1,
+                "prerequisites": [],
+                "rewards": {"experience": 50, "gold": 20, "reputation": 0},
+                "repeatable": False,
+            },
+            {
+                "id": "75000000-0000-0000-0000-000000000004",
+                "title": "Voices of the Past",
+                "description": "Listen to the echoes at the Ancient Crossroads.",
+                "location_id": CROSSROADS_ID,
+                "giver_npc_id": "74000000-0000-0000-0000-000000000005",
+                "faction_id": None,
+                "minimum_level": 5,
+                "prerequisites": [],
+                "rewards": {"experience": 500, "gold": 100, "reputation": 0},
+                "repeatable": False,
+            },
         ],
     )
     steps = sa.table(
@@ -401,7 +577,7 @@ def _seed_content() -> None:
                 "sequence": 0,
                 "objective_type": "NPC_HELP",
                 "target_id": NPC_ID,
-                "description": "Offer practical aid to Warden Elian.",
+                "description": "Offer practical aid to Warden Elara.",
                 "required_count": 1,
             },
             {
@@ -410,6 +586,30 @@ def _seed_content() -> None:
                 "objective_type": "DUNGEON_CLEAR",
                 "target_id": DUNGEON_ID,
                 "description": "Clear the Rootbound Hollow.",
+                "required_count": 1,
+            },
+            {
+                "quest_id": "75000000-0000-0000-0000-000000000002",
+                "sequence": 0,
+                "objective_type": "NPC_HELP",
+                "target_id": "74000000-0000-0000-0000-000000000003",
+                "description": "Assist Foreman Bram with the mining operation.",
+                "required_count": 1,
+            },
+            {
+                "quest_id": "75000000-0000-0000-0000-000000000003",
+                "sequence": 0,
+                "objective_type": "NPC_HELP",
+                "target_id": "74000000-0000-0000-0000-000000000004",
+                "description": "Patrol the outskirts with Captain Marcus.",
+                "required_count": 1,
+            },
+            {
+                "quest_id": "75000000-0000-0000-0000-000000000004",
+                "sequence": 0,
+                "objective_type": "NPC_HELP",
+                "target_id": "74000000-0000-0000-0000-000000000005",
+                "description": "Seek wisdom from Hermit Myra.",
                 "required_count": 1,
             },
         ],
