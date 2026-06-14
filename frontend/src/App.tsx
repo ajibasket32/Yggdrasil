@@ -1,5 +1,6 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
+import ErrorBoundary from "./components/ErrorBoundary";
 import CombatPanel from "./components/CombatPanel";
 import WorldPanel from "./components/WorldPanel";
 import GameCanvas from "./components/GameCanvas";
@@ -472,7 +473,8 @@ const App = () => {
 
   return (
     <main>
-      <header className="masthead">
+      <ErrorBoundary>
+        <header className="masthead">
         <div>
           <img
             src="assets/ui/rpg/iconCircle_beige.png"
@@ -788,8 +790,9 @@ const App = () => {
                 ))}
             </div>
           </section>
-        </div>
-      ) : null}
+          </div>
+        ) : null}
+      </ErrorBoundary>
     </main>
   );
 };

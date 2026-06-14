@@ -62,7 +62,7 @@ async def test_stale_worker_job_returns_to_retry_queue(
 ) -> None:
     settings = get_settings()
     dispatcher = RecordingDispatcher()
-    redis_client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
+    redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     try:
         async with session_factory() as session:
             service = MemoryService(

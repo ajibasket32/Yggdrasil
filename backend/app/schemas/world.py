@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 QuestStatusValue = Literal["NOT_STARTED", "ACTIVE", "COMPLETED", "FAILED", "ARCHIVED"]
 
@@ -20,13 +20,13 @@ class QuestStepView(BaseModel):
 
 class QuestView(BaseModel):
     id: UUID
-    title: str
-    description: str
-    minimum_level: int
+    title: str = Field(min_length=1, max_length=120)
+    description: str = Field(min_length=1, max_length=500)
+    minimum_level: int = Field(ge=1)
     status: QuestStatusValue
     objectives_complete: bool
     rewards_claimed: bool
-    current_step: int
+    current_step: int = Field(ge=0)
     steps: list[QuestStepView]
     rewards: dict[str, int]
 
@@ -37,9 +37,9 @@ class QuestMutationRequest(BaseModel):
 
 class NPCView(BaseModel):
     id: UUID
-    name: str
-    occupation: str
-    role: str
+    name: str = Field(min_length=1, max_length=100)
+    occupation: str = Field(min_length=1, max_length=100)
+    role: str = Field(min_length=1, max_length=50)
     faction_id: UUID | None
     current_location_id: UUID
     personality_profile: dict[str, object]
@@ -76,10 +76,10 @@ class NPCInteractionResult(BaseModel):
 
 class FactionView(BaseModel):
     id: UUID
-    name: str
-    description: str
-    reputation: int
-    rank: str
+    name: str = Field(min_length=1, max_length=100)
+    description: str = Field(min_length=1, max_length=500)
+    reputation: int = Field(ge=-1000000, le=1000000)
+    rank: str = Field(min_length=1, max_length=50)
     joined: bool
 
 

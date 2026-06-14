@@ -7,13 +7,13 @@ from pydantic import BaseModel, ConfigDict, Field
 
 class EncounterDefinitionView(BaseModel):
     id: UUID
-    name: str
-    monster_name: str
-    monster_level: int
-    difficulty: str
+    name: str = Field(min_length=1, max_length=100)
+    monster_name: str = Field(min_length=1, max_length=100)
+    monster_level: int = Field(ge=1)
+    difficulty: str = Field(min_length=1, max_length=20)
     location_id: UUID
-    reward_experience: int
-    reward_gold: int
+    reward_experience: int = Field(ge=0)
+    reward_gold: int = Field(ge=0)
 
 
 class StartCombatRequest(BaseModel):
@@ -43,15 +43,15 @@ class StatusEffectView(BaseModel):
 class CombatParticipantView(BaseModel):
     id: UUID
     source_id: UUID
-    name: str
+    name: str = Field(min_length=1, max_length=100)
     side: Literal["PLAYER", "ENEMY"]
-    level: int
-    current_hp: int
-    max_hp: int
-    current_mp: int
-    max_mp: int
-    current_stamina: int
-    max_stamina: int
+    level: int = Field(ge=1)
+    current_hp: int = Field(ge=0)
+    max_hp: int = Field(ge=1)
+    current_mp: int = Field(ge=0)
+    max_mp: int = Field(ge=0)
+    current_stamina: int = Field(ge=0)
+    max_stamina: int = Field(ge=0)
     guarding: bool
     defeated: bool
     statuses: list[StatusEffectView]

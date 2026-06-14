@@ -65,7 +65,7 @@ async def test_memory_persists_before_dispatch_and_deduplicates(
     settings = get_settings()
     player_id = uuid4()
     dispatcher = CommitCheckingDispatcher()
-    redis_client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
+    redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     try:
         async with session_factory() as session:
             service = MemoryService(
@@ -110,7 +110,7 @@ async def test_dispatch_failure_retains_job_and_recovery_reannounces_it(
 ) -> None:
     settings = get_settings()
     player_id = uuid4()
-    redis_client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
+    redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     try:
         async with session_factory() as session:
             service = MemoryService(
@@ -156,7 +156,7 @@ async def test_delete_is_idempotent_and_missing_memory_fails_closed(
     settings = get_settings()
     player_id = uuid4()
     dispatcher = CommitCheckingDispatcher()
-    redis_client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
+    redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     try:
         async with session_factory() as session:
             service = MemoryService(

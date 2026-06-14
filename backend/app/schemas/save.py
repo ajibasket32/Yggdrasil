@@ -46,12 +46,12 @@ class SaveSummary(BaseModel):
 
     save_id: UUID
     character_id: UUID
-    save_name: str
-    save_version: int
-    world_tick: int
-    schema_version: int
-    engine_version: str
-    status: str
+    save_name: str = Field(min_length=1, max_length=120)
+    save_version: int = Field(ge=1)
+    world_tick: int = Field(ge=0)
+    schema_version: int = Field(ge=1)
+    engine_version: str = Field(min_length=1, max_length=32)
+    status: str = Field(min_length=1, max_length=20)
     created_at: datetime
 
 

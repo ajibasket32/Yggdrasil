@@ -44,7 +44,9 @@ async def clean_rag_infrastructure() -> AsyncIterator[None]:
                 "RESTART IDENTITY CASCADE"
             )
         )
-    redis_client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
+    redis_client = redis.from_url(
+        settings.redis_url.get_secret_value()
+    )  # type: ignore[no-untyped-call]
     async with httpx.AsyncClient(
         timeout=settings.rag_qdrant_timeout_seconds
     ) as http_client:

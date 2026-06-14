@@ -150,6 +150,7 @@ class CharacterRepository:
         *,
         for_update: bool = False,
     ) -> Character | None:
+        """Read one owned active character."""
         statement = select(Character).where(
             Character.id == character_id,
             Character.player_id == player_id,

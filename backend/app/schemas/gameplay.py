@@ -125,19 +125,19 @@ class CharacterSummary(BaseModel):
 
 
 class CharacterSheet(CharacterSummary):
-    gender: str
-    alignment: str
-    experience: int
-    experience_to_next: int
-    skill_points: int
+    gender: str = Field(min_length=1, max_length=30)
+    alignment: str = Field(pattern=r"^(GOOD|NEUTRAL|EVIL)$")
+    experience: int = Field(ge=0)
+    experience_to_next: int = Field(ge=0)
+    skill_points: int = Field(ge=0)
     stats: StatBlock
     derived_stats: DerivedStatBlock
-    current_hp: int
-    current_mp: int
-    current_stamina: int
-    gold: int
-    fame: int
-    karma: int
+    current_hp: int = Field(ge=0)
+    current_mp: int = Field(ge=0)
+    current_stamina: int = Field(ge=0)
+    gold: int = Field(ge=0)
+    fame: int = Field(ge=0)
+    karma: int = Field(ge=-10000, le=10000)
     jobs: list[JobProgressView]
     skills: list[SkillView]
 
@@ -153,13 +153,13 @@ class JobMutationRequest(BaseModel):
 class InventoryItemView(BaseModel):
     inventory_item_id: UUID
     item_id: UUID
-    name: str
-    item_type: str
-    rarity: str
-    weight: float
-    value: int
-    quantity: int
-    slot_index: int
+    name: str = Field(min_length=1, max_length=100)
+    item_type: str = Field(min_length=1, max_length=50)
+    rarity: str = Field(min_length=1, max_length=20)
+    weight: float = Field(ge=0.0)
+    value: int = Field(ge=0)
+    quantity: int = Field(ge=1)
+    slot_index: int = Field(ge=0)
     is_quest_item: bool
     is_droppable: bool
     is_equipped: bool

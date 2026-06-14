@@ -57,7 +57,9 @@ class HealthService:
         """Check PostgreSQL with a read-only connectivity query."""
         connection: asyncpg.Connection[asyncpg.Record] | None = None
         try:
-            connection = await asyncpg.connect(self._settings.database_url, timeout=2)
+            connection = await asyncpg.connect(
+                self._settings.database_url.get_secret_value(), timeout=2
+            )
             await connection.execute("SELECT 1")
         except (OSError, TimeoutError, asyncpg.PostgresError):
             return DependencyHealth(status="unhealthy")
@@ -69,7 +71,7 @@ class HealthService:
     async def get_redis_health(self) -> DependencyHealth:
         """Check Redis connectivity without storing application data."""
         client = redis.from_url(  # type: ignore[no-untyped-call]  # redis factory lacks metadata.
-            self._settings.redis_url
+            self._settings.redis_url.get_secret_value()
         )
         try:
             await client.ping()
@@ -86,7 +88,7 @@ class HealthService:
     async def get_worker_health(self) -> DependencyHealth:
         """Check the RAG worker heartbeat without reading canonical state."""
         client = redis.from_url(  # type: ignore[no-untyped-call]
-            self._settings.redis_url
+            self._settings.redis_url.get_secret_value()
         )
         try:
             heartbeat = await client.get("worker:rag:heartbeat")
