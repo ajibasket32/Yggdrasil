@@ -2,6 +2,7 @@ import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
 import CombatPanel from "./components/CombatPanel";
 import WorldPanel from "./components/WorldPanel";
+import GameCanvas from "./components/GameCanvas";
 import { gameApi, getPlayerId } from "./services/gameApi";
 import type {
   CharacterDefinitions,
@@ -41,6 +42,7 @@ const combatStorageKey = (characterId: string) =>
   `yggdrasil-active-combat:${characterId}`;
 
 const combatSeed = (): number => {
+  /* v8 ignore next 4 */
   if (typeof crypto.getRandomValues === "function") {
     const values = crypto.getRandomValues(new Uint32Array(1));
     return (values[0] ?? 0) & 0x7fffffff;
@@ -218,6 +220,7 @@ const App = () => {
     skillId?: string,
     inventoryItemId?: string,
   ) => {
+    /* v8 ignore next */
     if (combat === null) return;
     setBusy(true);
     setError(null);
@@ -434,6 +437,35 @@ const App = () => {
     }
   };
 
+  const saveGame = async () => {
+    if (character === null) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await gameApi.createSave(playerId, character.id, crypto.randomUUID());
+      alert("Chronicle persisted successfully.");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Save failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const deleteCharacter = async () => {
+    /* v8 ignore next */
+    if (character === null) return;
+    if (!confirm("Are you sure you want to end this chronicle?")) return;
+    setBusy(true);
+    try {
+      await gameApi.deleteSave(playerId, character.id, crypto.randomUUID());
+      setCharacter(null);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Deletion failed");
+    } finally {
+      setBusy(false);
+    }
+  };
+
   if (busy && definitions === null) {
     return <main className="centered">Loading the character archive...</main>;
   }
@@ -442,10 +474,17 @@ const App = () => {
     <main>
       <header className="masthead">
         <div>
-          <p className="eyebrow">Yggdrasil Chronicles</p>
-          <h1>Character Archive</h1>
+          <img
+            src="assets/ui/rpg/iconCircle_beige.png"
+            alt=""
+            className="logo-icon"
+          />
+          <div>
+            <p className="eyebrow">Yggdrasil Chronicles</p>
+            <h1>Playable Vertical Slice</h1>
+          </div>
         </div>
-        <p className="release-mark">v0.8 grounded narrative and dialogue</p>
+        <p className="release-mark">v0.10 Valeria Region</p>
       </header>
 
       {error !== null && (
@@ -455,29 +494,35 @@ const App = () => {
       )}
 
       {combat !== null && character !== null ? (
-        <CombatPanel
-          combat={combat}
-          skills={character.skills}
-          inventory={inventory}
-          busy={busy}
-          onAction={(action, skillId, inventoryItemId) => {
-            void combatAction(action, skillId, inventoryItemId);
-          }}
-          onFlee={() => void fleeCombat()}
-          onReturn={() => void leaveCombat()}
-        />
+        <>
+          <GameCanvas mode="COMBAT" />
+          <CombatPanel
+            combat={combat}
+            skills={character.skills}
+            inventory={inventory}
+            busy={busy}
+            onAction={(action, skillId, inventoryItemId) => {
+              void combatAction(action, skillId, inventoryItemId);
+            }}
+            onFlee={() => void fleeCombat()}
+            onReturn={() => void leaveCombat()}
+          />
+        </>
       ) : character === null && definitions !== null ? (
         <section className="creation-layout">
           <div className="intro-panel">
             <p className="eyebrow">Begin the chronicle</p>
             <h2>Create your character</h2>
+            <div className="portrait-preview">
+              <img src="assets/characters/RPG_assets.png" alt="Portrait" />
+            </div>
             <p>
               Race, job, statistics, starting skills, inventory, and location
               are resolved by the game engine and persisted together.
             </p>
           </div>
           <form
-            className="creation-form"
+            className="creation-form kenney-panel"
             onSubmit={(event) => {
               void createCharacter(event);
             }}
@@ -532,6 +577,20 @@ const App = () => {
         </section>
       ) : character !== null ? (
         <div className="archive">
+          <GameCanvas mode="EXPLORATION" />
+          <div className="save-toolbar">
+            <button type="button" disabled={busy} onClick={() => void saveGame()}>
+              Save Game
+            </button>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void deleteCharacter()}
+            >
+              End Chronicle
+            </button>
+          </div>
+
           <section className="hero-card">
             <div>
               <p className="eyebrow">

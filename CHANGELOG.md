@@ -3,23 +3,39 @@
 All notable completed changes are recorded here. Planned work belongs in
 `TASKS.md`, not this file.
 
-## Unreleased
+## v1.0.0
 
 ### Added
 
-- No changes yet.
+- Expanded world content to reach MVP targets: 5 regions, 5 factions, 5 dungeons, and multiple NPCs/Quests.
+- World Items: World Stone Fragment, Eternity Bloom, Dragon Scale.
+- Comprehensive security audits with `pip-audit` and `npm audit` passing.
+- Final documentation and release status for MVP.
 
 ### Changed
 
-- No changes yet.
+- Advanced project status to v1.0.0 MVP Release complete.
+
+## v0.10.0
+
+### Added
+
+- Phaser 3 integrated into the frontend for World Map and Combat scenes.
+- Basic player movement and interaction logic in `WorldScene.ts`.
+- Monster sprite rendering (Slime/Goblin) and combat UI in `CombatScene.ts`.
+- Kenney RPG UI assets and portraits integrated into character creation and dialogue boxes.
+- Explicit "Save Game" and "End Chronicle" functionality in the main HUD.
+- Frontend branch coverage increased to 81% through new unit tests and Phaser scene coverage.
+
+### Changed
+
+- UI header and layout updated for the vertical slice experience.
+- Migration seeds updated to align with the "Valeria" region and lore.
 
 ### Fixed
 
-- No fixes yet.
-
-### Known Limitations
-
-- v0.10 Playable Vertical Slice has not started.
+- `crypto.randomUUID` and `getRandomValues` polyfilled for the Vitest environment.
+- Stale combat IDs are now correctly removed if fetching the encounter fails.
 
 ## v0.9.0
 

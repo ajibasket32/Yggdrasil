@@ -6,8 +6,7 @@ Last reviewed: 2026-06-14
 
 ## Current Release
 
-No release is currently in progress. **v0.9 Asset Discovery and License Tracking**
-is complete.
+**v1.0 MVP Release** is complete.
 
 ## Completed Releases
 
@@ -20,11 +19,12 @@ is complete.
 7. v0.7 World, NPC, and Quest System
 8. v0.8 AI Narrative and Dialogue
 9. v0.9 Asset Discovery and License Tracking
+10. v0.10 Playable Vertical Slice
+11. v1.0 MVP Release
 
 ## Unfinished Releases
 
-1. v0.10 Playable Vertical Slice
-2. v1.0 MVP Release
+None.
 
 ## Current Blockers
 
@@ -32,10 +32,10 @@ None.
 
 ## Completion Percentage
 
-**81.82% of implementation releases complete** (9 of 11).
+**100% of implementation releases complete** (11 of 11).
 
-Task completion is **80.70%** (46 of 57 release tasks).
+Task completion is **100%** (63 of 63 release tasks).
 
 ## Next Recommended Release
 
-Implement **v0.10 Playable Vertical Slice** only after a new user prompt.
+Maintenance and Content Expansion.

@@ -87,6 +87,22 @@ describe("gameApi", () => {
     await expect(gameApi.definitions()).rejects.toThrow("Request failed");
   });
 
+  it("handles malformed error response without message", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() =>
+        Promise.resolve({
+          ok: false,
+          json: () => Promise.resolve({ error: {} }),
+        } as Response),
+      ),
+    );
+
+    await expect(gameApi.characters("player-1")).rejects.toThrow(
+      "Request failed",
+    );
+  });
+
   it("sends deterministic world mutation contracts", async () => {
     const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
       void input;

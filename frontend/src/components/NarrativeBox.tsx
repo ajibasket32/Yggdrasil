@@ -6,7 +6,7 @@ interface NarrativeBoxProps {
 }
 
 const NarrativeBox = ({ narrative, onClose }: NarrativeBoxProps) => (
-  <aside className="dialogue-box" aria-label="Story dialogue">
+  <aside className="dialogue-box kenney-panel" aria-label="Story dialogue">
     <div className="dialogue-heading">
       <div>
         <p className="eyebrow">{narrative.tone}</p>
@@ -16,7 +16,14 @@ const NarrativeBox = ({ narrative, onClose }: NarrativeBoxProps) => (
         <span className="local-narrative">Local narration</span>
       )}
     </div>
-    <p>{narrative.text}</p>
+    <div className="dialogue-content">
+      <img
+        src="assets/ui/rpg/iconCheck_beige.png"
+        alt=""
+        className="dialogue-icon"
+      />
+      <p>{narrative.text}</p>
+    </div>
     <p className="dialogue-context">
       Grounded in {narrative.context_memory_count} relevant{" "}
       {narrative.context_memory_count === 1 ? "memory" : "memories"}
