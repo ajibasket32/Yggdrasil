@@ -1,0 +1,5 @@
+
+> yggdrasil-chronicles-frontend@0.8.0 test
+> vitest run --coverage
+
+sh: 1: vitest: not found

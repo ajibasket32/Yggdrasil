@@ -1,0 +1,12 @@
+assets/ui/kenney_ui-pack.zip VALID
+assets/ui/UIpack_RPG.zip VALID
+assets/characters/RPG_assets.png VALID
+assets/monsters/rpg_enemies.png VALID
+assets/monsters/8goblins.png VALID
+assets/tilesets/16x16_jrpg_tileset.png VALID
+assets/items/kenney_board-game-icons.zip VALID
+assets/backgrounds/kenney_backgroundElements.zip VALID
+assets/monsters/boss.png VALID
+frontend/src/assets/monsters/slime.png VALID
+frontend/src/assets/monsters/goblin.png VALID
+frontend/src/assets/tilesets/world.png VALID

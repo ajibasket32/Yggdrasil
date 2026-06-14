@@ -19,7 +19,25 @@ All notable completed changes are recorded here. Planned work belongs in
 
 ### Known Limitations
 
-- v0.9 Asset Discovery and License Tracking has not started.
+- v0.10 Playable Vertical Slice has not started.
+
+## v0.9.0
+
+### Added
+
+- Asset requirements checklist for the v0.10 vertical slice covering UI, characters, monsters, tilesets, items, and backgrounds.
+- CC0-licensed asset set from Kenney and OpenGameArt imported into `assets/` and organized in `frontend/src/assets/`.
+- Updated `assets/CATALOG.md` with complete provenance, license, and attribution for all selected assets.
+
+### Changed
+
+- Project tasks and release status advanced to reflect v0.9 completion.
+- `docs/ASSET_CHECKLIST.md` created to track discovery and selection.
+
+### Known Limitations
+
+- Assets are placeholders for the vertical slice and may be replaced in later stages.
+- No audio assets were imported in this release as they are optional for MVP.
 
 ## v0.8.0
 

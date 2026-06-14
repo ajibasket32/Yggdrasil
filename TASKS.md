@@ -100,20 +100,23 @@ in `MVP_ROADMAP.md` may move to `IN_PROGRESS`.
 
 | ID | Release | Status | Description | Acceptance Criteria | Dependencies | Notes |
 |---|---|---|---|---|---|---|
-| AST-001 | v0.9 | IN_PROGRESS | Define vertical-slice asset needs and approved source/license rules. | Asset checklist maps every need to permitted license categories. | v0.8 | Mapping the current browser slice to a minimal CC0 interface, character, enemy, item, and environment set. |
-| AST-002 | v0.9 | TODO | Discover, review, and select local assets. | Selected assets pass suitability, originality, and license review. | AST-001 | Sources limited by `AGENTS.md`. |
-| AST-003 | v0.9 | TODO | Import, optimize, and integrate selected assets locally. | No gameplay runtime download is required and performance budgets are met. | AST-002 | Preserve original source files where required. |
-| AST-004 | v0.9 | TODO | Complete asset catalog and attribution evidence. | Every shipped asset has complete provenance and license metadata. | AST-002, AST-003 | Block release on missing evidence. |
+| AST-001 | v0.9 | DONE | Define vertical-slice asset needs and approved source/license rules. | Asset checklist maps every need to permitted license categories. | v0.8 | Mapping the current browser slice to a minimal CC0 interface, character, enemy, item, and environment set. |
+| AST-002 | v0.9 | DONE | Discover, review, and select local assets. | Selected assets pass suitability, originality, and license review. | AST-001 | Sources limited by `AGENTS.md`. |
+| AST-003 | v0.9 | DONE | Import, optimize, and integrate selected assets locally. | No gameplay runtime download is required and performance budgets are met. | AST-002 | Preserve original source files where required. |
+| AST-004 | v0.9 | DONE | Complete asset catalog and attribution evidence. | Every shipped asset has complete provenance and license metadata. | AST-002, AST-003 | Block release on missing evidence. |
 
 ## v0.10 Playable Vertical Slice
 
 | ID | Release | Status | Description | Acceptance Criteria | Dependencies | Notes |
 |---|---|---|---|---|---|---|
-| VSL-001 | v0.10 | TODO | Build one bounded region and complete gameplay path. | Character creation through quest/combat completion is playable in browser. | v0.9 | Use only release-approved systems/content. |
-| VSL-002 | v0.10 | TODO | Integrate save/load and permanent consequences across the slice. | Restart and rollback tests preserve all slice state. | VSL-001 | No silent resets. |
-| VSL-003 | v0.10 | TODO | Integrate grounded narrative and all-provider fallback. | Slice remains completable with cloud AI disabled. | VSL-001, v0.8 | Narrative is cosmetic. |
-| VSL-004 | v0.10 | TODO | Meet accessibility, performance, security, and observability slice gates. | Applicable automated/manual checks pass with evidence. | VSL-001 through VSL-003 | Track accepted exceptions. |
-| VSL-005 | v0.10 | TODO | Add complete vertical-slice E2E and regression coverage. | Critical journey passes in normal, degraded, and restart scenarios. | VSL-001 through VSL-004 | Release candidate evidence retained. |
+| VSL-001 | v0.10 | TODO | Define vertical slice region and boundary. | Regional map (Valeris) and Forest dungeon boundary defined. | v0.9 | Starting region: Valeria. |
+| VSL-002 | v0.10 | TODO | Implement Character Creation with assets. | Screen uses GrafxKid portraits and RPG UI elements. | VSL-001 | |
+| VSL-003 | v0.10 | TODO | Implement Exploration and NPC Interaction. | Player can move between Valeris and Forest; NPC "Elara" provides a quest. | VSL-002 | |
+| VSL-004 | v0.10 | TODO | Implement Combat Encounter with sprites. | Combat with "Slime" or "Goblin" uses Redshrike sprites. | VSL-003 | |
+| VSL-005 | v0.10 | TODO | Implement Quest Completion and Rewards. | Defeating monster progresses quest; NPC grants XP/Gold. | VSL-004 | |
+| VSL-006 | v0.10 | TODO | Integrate transactional Save/Load. | State preserved after browser refresh or server restart. | VSL-005 | |
+| VSL-007 | v0.10 | TODO | Integrate Narrative and AI Fallback. | NPC dialogue uses AI if available, otherwise approved local fallback. | VSL-006 | |
+| VSL-008 | v0.10 | TODO | Complete E2E verification and release gates. | Critical journey passes; performance/accessibility gates met. | VSL-007 | |
 
 ## v1.0 MVP Release
 
