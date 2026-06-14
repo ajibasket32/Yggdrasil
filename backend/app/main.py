@@ -95,10 +95,33 @@ async def handle_save_error(request: Request, exception: Exception) -> JSONRespo
     )
 
 
-async def handle_validation_error(
-    request: Request, exception: ValidationError | RequestValidationError
+async def handle_pydantic_validation_error(
+    request: Request, exception: ValidationError
 ) -> JSONResponse:
-    """Return structured validation errors in the standard envelope."""
+    """Return structured Pydantic validation errors in the standard envelope."""
+    return JSONResponse(
+        status_code=422,
+        content={
+            "success": False,
+            "data": None,
+            "error": {
+                "code": "VALIDATION_ERROR",
+                "message": "The request payload failed validation",
+                "details": {"errors": exception.errors()},
+            },
+            "meta": {
+                "request_id": str(request.state.request_id),
+                "timestamp": datetime.now(UTC).isoformat(),
+                "api_version": "v1",
+            },
+        },
+    )
+
+
+async def handle_fastapi_validation_error(
+    request: Request, exception: RequestValidationError
+) -> JSONResponse:
+    """Return structured FastAPI request validation errors in the standard envelope."""
     return JSONResponse(
         status_code=422,
         content={
@@ -227,9 +250,11 @@ def create_app() -> FastAPI:
     application.add_exception_handler(GameplayError, handle_gameplay_error)
     application.add_exception_handler(WorldError, handle_world_error)
     application.add_exception_handler(NarrativeError, handle_narrative_error)
-    application.add_exception_handler(ValidationError, handle_validation_error)
     application.add_exception_handler(
-        RequestValidationError, handle_validation_error
+        ValidationError, handle_pydantic_validation_error  # type: ignore[arg-type]
+    )
+    application.add_exception_handler(
+        RequestValidationError, handle_fastapi_validation_error  # type: ignore[arg-type]
     )
     application.add_exception_handler(Exception, handle_unhandled_exception)
     application.include_router(health_router)

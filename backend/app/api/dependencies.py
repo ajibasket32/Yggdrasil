@@ -1,4 +1,3 @@
-from collections.abc import AsyncIterator
 from typing import Annotated
 
 import httpx
