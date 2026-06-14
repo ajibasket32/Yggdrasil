@@ -61,7 +61,7 @@ jobs:
       - run: poetry run alembic upgrade head
       - run: poetry run alembic downgrade -1
       - run: poetry run alembic upgrade head
-      - run: poetry run pytest --cov=app --cov-report=term-missing ../tests
+      - run: poetry run pytest -c pyproject.toml --cov=app --cov-report=term-missing ../tests
       - run: poetry run pip-audit
 
   frontend:
