@@ -8,8 +8,8 @@ Yggdrasil Chronicles is a browser-based JRPG with deterministic game systems and
 
 ## Project Status
 
-Current phase: v0.8 AI Narrative and Dialogue complete. No release is
-currently in progress; v0.9 Asset Discovery and License Tracking is the next
+Current phase: v0.9 Asset Discovery and License Tracking complete. No release is
+currently in progress; v0.10 Playable Vertical Slice is the next
 recommended release.
 
 The implementation is not release-ready. `RELEASE_CHECKLIST.md` governs
