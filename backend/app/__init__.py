@@ -1,0 +1,1 @@
+"""Yggdrasil Chronicles backend foundation."""

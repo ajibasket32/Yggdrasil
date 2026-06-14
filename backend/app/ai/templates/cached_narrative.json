@@ -1,0 +1,26 @@
+{
+  "dialogue": {
+    "text": "The speaker pauses, choosing silence for the moment.",
+    "tone": "neutral",
+    "tags": ["offline"],
+    "referenced_entity_ids": []
+  },
+  "lore": {
+    "text": "No additional lore is available right now.",
+    "tone": "neutral",
+    "tags": ["offline"],
+    "referenced_entity_ids": []
+  },
+  "narration": {
+    "text": "The journey continues without further narration.",
+    "tone": "neutral",
+    "tags": ["offline"],
+    "referenced_entity_ids": []
+  },
+  "description": {
+    "text": "The scene remains clear enough to continue.",
+    "tone": "neutral",
+    "tags": ["offline"],
+    "referenced_entity_ids": []
+  }
+}
