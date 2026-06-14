@@ -5,7 +5,9 @@ import GameCanvas from "./GameCanvas";
 describe("GameCanvas", () => {
   it("initializes Phaser Game", () => {
     const { container } = render(<GameCanvas mode="EXPLORATION" />);
-    expect(container.querySelector(".game-canvas-container")).toBeInTheDocument();
+    expect(
+      container.querySelector(".game-canvas-container"),
+    ).toBeInTheDocument();
   });
 
   it("switches between exploration and combat modes", () => {

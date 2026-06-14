@@ -264,7 +264,10 @@ export const gameApi = {
     request<unknown>("/save", playerId, {
       method: "POST",
       headers: { "Idempotency-Key": idempotencyKey },
-      body: JSON.stringify({ character_id: characterId, save_name: "Manual Save" }),
+      body: JSON.stringify({
+        character_id: characterId,
+        save_name: "Manual Save",
+      }),
     }),
   deleteSave: (playerId: string, saveId: string, idempotencyKey: string) =>
     request<unknown>(`/save/${saveId}`, playerId, {

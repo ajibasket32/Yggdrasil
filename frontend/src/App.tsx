@@ -579,7 +579,11 @@ const App = () => {
         <div className="archive">
           <GameCanvas mode="EXPLORATION" />
           <div className="save-toolbar">
-            <button type="button" disabled={busy} onClick={() => void saveGame()}>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => void saveGame()}
+            >
               Save Game
             </button>
             <button

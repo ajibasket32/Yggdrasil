@@ -1,14 +1,22 @@
 import "@testing-library/jest-dom/vitest";
 
 if (typeof window.crypto.randomUUID !== "function") {
-  window.crypto.randomUUID = () => "test-uuid" as `${string}-${string}-${string}-${string}-${string}`;
+  window.crypto.randomUUID = () =>
+    "test-uuid" as `${string}-${string}-${string}-${string}-${string}`;
 }
 
 if (typeof window.crypto.getRandomValues !== "function") {
-  (window.crypto as any).getRandomValues = <T extends ArrayBufferView | null>(array: T): T => {
+  (window.crypto as any).getRandomValues = <T extends ArrayBufferView | null>(
+    array: T,
+  ): T => {
     if (array) {
-      const view = new Uint8Array(array.buffer, array.byteOffset, array.byteLength);
-      for (let i = 0; i < view.length; i++) view[i] = Math.floor(Math.random() * 256);
+      const view = new Uint8Array(
+        array.buffer,
+        array.byteOffset,
+        array.byteLength,
+      );
+      for (let i = 0; i < view.length; i++)
+        view[i] = Math.floor(Math.random() * 256);
     }
     return array;
   };
@@ -25,7 +33,9 @@ vi.mock("phaser", () => ({
     };
   },
   Scene: class MockScene {
-    constructor(key: string) { (this as any).key = key; }
+    constructor(key: string) {
+      (this as any).key = key;
+    }
     load = {
       image: vi.fn(),
       spritesheet: vi.fn(),

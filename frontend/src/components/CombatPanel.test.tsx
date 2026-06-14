@@ -183,7 +183,9 @@ it("renders fled and loot-free victory outcomes", () => {
     />,
   );
   expect(
-    screen.getByText("The party was defeated. The character returns with 1 HP."),
+    screen.getByText(
+      "The party was defeated. The character returns with 1 HP.",
+    ),
   ).toBeInTheDocument();
 
   fireEvent.click(screen.getByRole("button", { name: "Return to archive" }));
