@@ -51,7 +51,7 @@ def worker_heartbeat() -> None:
 
 
 async def _worker_heartbeat() -> None:
-    client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
+    client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     try:
         await client.set(
             "worker:rag:heartbeat",
@@ -69,7 +69,7 @@ def recover_index_jobs() -> int:
 
 
 async def _recover_index_jobs() -> int:
-    redis_client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
+    redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     dispatcher = CeleryIndexDispatcher(celery_app)
     try:
         async with session_factory() as session:

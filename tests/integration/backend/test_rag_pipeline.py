@@ -93,7 +93,7 @@ async def test_retrieval_enforces_scope_cache_and_deletion(
     allowed_entity = uuid4()
     blocked_entity = uuid4()
     dispatcher = RecordingDispatcher()
-    redis_client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
+    redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     async with httpx.AsyncClient(
         timeout=settings.rag_qdrant_timeout_seconds
     ) as http_client:
@@ -196,7 +196,7 @@ async def test_qdrant_failure_is_retryable_and_canonical_memory_survives(
     settings = get_settings()
     player_id = uuid4()
     dispatcher = RecordingDispatcher()
-    redis_client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
+    redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     try:
         memory_id = await create_memory(
             player_id,
@@ -259,7 +259,7 @@ async def test_full_rebuild_queues_every_active_postgres_memory(
     settings = get_settings()
     player_id = uuid4()
     initial_dispatcher = RecordingDispatcher()
-    redis_client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
+    redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     async with httpx.AsyncClient(
         timeout=settings.rag_qdrant_timeout_seconds
     ) as http_client:

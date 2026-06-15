@@ -117,6 +117,7 @@ class IdempotencyRepository:
         key: str,
         operation: str,
     ) -> IdempotencyRecord | None:
+        """Read one idempotency record by player and key."""
         result = await self._session.execute(
             select(IdempotencyRecord).where(
                 IdempotencyRecord.player_id == player_id,

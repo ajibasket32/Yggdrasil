@@ -17,10 +17,10 @@ class Settings(BaseSettings):
     environment: str = "development"
     log_level: str = "INFO"
     service_name: str = "yggdrasil-backend"
-    database_url: str = (
+    database_url: SecretStr = SecretStr(
         "postgresql://yggdrasil:local_development_only@localhost:5432/yggdrasil"
     )
-    redis_url: str = "redis://localhost:6379/0"
+    redis_url: SecretStr = SecretStr("redis://localhost:6379/0")
     qdrant_url: str = "http://localhost:6333"
     ollama_url: str = "http://localhost:11434"
     rag_embedding_dimensions: int = Field(default=256, ge=16, le=512)
@@ -57,9 +57,10 @@ class Settings(BaseSettings):
     @property
     def sqlalchemy_database_url(self) -> str:
         """Return the configured PostgreSQL URL with SQLAlchemy's async driver."""
-        if self.database_url.startswith("postgresql+asyncpg://"):
-            return self.database_url
-        return self.database_url.replace(
+        url = self.database_url.get_secret_value()
+        if url.startswith("postgresql+asyncpg://"):
+            return url
+        return url.replace(
             "postgresql://",
             "postgresql+asyncpg://",
             1,

@@ -1,9 +1,8 @@
-from collections.abc import AsyncIterator
 from typing import Annotated
 
 import httpx
 import redis.asyncio as redis
-from fastapi import Depends
+from fastapi import Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.ai.factory import build_ai_orchestrator
@@ -62,31 +61,27 @@ WorldServiceDependency = Annotated[WorldService, Depends(get_world_service)]
 
 
 async def get_narrative_service(
+    request: Request,
     session: DatabaseSession,
-) -> AsyncIterator[NarrativeService]:
+) -> NarrativeService:
     """Compose request-scoped narrative, RAG, provider, and cache boundaries."""
     settings = get_settings()
-    redis_client = redis.from_url(settings.redis_url)  # type: ignore[no-untyped-call]
-    async with httpx.AsyncClient(
-        timeout=max(
-            settings.ai_local_timeout_seconds,
-            settings.rag_qdrant_timeout_seconds,
-        )
-    ) as http_client:
-        embedder = DeterministicTextEmbedder(settings.rag_embedding_dimensions)
-        retriever = MemoryRetriever(
-            MemoryRepository(session),
-            embedder,
-            QdrantClient(http_client, settings.qdrant_url, embedder.dimensions),
-            MemoryContextCache(redis_client, settings.rag_cache_ttl_seconds),
-        )
-        unit_of_work = NarrativeUnitOfWork(session)
-        yield NarrativeService(
-            unit_of_work,
-            NarrativeContextBuilder(unit_of_work.narrative, retriever),
-            build_ai_orchestrator(settings, http_client, redis_client),
-        )
-    await redis_client.aclose()
+    http_client: httpx.AsyncClient = request.app.state.http_client
+    redis_client: redis.Redis = request.app.state.redis_client
+
+    embedder = DeterministicTextEmbedder(settings.rag_embedding_dimensions)
+    retriever = MemoryRetriever(
+        MemoryRepository(session),
+        embedder,
+        QdrantClient(http_client, settings.qdrant_url, embedder.dimensions),
+        MemoryContextCache(redis_client, settings.rag_cache_ttl_seconds),
+    )
+    unit_of_work = NarrativeUnitOfWork(session)
+    return NarrativeService(
+        unit_of_work,
+        NarrativeContextBuilder(unit_of_work.narrative, retriever),
+        build_ai_orchestrator(settings, http_client, redis_client),
+    )
 
 
 NarrativeServiceDependency = Annotated[NarrativeService, Depends(get_narrative_service)]

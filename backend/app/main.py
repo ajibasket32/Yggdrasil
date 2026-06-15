@@ -2,8 +2,12 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
 
+import httpx
+import redis.asyncio as redis
 from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from pydantic import ValidationError
 
 from app.api.combat import router as combat_router
 from app.api.gameplay import router as gameplay_router
@@ -30,10 +34,25 @@ from app.services.world import WorldError
 
 
 @asynccontextmanager
-async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-    """Release database resources when the API process stops."""
-    yield
-    await dispose_database()
+async def lifespan(application: FastAPI) -> AsyncIterator[None]:
+    """Manage lifecycle of shared infrastructure clients."""
+    settings = get_settings()
+    async with httpx.AsyncClient(
+        timeout=max(
+            settings.ai_local_timeout_seconds,
+            settings.rag_qdrant_timeout_seconds,
+        )
+    ) as http_client:
+        redis_client = redis.from_url(
+            settings.redis_url.get_secret_value()
+        )  # type: ignore[no-untyped-call]
+        application.state.http_client = http_client
+        application.state.redis_client = redis_client
+        try:
+            yield
+        finally:
+            await redis_client.aclose()
+            await dispose_database()
 
 
 async def handle_save_error(request: Request, exception: Exception) -> JSONResponse:
@@ -65,6 +84,73 @@ async def handle_save_error(request: Request, exception: Exception) -> JSONRespo
             "error": {
                 "code": code,
                 "message": str(error),
+                "details": {},
+            },
+            "meta": {
+                "request_id": str(request.state.request_id),
+                "timestamp": datetime.now(UTC).isoformat(),
+                "api_version": "v1",
+            },
+        },
+    )
+
+
+async def handle_pydantic_validation_error(
+    request: Request, exception: ValidationError
+) -> JSONResponse:
+    """Return structured Pydantic validation errors in the standard envelope."""
+    return JSONResponse(
+        status_code=422,
+        content={
+            "success": False,
+            "data": None,
+            "error": {
+                "code": "VALIDATION_ERROR",
+                "message": "The request payload failed validation",
+                "details": {"errors": exception.errors()},
+            },
+            "meta": {
+                "request_id": str(request.state.request_id),
+                "timestamp": datetime.now(UTC).isoformat(),
+                "api_version": "v1",
+            },
+        },
+    )
+
+
+async def handle_fastapi_validation_error(
+    request: Request, exception: RequestValidationError
+) -> JSONResponse:
+    """Return structured FastAPI request validation errors in the standard envelope."""
+    return JSONResponse(
+        status_code=422,
+        content={
+            "success": False,
+            "data": None,
+            "error": {
+                "code": "VALIDATION_ERROR",
+                "message": "The request payload failed validation",
+                "details": {"errors": exception.errors()},
+            },
+            "meta": {
+                "request_id": str(request.state.request_id),
+                "timestamp": datetime.now(UTC).isoformat(),
+                "api_version": "v1",
+            },
+        },
+    )
+
+
+async def handle_unhandled_exception(request: Request, _: Exception) -> JSONResponse:
+    """Mask internal implementation details for unhandled exceptions."""
+    return JSONResponse(
+        status_code=500,
+        content={
+            "success": False,
+            "data": None,
+            "error": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "message": "An unexpected error occurred",
                 "details": {},
             },
             "meta": {
@@ -164,6 +250,13 @@ def create_app() -> FastAPI:
     application.add_exception_handler(GameplayError, handle_gameplay_error)
     application.add_exception_handler(WorldError, handle_world_error)
     application.add_exception_handler(NarrativeError, handle_narrative_error)
+    application.add_exception_handler(
+        ValidationError, handle_pydantic_validation_error  # type: ignore[arg-type]
+    )
+    application.add_exception_handler(
+        RequestValidationError, handle_fastapi_validation_error  # type: ignore[arg-type]
+    )
+    application.add_exception_handler(Exception, handle_unhandled_exception)
     application.include_router(health_router)
     application.include_router(combat_router, prefix="/api/v1")
     application.include_router(gameplay_router, prefix="/api/v1")

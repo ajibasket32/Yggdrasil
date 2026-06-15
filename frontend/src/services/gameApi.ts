@@ -98,7 +98,12 @@ export const gameApi = {
     destinationId: string,
     idempotencyKey: string,
   ) =>
-    request<unknown>(`/characters/${characterId}/travel`, playerId, {
+    request<{
+      character_id: string;
+      origin: Location;
+      destination: Location;
+      newly_discovered: boolean;
+    }>(`/characters/${characterId}/travel`, playerId, {
       method: "POST",
       headers: { "Idempotency-Key": idempotencyKey },
       body: JSON.stringify({ destination_id: destinationId }),
@@ -261,7 +266,11 @@ export const gameApi = {
       body: JSON.stringify({ character_id: characterId }),
     }),
   createSave: (playerId: string, characterId: string, idempotencyKey: string) =>
-    request<unknown>("/save", playerId, {
+    request<{
+      save_id: string;
+      character_id: string;
+      save_name: string;
+    }>("/save", playerId, {
       method: "POST",
       headers: { "Idempotency-Key": idempotencyKey },
       body: JSON.stringify({

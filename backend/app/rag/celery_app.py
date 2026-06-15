@@ -6,7 +6,7 @@ settings = get_settings()
 
 celery_app = Celery(
     "yggdrasil-rag",
-    broker=settings.redis_url,
+    broker=settings.redis_url.get_secret_value(),
     include=["app.rag.tasks"],
 )
 celery_app.conf.update(
