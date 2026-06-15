@@ -87,6 +87,22 @@ describe("gameApi", () => {
     await expect(gameApi.definitions()).rejects.toThrow("Request failed");
   });
 
+  it("reports non-JSON responses as proxy or backend configuration failures", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.reject(new SyntaxError("Unexpected token '<'")),
+        } as Response),
+      ),
+    );
+
+    await expect(gameApi.definitions()).rejects.toThrow(
+      "API returned an invalid response. Check backend/proxy configuration.",
+    );
+  });
+
   it("handles malformed error response without message", async () => {
     vi.stubGlobal(
       "fetch",

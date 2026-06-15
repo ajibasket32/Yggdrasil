@@ -4,6 +4,8 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import CombatPanel from "./components/CombatPanel";
 import WorldPanel from "./components/WorldPanel";
 import GameCanvas from "./components/GameCanvas";
+import portraitAtlasUrl from "./assets/characters/RPG_assets.png";
+import logoIconUrl from "./assets/ui/rpg/iconCircle_beige.png";
 import { gameApi, getPlayerId } from "./services/gameApi";
 import type {
   CharacterDefinitions,
@@ -477,7 +479,7 @@ const App = () => {
         <header className="masthead">
           <div>
             <img
-              src="assets/ui/rpg/iconCircle_beige.png"
+              src={logoIconUrl}
               alt=""
               className="logo-icon"
             />
@@ -516,7 +518,7 @@ const App = () => {
               <p className="eyebrow">Begin the chronicle</p>
               <h2>Create your character</h2>
               <div className="portrait-preview">
-                <img src="assets/characters/RPG_assets.png" alt="Portrait" />
+                <img src={portraitAtlasUrl} alt="Portrait" />
               </div>
               <p>
                 Race, job, statistics, starting skills, inventory, and location

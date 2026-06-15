@@ -32,6 +32,8 @@ interface ApiErrorEnvelope {
 
 const PLAYER_ID_KEY = "yggdrasil-player-id";
 const FALLBACK_PLAYER_ID = "9d463696-4daf-4f3c-bb8c-f21389acb991";
+const INVALID_API_RESPONSE_MESSAGE =
+  "API returned an invalid response. Check backend/proxy configuration.";
 
 export const getPlayerId = (): string => {
   const stored = window.localStorage.getItem(PLAYER_ID_KEY);
@@ -61,7 +63,12 @@ const request = async <T>(
   }
 
   const response = await fetch(`/api/v1${path}`, { ...init, headers });
-  const payload = (await response.json()) as ApiEnvelope<T> | ApiErrorEnvelope;
+  let payload: ApiEnvelope<T> | ApiErrorEnvelope;
+  try {
+    payload = (await response.json()) as ApiEnvelope<T> | ApiErrorEnvelope;
+  } catch {
+    throw new Error(INVALID_API_RESPONSE_MESSAGE);
+  }
   if (!response.ok || !("data" in payload)) {
     const message =
       "error" in payload ? payload.error?.message : "Request failed";
