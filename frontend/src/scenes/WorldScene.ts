@@ -44,7 +44,7 @@ export default class WorldScene extends Scene {
     // Listen for changes from React
     this.registry.events.on(
       "changedata-locationName",
-      this.updateLocation,
+      () => this.updateLocation(),
       this,
     );
 
@@ -60,7 +60,7 @@ export default class WorldScene extends Scene {
   }
 
   private updateLocation() {
-    const locName = this.registry.get("locationName");
+    const locName = this.registry.get("locationName") as string;
     if (locName && this.locationText) {
       this.locationText.setText(locName);
 

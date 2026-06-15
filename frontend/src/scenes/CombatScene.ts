@@ -73,7 +73,7 @@ export default class CombatScene extends Scene {
     this.syncState();
 
     // Listen to React state changes
-    this.registry.events.on("changedata-combatState", this.syncState, this);
+    this.registry.events.on("changedata-combatState", () => this.syncState(), this);
   }
 
   private syncState() {

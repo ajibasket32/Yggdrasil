@@ -6,7 +6,6 @@ import NarrativeBox from "./components/NarrativeBox";
 import WorldPanel from "./components/WorldPanel";
 import GameCanvas from "./components/GameCanvas";
 import portraitAtlasUrl from "./assets/characters/RPG_assets.png";
-import logoIconUrl from "./assets/ui/rpg/iconCircle_beige.png";
 import { gameApi, getPlayerId } from "./services/gameApi";
 import type {
   CharacterDefinitions,
