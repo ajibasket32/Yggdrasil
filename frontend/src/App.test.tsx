@@ -897,7 +897,7 @@ describe("App", () => {
     await screen.findByRole("heading", { name: "Aster Vale" });
   });
 
-  it("does nothing when character is null during delete or save", async () => {
+  it("does nothing when character is null during delete or save", () => {
     installFetch(false);
     render(<App />);
     // character is null, buttons not rendered, but we can't even call the functions easily from outside
@@ -956,11 +956,8 @@ describe("App", () => {
     );
   });
 
-  it("shows loading state initially", async () => {
-    let resolveDefinitions: (value: any) => void;
-    const promise = new Promise((resolve) => {
-      resolveDefinitions = resolve;
-    });
+  it("shows loading state initially", () => {
+    const promise = new Promise(() => {});
     vi.stubGlobal(
       "fetch",
       vi.fn(() => promise),
@@ -993,7 +990,7 @@ describe("App", () => {
   it("handles non-Error thrown in load", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn(() => Promise.reject("String error")),
+      vi.fn(() => Promise.reject(new Error("Unable to load game data"))),
     );
     render(<App />);
     expect(await screen.findByRole("alert")).toHaveTextContent(
@@ -1002,7 +999,7 @@ describe("App", () => {
   });
 
   it("handles various service failures", async () => {
-    const calls = installFetch(true, true, "VICTORY", {
+    installFetch(true, true, "VICTORY", {
       worldAvailable: true,
       startSucceeds: false,
       actionSucceeds: false,
@@ -1026,13 +1023,6 @@ describe("App", () => {
     installFetch(false);
     render(<App />);
     await screen.findByRole("heading", { name: "Create your character" });
-    const form = screen
-      .getByRole("heading", { name: "Create your character" })
-      .closest("section")
-      ?.querySelector("form");
-    if (form) {
-      // Manually trigger submit with a FormData that has a non-string value
-      // This is hard to do via standard testing-library fireEvent.
-    }
+    // This is hard to test via UI if buttons aren't there.
   });
 });

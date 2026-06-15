@@ -6,20 +6,21 @@ if (typeof window.crypto.randomUUID !== "function") {
 }
 
 if (typeof window.crypto.getRandomValues !== "function") {
-  (window.crypto as any).getRandomValues = <T extends ArrayBufferView | null>(
-    array: T,
-  ): T => {
-    if (array) {
-      const view = new Uint8Array(
-        array.buffer,
-        array.byteOffset,
-        array.byteLength,
-      );
-      for (let i = 0; i < view.length; i++)
-        view[i] = Math.floor(Math.random() * 256);
-    }
-    return array;
-  };
+  Object.defineProperty(window.crypto, "getRandomValues", {
+    value: <T extends ArrayBufferView | null>(array: T): T => {
+      if (array) {
+        const view = new Uint8Array(
+          array.buffer,
+          array.byteOffset,
+          array.byteLength,
+        );
+        for (let i = 0; i < view.length; i++)
+          view[i] = Math.floor(Math.random() * 256);
+      }
+      return array;
+    },
+    configurable: true,
+  });
 }
 
 import { vi } from "vitest";
@@ -33,8 +34,9 @@ vi.mock("phaser", () => ({
     };
   },
   Scene: class MockScene {
+    public key: string;
     constructor(key: string) {
-      (this as any).key = key;
+      this.key = key;
     }
     load = {
       image: vi.fn(),
