@@ -126,7 +126,7 @@ const WorldPanel = ({
       )}
     </section>
 
-    <section className="jrpg-panel split-panel" style={{ marginTop: '1.5rem' }}>
+    <section className="jrpg-panel split-panel" style={{ marginTop: "1.5rem" }}>
       <div>
         <h3>People nearby</h3>
         {npcs.length === 0 ? (
@@ -204,7 +204,10 @@ const WorldPanel = ({
       </div>
     </section>
 
-    <section className="jrpg-panel split-panel" style={{ marginTop: '1.5rem', marginBottom: '4rem' }}>
+    <section
+      className="jrpg-panel split-panel"
+      style={{ marginTop: "1.5rem", marginBottom: "4rem" }}
+    >
       <div>
         <h3>Dungeons</h3>
         {dungeons.length === 0 ? (

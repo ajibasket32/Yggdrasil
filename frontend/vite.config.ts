@@ -24,6 +24,6 @@ export default defineConfig({
         statements: 80,
       },
     },
-    exclude: ["audit_gameplay.spec.ts", "node_modules/**/*"],
+    exclude: ["tests/e2e/**/*", "node_modules/**/*"],
   },
 });

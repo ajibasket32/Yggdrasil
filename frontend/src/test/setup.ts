@@ -38,7 +38,7 @@ vi.mock("phaser", () => ({
       get: vi.fn(),
       events: {
         on: vi.fn(),
-      }
+      },
     };
   },
   Scene: class MockScene {
@@ -46,14 +46,14 @@ vi.mock("phaser", () => ({
     public registry: any;
     public cameras: any;
     public tweens: any;
-    
+
     constructor(key: string) {
       this.key = key;
       this.registry = {
         get: vi.fn(),
         events: {
           on: vi.fn(),
-        }
+        },
       };
       this.cameras = {
         main: {
@@ -62,7 +62,7 @@ vi.mock("phaser", () => ({
           flash: vi.fn(),
           shake: vi.fn(),
           setBackgroundColor: vi.fn(),
-        }
+        },
       };
       this.tweens = {
         add: vi.fn(),
@@ -102,6 +102,6 @@ vi.mock("phaser", () => ({
   AUTO: "AUTO",
   Scale: {
     RESIZE: "RESIZE",
-    CENTER_BOTH: "CENTER_BOTH"
-  }
+    CENTER_BOTH: "CENTER_BOTH",
+  },
 }));
