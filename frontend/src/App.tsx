@@ -2,6 +2,7 @@ import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
 import ErrorBoundary from "./components/ErrorBoundary";
 import CombatPanel from "./components/CombatPanel";
+import NarrativeBox from "./components/NarrativeBox";
 import WorldPanel from "./components/WorldPanel";
 import GameCanvas from "./components/GameCanvas";
 import portraitAtlasUrl from "./assets/characters/RPG_assets.png";
@@ -73,6 +74,9 @@ const App = () => {
   const [narrative, setNarrative] = useState<Narrative | null>(null);
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  type MenuView = "NONE" | "CHARACTER" | "WORLD_PANEL" | "ENCOUNTERS" | "TRAVEL";
+  const [menuView, setMenuView] = useState<MenuView>("NONE");
 
   const inspectCharacter = useCallback(
     async (characterId: string) => {
@@ -474,22 +478,20 @@ const App = () => {
   }
 
   return (
-    <main>
+    <main className={character !== null ? "jrpg-layout" : ""}>
       <ErrorBoundary>
-        <header className="masthead">
-          <div>
-            <img
-              src={logoIconUrl}
-              alt=""
-              className="logo-icon"
-            />
+        {character === null && (
+          <header className="masthead">
             <div>
-              <p className="eyebrow">Yggdrasil Chronicles</p>
-              <h1>Playable Vertical Slice</h1>
+              <img src={logoIconUrl} alt="" className="logo-icon" />
+              <div>
+                <p className="eyebrow">Yggdrasil Chronicles</p>
+                <h1>Playable Vertical Slice</h1>
+              </div>
             </div>
-          </div>
-          <p className="release-mark">v0.10 Valeria Region</p>
-        </header>
+            <p className="release-mark">v0.10 Valeria Region</p>
+          </header>
+        )}
 
         {error !== null && (
           <p className="error" role="alert">
@@ -500,17 +502,21 @@ const App = () => {
         {combat !== null && character !== null ? (
           <>
             <GameCanvas mode="COMBAT" />
-            <CombatPanel
-              combat={combat}
-              skills={character.skills}
-              inventory={inventory}
-              busy={busy}
-              onAction={(action, skillId, inventoryItemId) => {
-                void combatAction(action, skillId, inventoryItemId);
-              }}
-              onFlee={() => void fleeCombat()}
-              onReturn={() => void leaveCombat()}
-            />
+            <div className="jrpg-ui-layer">
+              <div className="bottom-panel">
+                <CombatPanel
+                  combat={combat}
+                  skills={character.skills}
+                  inventory={inventory}
+                  busy={busy}
+                  onAction={(action, skillId, inventoryItemId) => {
+                    void combatAction(action, skillId, inventoryItemId);
+                  }}
+                  onFlee={() => void fleeCombat()}
+                  onReturn={() => void leaveCombat()}
+                />
+              </div>
+            </div>
           </>
         ) : character === null && definitions !== null ? (
           <section className="creation-layout">
@@ -580,221 +586,225 @@ const App = () => {
             </form>
           </section>
         ) : character !== null ? (
-          <div className="archive">
+          <>
             <GameCanvas mode="EXPLORATION" />
-            <div className="save-toolbar">
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => void saveGame()}
-              >
-                Save Game
-              </button>
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => void deleteCharacter()}
-              >
-                End Chronicle
-              </button>
-            </div>
-
-            <section className="hero-card">
-              <div>
+            <div className="jrpg-ui-layer">
+              <div className="hud-overlay">
                 <p className="eyebrow">
                   {character.race.name} · {character.alignment}
                 </p>
-                <h2>{character.name}</h2>
+                <h3>{character.name}</h3>
                 <p>
-                  Level {character.level} {character.current_job.name} ·{" "}
-                  {character.current_location.name}
+                  Level {character.level} {character.current_job.name}
                 </p>
+                <p>{character.current_location.name}</p>
+                <div className="resource-grid" aria-label="Character resources">
+                  <span>
+                    HP <strong>{character.current_hp}/{character.derived_stats.max_hp}</strong>
+                  </span>
+                  <span>
+                    MP <strong>{character.current_mp}/{character.derived_stats.max_mp}</strong>
+                  </span>
+                  <span>
+                    SP <strong>{character.current_stamina}/{character.derived_stats.max_stamina}</strong>
+                  </span>
+                </div>
               </div>
-              <div className="resource-grid" aria-label="Character resources">
-                <span>
-                  HP{" "}
-                  <strong>
-                    {character.current_hp}/{character.derived_stats.max_hp}
-                  </strong>
-                </span>
-                <span>
-                  MP{" "}
-                  <strong>
-                    {character.current_mp}/{character.derived_stats.max_mp}
-                  </strong>
-                </span>
-                <span>
-                  Stamina{" "}
-                  <strong>
-                    {character.current_stamina}/
-                    {character.derived_stats.max_stamina}
-                  </strong>
-                </span>
-              </div>
-            </section>
 
-            <section className="panel">
-              <h3>Attributes</h3>
-              <div className="stat-grid">
-                {Object.entries(statLabels).map(([key, label]) => (
-                  <div key={key}>
-                    <span>{label}</span>
-                    <strong>
-                      {character.stats[key as keyof typeof character.stats]}
-                    </strong>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section className="panel split-panel">
-              <div>
-                <h3>Job progress</h3>
-                {character.jobs.map((job) => (
-                  <p key={job.job.id}>
-                    <strong>{job.job.name}</strong> · Job level {job.job_level}
-                    {job.active ? " · Active" : ""}
-                  </p>
-                ))}
-              </div>
-              <div>
-                <h3>Skills</h3>
-                {character.skills.map((skill) => (
-                  <p key={skill.id}>
-                    <strong>{skill.name}</strong> · Rank {skill.skill_level}
-                  </p>
-                ))}
-              </div>
-            </section>
-
-            <section className="panel split-panel">
-              <div>
-                <h3>Inventory</h3>
-                <p className="muted">
-                  {inventory?.used_slots ?? 0}/{inventory?.slot_count ?? 0}{" "}
-                  slots · {inventory?.total_weight ?? 0}/
-                  {inventory?.max_weight ?? 0} weight
-                </p>
-                <ul>
-                  {inventory?.items.map((item) => (
-                    <li key={item.inventory_item_id}>
-                      <strong>{item.name}</strong> × {item.quantity}
-                      {item.is_quest_item ? " · Protected" : ""}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3>Equipment</h3>
-                <ul>
-                  {equipment?.slots.map((slot) => (
-                    <li key={slot.slot_id}>
-                      <span>{slot.name}</span> · {slot.item?.name ?? "Empty"}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-
-            <WorldPanel
-              quests={quests}
-              npcs={npcs}
-              factions={factions}
-              dungeons={dungeons}
-              journal={journal}
-              busy={busy}
-              interactionText={interactionText}
-              narrative={narrative}
-              onQuestAction={(quest, action) => {
-                void questAction(quest, action);
-              }}
-              onNpcAction={(npc, action) => {
-                void npcAction(npc, action);
-              }}
-              onDialogue={(npc, topic) => {
-                void dialogue(npc, topic);
-              }}
-              onQuestFraming={(quest) => {
-                void questFraming(quest);
-              }}
-              onCloseNarrative={() => setNarrative(null)}
-              onJoinFaction={(faction) => {
-                void joinFaction(faction);
-              }}
-              onDungeonAction={(dungeon, action) => {
-                void dungeonAction(dungeon, action);
-              }}
-            />
-
-            <section className="panel">
-              <h3>Encounters</h3>
-              {encounters.length === 0 ? (
-                <p className="muted">No combat encounters at this location.</p>
-              ) : (
-                <div className="encounter-grid">
-                  {encounters.map((encounter) => (
-                    <article key={encounter.id}>
-                      <p className="eyebrow">{encounter.difficulty}</p>
-                      <h4>{encounter.name}</h4>
-                      <p>
-                        Level {encounter.monster_level} {encounter.monster_name}
-                      </p>
-                      <p className="muted">
-                        {encounter.reward_experience} XP /{" "}
-                        {encounter.reward_gold} gold
-                      </p>
-                      <button
-                        type="button"
-                        disabled={busy}
-                        onClick={() => void startCombat(encounter)}
-                      >
-                        Begin combat
-                      </button>
-                    </article>
-                  ))}
+              {(interactionText !== null || narrative !== null) && (
+                <div className="narrative-box">
+                  {interactionText && <p>{interactionText}</p>}
+                  {narrative && <NarrativeBox narrative={narrative} onClose={() => setNarrative(null)} />}
+                  {interactionText && !narrative && <button onClick={() => setInteractionText(null)}>Close</button>}
                 </div>
               )}
-            </section>
 
-            <section className="panel">
-              <div className="section-heading">
-                <h3>Known world</h3>
-                <button
-                  type="button"
-                  disabled={busy}
-                  onClick={() => void describeLocation()}
-                >
-                  Observe surroundings
-                </button>
+              <div className="action-bar">
+                <button onClick={() => setMenuView("TRAVEL")}>Travel</button>
+                <button onClick={() => setMenuView("ENCOUNTERS")}>Encounters</button>
+                <button onClick={() => setMenuView("WORLD_PANEL")}>Quests & NPCs</button>
+                <button onClick={() => setMenuView("CHARACTER")}>Status & Inv</button>
+                <button onClick={() => void saveGame()}>Save Game</button>
+                <button onClick={() => void deleteCharacter()}>End Chronicle</button>
               </div>
-              <div className="location-grid">
-                {locations
-                  .filter(
-                    (location) => location.discovered || location.reachable,
-                  )
-                  .map((location) => (
-                    <article key={location.id}>
-                      <p className="eyebrow">Danger {location.danger_level}</p>
-                      <h4>{location.name}</h4>
-                      <p>{location.description}</p>
-                      {location.reachable &&
-                        location.id !== character.current_location.id && (
+
+              {menuView !== "NONE" && (
+                <div className="menu-modal-backdrop" onClick={() => setMenuView("NONE")}>
+                  <div className="menu-modal-content" onClick={(e) => e.stopPropagation()}>
+                    <button className="menu-close-btn" onClick={() => setMenuView("NONE")}>Close Menu</button>
+                    
+                    {menuView === "CHARACTER" && (
+                      <div className="archive">
+                        <section className="panel">
+                          <h3>Attributes</h3>
+                          <div className="stat-grid">
+                            {Object.entries(statLabels).map(([key, label]) => (
+                              <div key={key}>
+                                <span>{label}</span>
+                                <strong>
+                                  {character.stats[key as keyof typeof character.stats]}
+                                </strong>
+                              </div>
+                            ))}
+                          </div>
+                        </section>
+                        <section className="panel split-panel">
+                          <div>
+                            <h3>Job progress</h3>
+                            {character.jobs.map((job) => (
+                              <p key={job.job.id}>
+                                <strong>{job.job.name}</strong> · Job level {job.job_level}
+                                {job.active ? " · Active" : ""}
+                              </p>
+                            ))}
+                          </div>
+                          <div>
+                            <h3>Skills</h3>
+                            {character.skills.map((skill) => (
+                              <p key={skill.id}>
+                                <strong>{skill.name}</strong> · Rank {skill.skill_level}
+                              </p>
+                            ))}
+                          </div>
+                        </section>
+                        <section className="panel split-panel">
+                          <div>
+                            <h3>Inventory</h3>
+                            <p className="muted">
+                              {inventory?.used_slots ?? 0}/{inventory?.slot_count ?? 0} slots · {inventory?.total_weight ?? 0}/{inventory?.max_weight ?? 0} weight
+                            </p>
+                            <ul>
+                              {inventory?.items.map((item) => (
+                                <li key={item.inventory_item_id}>
+                                  <strong>{item.name}</strong> × {item.quantity}
+                                  {item.is_quest_item ? " · Protected" : ""}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div>
+                            <h3>Equipment</h3>
+                            <ul>
+                              {equipment?.slots.map((slot) => (
+                                <li key={slot.slot_id}>
+                                  <span>{slot.name}</span> · {slot.item?.name ?? "Empty"}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </section>
+                      </div>
+                    )}
+
+                    {menuView === "WORLD_PANEL" && (
+                      <WorldPanel
+                        quests={quests}
+                        npcs={npcs}
+                        factions={factions}
+                        dungeons={dungeons}
+                        journal={journal}
+                        busy={busy}
+                        interactionText={interactionText}
+                        narrative={narrative}
+                        onQuestAction={(quest, action) => void questAction(quest, action)}
+                        onNpcAction={(npc, action) => void npcAction(npc, action)}
+                        onDialogue={(npc, topic) => {
+                          void dialogue(npc, topic);
+                          setMenuView("NONE");
+                        }}
+                        onQuestFraming={(quest) => {
+                          void questFraming(quest);
+                          setMenuView("NONE");
+                        }}
+                        onCloseNarrative={() => setNarrative(null)}
+                        onJoinFaction={(faction) => void joinFaction(faction)}
+                        onDungeonAction={(dungeon, action) => void dungeonAction(dungeon, action)}
+                      />
+                    )}
+
+                    {menuView === "ENCOUNTERS" && (
+                      <section className="panel">
+                        <h3>Encounters</h3>
+                        {encounters.length === 0 ? (
+                          <p className="muted">No combat encounters at this location.</p>
+                        ) : (
+                          <div className="encounter-grid">
+                            {encounters.map((encounter) => (
+                              <article key={encounter.id}>
+                                <p className="eyebrow">{encounter.difficulty}</p>
+                                <h4>{encounter.name}</h4>
+                                <p>
+                                  Level {encounter.monster_level} {encounter.monster_name}
+                                </p>
+                                <p className="muted">
+                                  {encounter.reward_experience} XP / {encounter.reward_gold} gold
+                                </p>
+                                <button
+                                  type="button"
+                                  disabled={busy}
+                                  onClick={() => {
+                                    void startCombat(encounter);
+                                    setMenuView("NONE");
+                                  }}
+                                >
+                                  Begin combat
+                                </button>
+                              </article>
+                            ))}
+                          </div>
+                        )}
+                      </section>
+                    )}
+
+                    {menuView === "TRAVEL" && (
+                      <section className="panel">
+                        <div className="section-heading">
+                          <h3>Known world</h3>
                           <button
                             type="button"
                             disabled={busy}
-                            onClick={() => void travel(location, character.id)}
+                            onClick={() => {
+                              void describeLocation();
+                              setMenuView("NONE");
+                            }}
                           >
-                            Travel here
+                            Observe surroundings
                           </button>
-                        )}
-                      {location.id === character.current_location.id && (
-                        <span className="current">Current location</span>
-                      )}
-                    </article>
-                  ))}
-              </div>
-            </section>
-          </div>
+                        </div>
+                        <div className="location-grid">
+                          {locations
+                            .filter((location) => location.discovered || location.reachable)
+                            .map((location) => (
+                              <article key={location.id}>
+                                <p className="eyebrow">Danger {location.danger_level}</p>
+                                <h4>{location.name}</h4>
+                                <p>{location.description}</p>
+                                {location.reachable && location.id !== character.current_location.id && (
+                                  <button
+                                    type="button"
+                                    disabled={busy}
+                                    onClick={() => {
+                                      void travel(location, character.id);
+                                      setMenuView("NONE");
+                                    }}
+                                  >
+                                    Travel here
+                                  </button>
+                                )}
+                                {location.id === character.current_location.id && (
+                                  <span className="current">Current location</span>
+                                )}
+                              </article>
+                            ))}
+                        </div>
+                      </section>
+                    )}
+
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
         ) : null}
       </ErrorBoundary>
     </main>

@@ -6,38 +6,27 @@ Last reviewed: 2026-06-14
 
 ## Current Status
 
-**v0.8 AI Narrative and Dialogue is complete.** No release is currently in
-progress.
+**v1.0 MVP Release is complete.** No release is currently in progress.
 
 ## Latest Release
 
-**v0.8.0 AI Narrative and Dialogue**
+**v1.0.0 MVP Release**
 
 ### Completed
 
-- Added versioned, provider-neutral prompts for NPC dialogue, lore, quest
-  framing, and current-location descriptions.
-- Added player-scoped context assembly across canonical memories, NPC profile,
-  faction standing, relationship values, quests, location, and recent
-  dialogue.
-- Added strict output validation, entity boundaries, idempotency, stable
-  context hashing, cosmetic narrative persistence, and safe context caching.
-- Added fixed-topic NPC choices and JRPG story panels without free-form
-  chatbot control.
-- Added approved local fallback presentation when providers or Qdrant are
-  unavailable.
-- Passed 108 backend tests at 84.90% coverage and 33 frontend tests at 94.75%
-  statement and 80.43% branch coverage.
-- Passed strict typing, lint, formatting, production builds, migration
-  rollback/upgrade, dependency audits, secret scanning, healthy deployment,
-  and deployed browser verification.
+- Added versioned, provider-neutral prompts and player-scoped context assembly for narrative.
+- Added strict output validation, cosmetic narrative persistence, and local fallback presentation.
+- Completed asset discovery, review, and local integration with full provenance in `assets/CATALOG.md`.
+- Integrated Phaser 3 for 2D JRPG World and Combat scenes in the browser.
+- Added full transactional Save Game / End Chronicle workflows to the UI.
+- Expanded content to the MVP targets: 5 regions, 5 factions, 5 dungeons, and world items.
+- Hardened security, verified migrations, and passed `npm audit` and `pip-audit`.
+- Passed all unit, integration, and E2E gates, meeting MVP testing thresholds.
 
 ### Not Yet Implemented
 
-- Release-approved visual/audio asset selection, import, attribution, and
-  license evidence.
-- The complete playable vertical slice and final MVP content breadth.
-- Production authentication and public-release operational approvals.
+- Complete production authentication.
+- Full post-MVP simulation (economy, housing, multiplayer).
 
 ### Known Limitations
 
@@ -65,5 +54,4 @@ progress.
 
 ### Next Recommended Release
 
-Implement **v0.9 Asset Discovery and License Tracking** only after a new user
-prompt.
+Maintenance and Content Expansion.

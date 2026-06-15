@@ -14,21 +14,20 @@ export default class WorldScene extends Scene {
   }
 
   create() {
-    this.add.text(10, 10, "Valeria Exploration", {
-      fontSize: "18px",
-      color: "#ffffff",
-    });
+    this.cameras.main.setBackgroundColor("#485747");
 
-    const player = this.add.sprite(400, 300, "player", 0);
-    player.setScale(2);
+    const player = this.add.sprite(400, 200, "player", 0);
+    player.setScale(4);
 
     this.input.keyboard?.on("keydown", (event: KeyboardEvent) => {
       switch (event.key) {
         case "ArrowLeft":
           player.x -= 16;
+          player.setFlipX(true);
           break;
         case "ArrowRight":
           player.x += 16;
+          player.setFlipX(false);
           break;
         case "ArrowUp":
           player.y -= 16;

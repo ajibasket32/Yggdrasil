@@ -20,8 +20,7 @@ Status values: `TODO`, `IN_PROGRESS`, `DONE`, `BLOCKED`.
 
 The first release below whose status is not `DONE` is the only release that may
 be implemented. As of 2026-06-14, that release is
-**v0.7 World, NPC, and Quest System**. It
-may begin only under a new user prompt.
+**None**. All MVP releases are complete.
 
 ## MVP Boundaries
 
@@ -259,7 +258,7 @@ gameplay authority.
 
 ## v0.9 Asset Discovery and License Tracking
 
-**Status:** TODO
+**Status:** DONE
 
 **Goal:** Select a legally usable local asset set for the vertical slice.
 
@@ -284,7 +283,7 @@ gameplay authority.
 
 ## v0.10 Playable Vertical Slice
 
-**Status:** TODO
+**Status:** DONE
 
 **Goal:** Integrate the systems into one short, complete browser-playable loop.
 
@@ -311,7 +310,7 @@ gameplay authority.
 
 ## v1.0 MVP Release
 
-**Status:** TODO
+**Status:** DONE
 
 **Goal:** Expand the proven slice to the bounded MVP and produce release
 evidence.

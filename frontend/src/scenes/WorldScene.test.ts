@@ -10,9 +10,14 @@ describe("WorldScene", () => {
     // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(scene.load.spritesheet).toHaveBeenCalled();
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+    (scene as any).cameras = { main: { setBackgroundColor: vi.fn() } };
+    
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+    (scene as any).add = { sprite: vi.fn().mockReturnValue({ setScale: vi.fn(), setFlipX: vi.fn() }) };
     scene.create();
     // eslint-disable-next-line @typescript-eslint/unbound-method
-    expect(scene.add.text).toHaveBeenCalled();
+    expect(scene.cameras.main.setBackgroundColor).toHaveBeenCalled();
     // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(scene.add.sprite).toHaveBeenCalled();
 

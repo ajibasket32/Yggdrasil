@@ -15,15 +15,22 @@ export default class CombatScene extends Scene {
   }
 
   create() {
-    this.add.text(10, 10, "Combat Encounter", {
-      fontSize: "18px",
-      color: "#ff0000",
+    this.cameras.main.setBackgroundColor("#111813");
+
+    const player = this.add.sprite(600, 200, "player", 0);
+    player.setScale(5);
+    player.setFlipX(true);
+
+    const enemy = this.add.sprite(200, 200, "slime");
+    enemy.setScale(5);
+
+    this.tweens.add({
+      targets: enemy,
+      y: 190,
+      duration: 1500,
+      yoyo: true,
+      repeat: -1,
+      ease: "Sine.easeInOut",
     });
-
-    const player = this.add.sprite(200, 300, "player", 0);
-    player.setScale(3);
-
-    const enemy = this.add.sprite(600, 300, "slime");
-    enemy.setScale(3);
   }
 }
