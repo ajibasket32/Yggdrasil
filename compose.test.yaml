@@ -1,0 +1,77 @@
+name: yggdrasil-chronicles-test
+
+services:
+  postgres:
+    image: postgres:16.9-alpine
+    env_file:
+      - .env.test
+    ports:
+      - "127.0.0.1:${TEST_POSTGRES_PORT:-15432}:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+
+  redis:
+    image: redis:7.4.2-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "127.0.0.1:${TEST_REDIS_PORT:-16379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+
+  qdrant:
+    image: qdrant/qdrant:v1.14.1
+    ports:
+      - "127.0.0.1:${TEST_QDRANT_HTTP_PORT:-16333}:6333"
+      - "127.0.0.1:${TEST_QDRANT_GRPC_PORT:-16334}:6334"
+    volumes:
+      - qdrant_test_data:/qdrant/storage
+
+  backend-test:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+      args:
+        POETRY_INSTALL_ARGS: "--with dev --no-root"
+    env_file:
+      - .env.test
+    environment:
+      DATABASE_URL: postgresql://yggdrasil_test:yggdrasil_test_local_only@postgres:5432/yggdrasil_test
+      REDIS_URL: redis://redis:6379/1
+      QDRANT_URL: http://qdrant:6333
+      OLLAMA_URL: http://127.0.0.1:11434
+      AI_PROVIDER_ORDER: cached
+      PYTHONPATH: /app
+    volumes:
+      - ./backend:/app
+      - ./backend:/backend:ro
+      - ./database/migrations:/database/migrations:ro
+      - ./database/seeds:/database/seeds:ro
+      - ./tests:/tests
+      - ./tools:/tools
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+    command:
+      [
+        "sh",
+        "-lc",
+        "poetry run pytest -c pyproject.toml ../tests/integration ../tests/regression",
+      ]
+    profiles:
+      - test
+
+volumes:
+  postgres_test_data:
+  qdrant_test_data:

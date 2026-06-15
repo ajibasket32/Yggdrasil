@@ -11,7 +11,8 @@ RUN pip install --no-cache-dir --upgrade pip==26.1.2 \
     && pip install --no-cache-dir poetry==2.3.4
 
 COPY backend/pyproject.toml backend/poetry.lock ./
-RUN poetry install --only main --no-root
+ARG POETRY_INSTALL_ARGS="--only main --no-root"
+RUN poetry install ${POETRY_INSTALL_ARGS}
 
 COPY backend/app ./app
 COPY backend/alembic.ini ./

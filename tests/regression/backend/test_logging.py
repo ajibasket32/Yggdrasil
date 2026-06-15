@@ -1,6 +1,7 @@
 import json
 import logging
 
+from app.core.config import get_settings
 from app.core.uvicorn_logging import JsonLogFormatter
 
 
@@ -20,7 +21,7 @@ def test_standard_log_record_is_rendered_as_required_json() -> None:
 
     assert payload["level"] == "info"
     assert payload["service"] == "yggdrasil-backend"
-    assert payload["environment"] == "development"
+    assert payload["environment"] == get_settings().environment
     assert payload["event_name"] == "uvicorn.error.log"
     assert payload["message"] == "Application startup complete"
     assert "request_id" in payload

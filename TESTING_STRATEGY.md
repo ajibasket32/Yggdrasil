@@ -501,6 +501,31 @@ Coverage must never decrease on main branch. A PR that lowers coverage below the
 | `staging` | Pre-release verification | Snapshot of prod data | Real providers (rate-limited) |
 | `production` | Live game | Real player data | Real providers |
 
+### 11.1 Windows Local Integration and Regression Path
+
+The repository root provides a Docker Compose-backed Windows test entrypoint:
+
+```powershell
+.\test-local.ps1
+```
+
+This command uses `compose.test.yaml` and `.env.test` rather than the normal
+development stack. The test stack exposes PostgreSQL, Redis, and Qdrant only on
+localhost test ports, applies Alembic migrations, verifies canonical seed data
+created by migrations, and runs backend integration and regression tests inside
+a backend test runner container with Poetry dev dependencies installed.
+
+The default command is equivalent to:
+
+```bash
+pytest -c pyproject.toml ../tests/integration ../tests/regression
+```
+
+Use `.\test-local.ps1 -Suite integration` or
+`.\test-local.ps1 -Suite regression` for focused runs. Tests must keep using
+fixtures in `tests/conftest.py` or local stubs/mocks for external AI behavior;
+cloud provider credentials are intentionally empty in `.env.test`.
+
 ---
 
 ## 12. MOCK PATTERNS

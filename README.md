@@ -65,6 +65,38 @@ Development endpoints:
 The committed `.env.example` contains development-only sample values. Never
 commit a real `.env` file or production credentials.
 
+## Local Test Start
+
+Run backend integration and regression tests from the repository root on
+Windows:
+
+```powershell
+.\test-local.ps1
+```
+
+The script uses `compose.test.yaml` and the committed safe `.env.test` values.
+It starts isolated PostgreSQL, Redis, and Qdrant services on localhost ports
+`15432`, `16379`, and `16333`; builds a backend test runner with Poetry dev
+dependencies; applies Alembic migrations; verifies canonical migration seed
+data; and runs:
+
+```bash
+pytest -c pyproject.toml ../tests/integration ../tests/regression
+```
+
+Useful variants:
+
+```powershell
+.\test-local.ps1 -Suite integration
+.\test-local.ps1 -Suite regression
+.\test-local.ps1 -KeepServices
+.\test-local.cmd -Suite all
+```
+
+When `-KeepServices` is not used, the script removes the isolated test volumes
+after the run. The `.env.test` file contains only local test credentials and
+disables cloud AI providers by using the cached narrative provider.
+
 ## MVP Definition
 
 A valid MVP lets a player create a character, explore, fight, progress, accept and complete quests, talk to NPCs, save, load, and continue after cloud AI providers fail.
