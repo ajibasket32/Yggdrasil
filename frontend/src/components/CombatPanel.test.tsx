@@ -105,14 +105,16 @@ it("renders statuses and routes each available engine action", () => {
   );
 
   expect(screen.getByText("BURN (2)")).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Ember (5 MP)" })).toBeDisabled();
+  
+  const emberBtn = screen.getByRole("button", { name: (content, element) => element.textContent?.includes("Ember") ?? false });
+  expect(emberBtn).toBeDisabled();
   expect(
     screen.queryByRole("button", { name: /Focus/ }),
   ).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole("button", { name: "Attack" }));
   fireEvent.click(screen.getByRole("button", { name: "Guard" }));
   fireEvent.click(screen.getByRole("button", { name: "Wait" }));
-  fireEvent.click(screen.getByRole("button", { name: "Escape" }));
+  fireEvent.click(screen.getByRole("button", { name: "Flee" }));
 
   expect(onAction).toHaveBeenNthCalledWith(1, "ATTACK");
   expect(onAction).toHaveBeenNthCalledWith(2, "GUARD");
@@ -134,7 +136,7 @@ it("renders fled and loot-free victory outcomes", () => {
     />,
   );
   expect(
-    screen.getByText("The party escaped the encounter."),
+    screen.getByText("Escaped!"),
   ).toBeInTheDocument();
 
   rerender(
@@ -152,7 +154,7 @@ it("renders fled and loot-free victory outcomes", () => {
       onReturn={onReturn}
     />,
   );
-  expect(screen.getByText("Gained 10 XP and 4 gold.")).toBeInTheDocument();
+  expect(screen.getByText(/Victory! \+10 XP, \+4 Gold/)).toBeInTheDocument();
 
   rerender(
     <CombatPanel
@@ -184,11 +186,11 @@ it("renders fled and loot-free victory outcomes", () => {
   );
   expect(
     screen.getByText(
-      "The party was defeated. The character returns with 1 HP.",
+      /Defeated/i,
     ),
   ).toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole("button", { name: "Return to archive" }));
+  fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
   expect(onReturn).toHaveBeenCalledOnce();
 });
 

@@ -75,7 +75,7 @@ const App = () => {
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  type MenuView = "NONE" | "CHARACTER" | "WORLD_PANEL" | "ENCOUNTERS" | "TRAVEL";
+  type MenuView = "NONE" | "CHARACTER" | "WORLD_PANEL" | "ENCOUNTERS" | "TRAVEL" | "ENDING";
   const [menuView, setMenuView] = useState<MenuView>("NONE");
 
   const inspectCharacter = useCallback(
@@ -461,15 +461,21 @@ const App = () => {
   const deleteCharacter = async () => {
     /* v8 ignore next */
     if (character === null) return;
-    if (!confirm("Are you sure you want to end this chronicle?")) return;
     setBusy(true);
     try {
       await gameApi.deleteSave(playerId, character.id, crypto.randomUUID());
       setCharacter(null);
+      setMenuView("NONE");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Deletion failed");
     } finally {
       setBusy(false);
+    }
+  };
+
+  const triggerEnding = () => {
+    if (confirm("Are you sure you want to conclude your journey? This will end the MVP.")) {
+      setMenuView("ENDING");
     }
   };
 
@@ -481,16 +487,17 @@ const App = () => {
     <main className={character !== null ? "jrpg-layout" : ""}>
       <ErrorBoundary>
         {character === null && (
-          <header className="masthead">
-            <div>
-              <img src={logoIconUrl} alt="" className="logo-icon" />
-              <div>
-                <p className="eyebrow">Yggdrasil Chronicles</p>
-                <h1>Playable Vertical Slice</h1>
+          <div className="title-screen">
+            <div className="title-logo">Yggdrasil Chronicles</div>
+            <p className="eyebrow" style={{ color: '#fff', marginBottom: '2rem' }}>Playable MVP Candidate</p>
+            {definitions === null ? (
+               <p style={{ color: '#fff' }}>Loading the character archive...</p>
+            ) : (
+              <div className="title-menu">
+                <p className="eyebrow">Select or create a character to begin</p>
               </div>
-            </div>
-            <p className="release-mark">v0.10 Valeria Region</p>
-          </header>
+            )}
+          </div>
         )}
 
         {error !== null && (
@@ -501,7 +508,7 @@ const App = () => {
 
         {combat !== null && character !== null ? (
           <>
-            <GameCanvas mode="COMBAT" />
+            <GameCanvas mode="COMBAT" combatState={combat} locationName={character.current_location.name} />
             <div className="jrpg-ui-layer">
               <div className="bottom-panel">
                 <CombatPanel
@@ -519,9 +526,9 @@ const App = () => {
             </div>
           </>
         ) : character === null && definitions !== null ? (
-          <section className="creation-layout">
-            <div className="intro-panel">
-              <p className="eyebrow">Begin the chronicle</p>
+          <section className="creation-layout jrpg-panel">
+            <div className="intro-panel" style={{ background: 'transparent' }}>
+              <p className="eyebrow">New Game</p>
               <h2>Create your character</h2>
               <div className="portrait-preview">
                 <img src={portraitAtlasUrl} alt="Portrait" />
@@ -587,51 +594,70 @@ const App = () => {
           </section>
         ) : character !== null ? (
           <>
-            <GameCanvas mode="EXPLORATION" />
+            <GameCanvas mode="EXPLORATION" locationName={character.current_location.name} />
             <div className="jrpg-ui-layer">
-              <div className="hud-overlay">
-                <p className="eyebrow">
-                  {character.race.name} · {character.alignment}
-                </p>
-                <h3>{character.name}</h3>
-                <p>
-                  Level {character.level} {character.current_job.name}
-                </p>
-                <p>{character.current_location.name}</p>
-                <div className="resource-grid" aria-label="Character resources">
-                  <span>
-                    HP <strong>{character.current_hp}/{character.derived_stats.max_hp}</strong>
-                  </span>
-                  <span>
-                    MP <strong>{character.current_mp}/{character.derived_stats.max_mp}</strong>
-                  </span>
-                  <span>
-                    SP <strong>{character.current_stamina}/{character.derived_stats.max_stamina}</strong>
-                  </span>
+              <div className="hud-overlay jrpg-panel">
+                <div className="character-status-compact">
+                  <div className="portrait-mini">
+                    <img src={portraitAtlasUrl} alt="Portrait" />
+                  </div>
+                  <div style={{ flexGrow: 1 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                      <strong style={{ fontSize: '1.2rem', color: '#fef08a' }}>{character.name}</strong>
+                      <span className="muted">Lv {character.level} {character.current_job.name}</span>
+                    </div>
+                    
+                    <div className="resource-bar-container">
+                      <span className="resource-bar-label">HP</span>
+                      <div className="resource-bar">
+                        <div className="resource-fill hp" style={{ width: `${(character.current_hp / character.derived_stats.max_hp) * 100}%` }}></div>
+                        <span className="resource-text">{character.current_hp}/{character.derived_stats.max_hp}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="resource-bar-container">
+                      <span className="resource-bar-label">MP</span>
+                      <div className="resource-bar">
+                        <div className="resource-fill mp" style={{ width: `${(character.current_mp / character.derived_stats.max_mp) * 100}%` }}></div>
+                        <span className="resource-text">{character.current_mp}/{character.derived_stats.max_mp}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ marginTop: '1rem', borderTop: '1px solid #4a6fa5', paddingTop: '0.5rem', fontSize: '0.9rem', color: '#89b4fa' }}>
+                  📍 {character.current_location.name}
                 </div>
               </div>
 
               {(interactionText !== null || narrative !== null) && (
-                <div className="narrative-box">
-                  {interactionText && <p>{interactionText}</p>}
-                  {narrative && <NarrativeBox narrative={narrative} onClose={() => setNarrative(null)} />}
-                  {interactionText && !narrative && <button onClick={() => setInteractionText(null)}>Close</button>}
+                <div className="narrative-container">
+                  <div className="jrpg-panel" style={{ flexGrow: 1 }}>
+                    {interactionText && <div className="narrative-text typing-effect">{interactionText}</div>}
+                    {narrative && <NarrativeBox narrative={narrative} onClose={() => setNarrative(null)} />}
+                    {interactionText && !narrative && (
+                      <div style={{ textAlign: 'right', marginTop: '1rem' }}>
+                         <button onClick={() => setInteractionText(null)}>Close ▼</button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
 
-              <div className="action-bar">
+              <div className="action-bar jrpg-panel" style={{ padding: '1rem' }}>
                 <button onClick={() => setMenuView("TRAVEL")}>Travel</button>
                 <button onClick={() => setMenuView("ENCOUNTERS")}>Encounters</button>
-                <button onClick={() => setMenuView("WORLD_PANEL")}>Quests & NPCs</button>
-                <button onClick={() => setMenuView("CHARACTER")}>Status & Inv</button>
-                <button onClick={() => void saveGame()}>Save Game</button>
-                <button onClick={() => void deleteCharacter()}>End Chronicle</button>
+                <button onClick={() => setMenuView("WORLD_PANEL")}>Quests</button>
+                <button onClick={() => setMenuView("CHARACTER")}>Status</button>
+                <button onClick={() => void saveGame()}>Save</button>
+                <button onClick={triggerEnding} style={{ color: '#f87171' }}>Conclude</button>
               </div>
 
               {menuView !== "NONE" && (
-                <div className="menu-modal-backdrop" onClick={() => setMenuView("NONE")}>
+                <div className="menu-modal-backdrop" onClick={() => menuView !== "ENDING" && setMenuView("NONE")}>
                   <div className="menu-modal-content" onClick={(e) => e.stopPropagation()}>
-                    <button className="menu-close-btn" onClick={() => setMenuView("NONE")}>Close Menu</button>
+                    {menuView !== "ENDING" && (
+                      <button className="menu-close-btn" onClick={() => setMenuView("NONE")}>×</button>
+                    )}
                     
                     {menuView === "CHARACTER" && (
                       <div className="archive">
@@ -800,6 +826,19 @@ const App = () => {
                       </section>
                     )}
 
+                    {menuView === "ENDING" && (
+                      <div style={{ textAlign: 'center', padding: '2rem' }}>
+                        <h2 style={{ fontSize: '3rem', marginBottom: '2rem' }}>The End</h2>
+                        <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
+                          Thank you for playing the Yggdrasil Chronicles MVP Candidate.
+                          Your journey as {character.name} the {character.current_job.name} ends here.
+                        </p>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
+                          <button onClick={() => setMenuView("NONE")}>Return to Game</button>
+                          <button onClick={() => void deleteCharacter()} style={{ borderColor: '#f87171', color: '#f87171' }}>Finalize & Delete Save</button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

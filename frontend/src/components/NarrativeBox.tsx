@@ -6,32 +6,27 @@ interface NarrativeBoxProps {
 }
 
 const NarrativeBox = ({ narrative, onClose }: NarrativeBoxProps) => (
-  <aside className="dialogue-box kenney-panel" aria-label="Story dialogue">
-    <div className="dialogue-heading">
-      <div>
-        <p className="eyebrow">{narrative.tone}</p>
-        <h4>{narrative.speaker_name ?? "Chronicle"}</h4>
-      </div>
-      {narrative.fallback_used && (
-        <span className="local-narrative">Local narration</span>
-      )}
+  <aside className="dialogue-box" aria-label="Story dialogue">
+    <div className="narrative-speaker">
+      {narrative.speaker_name ?? "Chronicle"}
     </div>
+    
     <div className="dialogue-content">
-      <img
-        src="assets/ui/rpg/iconCheck_beige.png"
-        alt=""
-        className="dialogue-icon"
-      />
-      <p>{narrative.text}</p>
+      <div className="narrative-text typing-effect">
+        {narrative.text}
+      </div>
     </div>
-    <p className="dialogue-context">
-      Grounded in {narrative.context_memory_count} relevant{" "}
-      {narrative.context_memory_count === 1 ? "memory" : "memories"}
-      {narrative.cached ? " · Reused safely" : ""}
-    </p>
-    <button type="button" onClick={onClose}>
-      Continue
-    </button>
+    
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', borderTop: '1px solid #4a6fa5', paddingTop: '0.5rem' }}>
+      <p className="muted" style={{ margin: 0, fontSize: '0.8rem' }}>
+        {narrative.fallback_used && <span className="local-narrative danger" style={{ marginRight: '0.5rem' }}>[Offline Mode]</span>}
+        Grounded in {narrative.context_memory_count} memories
+        {narrative.cached ? " · Cached" : ""}
+      </p>
+      <button type="button" onClick={onClose}>
+        Continue ▼
+      </button>
+    </div>
   </aside>
 );
 

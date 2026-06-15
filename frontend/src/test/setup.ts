@@ -31,21 +31,66 @@ vi.mock("phaser", () => ({
     scene = {
       start: vi.fn(),
       stop: vi.fn(),
+      isActive: vi.fn(() => false),
+    };
+    registry = {
+      set: vi.fn(),
+      get: vi.fn(),
+      events: {
+        on: vi.fn(),
+      }
     };
   },
   Scene: class MockScene {
     public key: string;
+    public registry: any;
+    public cameras: any;
+    public tweens: any;
+    
     constructor(key: string) {
       this.key = key;
+      this.registry = {
+        get: vi.fn(),
+        events: {
+          on: vi.fn(),
+        }
+      };
+      this.cameras = {
+        main: {
+          width: 800,
+          height: 600,
+          flash: vi.fn(),
+          shake: vi.fn(),
+          setBackgroundColor: vi.fn(),
+        }
+      };
+      this.tweens = {
+        add: vi.fn(),
+      };
     }
     load = {
       image: vi.fn(),
       spritesheet: vi.fn(),
     };
     add = {
-      text: vi.fn(),
+      text: vi.fn(() => ({
+        setOrigin: vi.fn(() => ({})),
+        setText: vi.fn(),
+      })),
       sprite: vi.fn(() => ({
         setScale: vi.fn(),
+        setFlipX: vi.fn(),
+        setTexture: vi.fn(),
+        texture: { key: "mock" },
+        x: 0,
+        y: 0,
+        alpha: 1,
+      })),
+      graphics: vi.fn(() => ({
+        fillGradientStyle: vi.fn(),
+        fillRect: vi.fn(),
+        clear: vi.fn(),
+        fillStyle: vi.fn(),
       })),
     };
     input = {
@@ -55,4 +100,8 @@ vi.mock("phaser", () => ({
     };
   },
   AUTO: "AUTO",
+  Scale: {
+    RESIZE: "RESIZE",
+    CENTER_BOTH: "CENTER_BOTH"
+  }
 }));

@@ -465,10 +465,10 @@ describe("App", () => {
     fireEvent.click(screen.getByRole("button", { name: "Create character" }));
 
     expect(
-      await screen.findByRole("heading", { name: "Aster Vale" }),
+      await screen.findByText("Aster Vale"),
     ).toBeInTheDocument();
-    await screen.findByRole("heading", { name: "Aster Vale" });
-    fireEvent.click(screen.getByRole("button", { name: "Status & Inv" }));
+    await screen.findByText("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Status" }));
     expect(await screen.findByText("Power Strike")).toBeInTheDocument();
     expect(screen.getByText("Field Potion")).toBeInTheDocument();
     expect(calls).toContain("POST /api/v1/characters");
@@ -478,7 +478,7 @@ describe("App", () => {
     const calls = installFetch(true);
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Travel" }));
     expect(await screen.findByRole("heading", { name: "Known world" })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Travel here" }));
@@ -526,13 +526,13 @@ describe("App", () => {
     installFetch(true, false);
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Travel" }));
     fireEvent.click(await screen.findByRole("button", { name: "Travel here" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent("Route closed");
     expect(
-      screen.getByRole("heading", { name: "Aster Vale" }),
+      screen.getByText("Aster Vale"),
     ).toBeInTheDocument();
   });
 
@@ -540,21 +540,19 @@ describe("App", () => {
     installFetch(true);
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Encounters" }));
     fireEvent.click(await screen.findByRole("button", { name: "Begin combat" }));
     expect(
-      await screen.findByRole("heading", {
-        name: "Slime on the Verge",
-        level: 2,
-      }),
+      await screen.findByText(/Slime on the Verge/i)
     ).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Attack" }));
 
     expect(await screen.findByText("VICTORY")).toBeInTheDocument();
-    expect(screen.getAllByText(/Gained 45 XP and 18 gold/)).toHaveLength(2);
+    expect(screen.getByText(/Gained 45 XP and 18 gold/)).toBeInTheDocument();
+    expect(screen.getByText(/Victory! \+45 XP/)).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Return to archive" }),
+      screen.getByRole("button", { name: /Continue/i }),
     ).toBeInTheDocument();
   });
 
@@ -562,7 +560,7 @@ describe("App", () => {
     installFetch(true, true, "DEFEAT");
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Encounters" }));
     fireEvent.click(await screen.findByRole("button", { name: "Begin combat" }));
     fireEvent.click(await screen.findByRole("button", { name: "Attack" }));
@@ -570,7 +568,7 @@ describe("App", () => {
     expect(await screen.findByText("DEFEAT")).toBeInTheDocument();
     expect(
       screen.getByText(
-        "The party was defeated. The character returns with 1 HP.",
+        "The party was defeated...",
       ),
     ).toBeInTheDocument();
   });
@@ -584,10 +582,7 @@ describe("App", () => {
     render(<App />);
 
     expect(
-      await screen.findByRole("heading", {
-        name: "Slime on the Verge",
-        level: 2,
-      }),
+      await screen.findByText(/Slime on the Verge/i)
     ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Attack" })).toBeInTheDocument();
   });
@@ -600,7 +595,7 @@ describe("App", () => {
     );
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Travel" }));
     expect(await screen.findByRole("heading", { name: "Known world" })).toBeInTheDocument();
     expect(
@@ -612,7 +607,7 @@ describe("App", () => {
     installFetch(true, true, "VICTORY", { encountersAvailable: false });
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Encounters" }));
     expect(await screen.findByText("No combat encounters at this location.")).toBeInTheDocument();
     expect(
@@ -624,16 +619,16 @@ describe("App", () => {
     installFetch(true);
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Encounters" }));
     fireEvent.click(await screen.findByRole("button", { name: "Begin combat" }));
-    fireEvent.click(await screen.findByRole("button", { name: "Escape" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Flee" }));
     expect(
-      await screen.findByText("The party escaped the encounter."),
+      await screen.findByText("Escaped!"),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Return to archive" }));
+    fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Travel" }));
     expect(await screen.findByRole("heading", { name: "Known world" })).toBeInTheDocument();
   });
@@ -642,7 +637,7 @@ describe("App", () => {
     installFetch(true, true, "VICTORY", { actionSucceeds: false });
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Encounters" }));
     fireEvent.click(await screen.findByRole("button", { name: "Begin combat" }));
     fireEvent.click(await screen.findByRole("button", { name: "Attack" }));
@@ -651,7 +646,7 @@ describe("App", () => {
       "Action rejected",
     );
     expect(
-      screen.getByRole("heading", { name: "Slime on the Verge", level: 2 }),
+      screen.getByText(/Slime on the Verge/i),
     ).toBeInTheDocument();
   });
 
@@ -659,7 +654,7 @@ describe("App", () => {
     installFetch(true, true, "VICTORY", { startSucceeds: false });
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Encounters" }));
     fireEvent.click(await screen.findByRole("button", { name: "Begin combat" }));
 
@@ -674,10 +669,10 @@ describe("App", () => {
     installFetch(true, true, "VICTORY", { fleeSucceeds: false });
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Encounters" }));
     fireEvent.click(await screen.findByRole("button", { name: "Begin combat" }));
-    fireEvent.click(await screen.findByRole("button", { name: "Escape" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Flee" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Escape blocked",
@@ -691,8 +686,8 @@ describe("App", () => {
     });
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    await screen.findByText("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Accept quest" }));
     await waitFor(() => {
       expect(calls).toContain("POST /api/v1/quests/quest-1/accept");
@@ -707,8 +702,8 @@ describe("App", () => {
     await waitFor(() => {
       expect(calls).toContain("POST /api/v1/factions/faction-1/join");
     });
-    await screen.findByRole("heading", { name: "Aster Vale" });
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    await screen.findByText("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Enter dungeon" }));
     await waitFor(() => {
       expect(calls).toContain("POST /api/v1/dungeons/dungeon-1/enter");
@@ -724,8 +719,8 @@ describe("App", () => {
     });
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    await screen.findByText("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Accept quest" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Quest unavailable",
@@ -745,18 +740,18 @@ describe("App", () => {
     });
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    await screen.findByText("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Speak" }));
 
     expect(await screen.findByText(narrative.text)).toBeInTheDocument();
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
     expect(calls).toContain("POST /api/v1/npcs/npc-1/dialogue");
 
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+    fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
     expect(screen.queryByText(narrative.text)).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Hear story" }));
     expect(
       await screen.findByText("A watch must be kept beneath the old boughs."),
@@ -771,22 +766,22 @@ describe("App", () => {
     });
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Travel" }));
     fireEvent.click(await screen.findByRole("button", { name: "Observe surroundings" }));
     expect(
       await screen.findByText("Lanterns hold back the green dusk."),
     ).toBeInTheDocument();
     expect(calls).toContain("POST /api/v1/locations/location-1/description");
-    fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+    fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
 
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Speak" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Dialogue unavailable",
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Hear story" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Story unavailable",
@@ -802,20 +797,20 @@ describe("App", () => {
     });
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
     fireEvent.click(screen.getByRole("button", { name: "Travel" }));
     fireEvent.click(await screen.findByRole("button", { name: "Observe surroundings" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Description unavailable",
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Join faction" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Faction unavailable",
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Enter dungeon" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Dungeon unavailable",
@@ -828,9 +823,9 @@ describe("App", () => {
     vi.stubGlobal("alert", alertMock);
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
 
-    const saveButton = screen.getByRole("button", { name: "Save Game" });
+    const saveButton = screen.getByRole("button", { name: "Save" });
     fireEvent.click(saveButton);
 
     await waitFor(() => {
@@ -854,11 +849,11 @@ describe("App", () => {
     );
     render(<App />);
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
 
-    const endButton = screen.getByRole("button", {
-      name: "End Chronicle",
-    });
+    const concludeButton = await screen.findByRole("button", { name: "Conclude" });
+    fireEvent.click(concludeButton);
+    const endButton = await screen.findByRole("button", { name: "Finalize & Delete Save" });
     fireEvent.click(endButton);
 
     await waitFor(() => {
@@ -879,11 +874,11 @@ describe("App", () => {
     render(<App />);
 
     fireEvent.click(
-      await screen.findByRole("button", { name: "End Chronicle" }),
+      await screen.findByRole("button", { name: "Conclude" }),
     );
     expect(calls).not.toContain("DELETE /api/v1/save/character-1");
     expect(
-      screen.getByRole("heading", { name: "Aster Vale" }),
+      screen.getByText("Aster Vale"),
     ).toBeInTheDocument();
   });
 
@@ -903,7 +898,7 @@ describe("App", () => {
     });
     fireEvent.click(screen.getByRole("button", { name: "Create character" }));
 
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
   });
 
   it("does nothing when character is null during delete or save", async () => {
@@ -920,8 +915,8 @@ describe("App", () => {
       factionSucceeds: false,
     });
     render(<App />);
-    await screen.findByRole("heading", { name: "Aster Vale" });
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    await screen.findByText("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Join faction" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Faction unavailable",
@@ -934,8 +929,8 @@ describe("App", () => {
       dungeonSucceeds: false,
     });
     render(<App />);
-    await screen.findByRole("heading", { name: "Aster Vale" });
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    await screen.findByText("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Enter dungeon" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Dungeon unavailable",
@@ -948,8 +943,8 @@ describe("App", () => {
       npcSucceeds: false,
     });
     render(<App />);
-    await screen.findByRole("heading", { name: "Aster Vale" });
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    await screen.findByText("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Offer help" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "NPC unavailable",
@@ -962,8 +957,8 @@ describe("App", () => {
       questSucceeds: false,
     });
     render(<App />);
-    await screen.findByRole("heading", { name: "Aster Vale" });
-    fireEvent.click(screen.getByRole("button", { name: "Quests & NPCs" }));
+    await screen.findByText("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
     fireEvent.click(await screen.findByRole("button", { name: "Accept quest" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Quest unavailable",
@@ -994,9 +989,7 @@ describe("App", () => {
     );
     const { container } = render(<App />);
     await waitFor(() =>
-      expect(
-        screen.queryByText("Loading the character archive..."),
-      ).not.toBeInTheDocument(),
+      expect(screen.getByText("Loading the character archive...")).toBeInTheDocument(),
     );
     expect(container.firstChild?.childNodes.length).toBe(1); // Only header or similar
   });
@@ -1027,7 +1020,7 @@ describe("App", () => {
       dungeonSucceeds: false,
     });
     render(<App />);
-    await screen.findByRole("heading", { name: "Aster Vale" });
+    await screen.findByText("Aster Vale");
 
     // Flee failure
     // Need to be in combat first

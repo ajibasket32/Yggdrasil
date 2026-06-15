@@ -30,14 +30,13 @@ const ResourceBar = ({
 }) => {
   const width = maximum > 0 ? Math.max(0, (current / maximum) * 100) : 0;
   return (
-    <div className="combat-resource">
-      <span>
-        {label} {current}/{maximum}
-      </span>
-      <div className="bar-track">
-        <div className="bar-value" style={{ width: `${width}%` }} />
+      <div className="resource-bar-container">
+        <span className="resource-bar-label">{label}</span>
+        <div className="resource-bar">
+          <div className={`resource-fill ${label.toLowerCase()}`} style={{ width: `${width}%` }} />
+          <span className="resource-text">{current}/{maximum}</span>
+        </div>
       </div>
-    </div>
   );
 };
 
@@ -62,20 +61,27 @@ const CombatPanel = ({
   }
 
   return (
-    <section className="combat-shell" aria-label="Combat encounter">
-      <header className="combat-heading">
-        <div>
-          <p className="eyebrow">Round {combat.round_number}</p>
-          <h2>{combat.encounter_name}</h2>
+    <section className="combat-shell" aria-label="Combat encounter" style={{ position: 'absolute', bottom: '1rem', left: '1rem', right: '1rem', display: 'flex', gap: '1rem', alignItems: 'flex-end' }}>
+      
+      <div className="combat-log-container jrpg-panel" style={{ flexGrow: 1, minWidth: '300px' }} aria-live="polite">
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+          <span className="eyebrow">Round {combat.round_number} - {combat.encounter_name}</span>
+          <strong className={combat.status === 'ACTIVE' ? 'success' : combat.status === 'DEFEAT' ? 'danger' : 'success'}>
+            {combat.status}
+          </strong>
         </div>
-        <strong
-          className={`combat-status status-${combat.status.toLowerCase()}`}
-        >
-          {combat.status}
-        </strong>
-      </header>
+        <ol style={{ padding: 0, margin: 0, listStyle: 'none' }}>
+          {combat.recent_log.slice().reverse().map((entry) => (
+            <li key={entry.id}>
+              <span>[{entry.round_number}]</span>
+              <span style={{ color: '#e2e8f0' }}>{entry.text}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
 
-      <div className="combatants">
+      <div className="combatants" style={{ display: 'none' }}>
+        {/* We hide the old combatants block since GameCanvas now renders HP bars, but we keep it in DOM for screen readers if needed */}
         {[player, enemy].map((participant) => (
           <article key={participant.id} className="combatant-card">
             <p className="eyebrow">{participant.side}</p>
@@ -102,85 +108,39 @@ const CombatPanel = ({
       </div>
 
       {combat.status === "ACTIVE" ? (
-        <div className="combat-actions" aria-label="Combat actions">
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => onAction("ATTACK")}
-          >
-            Attack
-          </button>
+        <div className="action-bar jrpg-panel" aria-label="Combat actions" style={{ position: 'static', width: '250px' }}>
+          <button type="button" disabled={busy} onClick={() => onAction("ATTACK")}>Attack</button>
           {activeSkills.map((skill) => (
-            <button
-              key={skill.id}
-              type="button"
-              disabled={busy || player.current_mp < skill.mana_cost}
-              onClick={() => onAction("SKILL", skill.id)}
-            >
-              {skill.name} ({skill.mana_cost} MP)
+            <button key={skill.id} type="button" disabled={busy || player.current_mp < skill.mana_cost} onClick={() => onAction("SKILL", skill.id)}>
+              {skill.name} <span style={{fontSize: '0.8rem', color: '#89b4fa'}}>({skill.mana_cost}MP)</span>
             </button>
           ))}
           {potion !== undefined && (
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() =>
-                onAction("ITEM", undefined, potion.inventory_item_id)
-              }
-            >
-              {potion.name} x{potion.quantity}
+            <button type="button" disabled={busy} onClick={() => onAction("ITEM", undefined, potion.inventory_item_id)}>
+              Item <span style={{fontSize: '0.8rem', color: '#89b4fa'}}>(x{potion.quantity})</span>
             </button>
           )}
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => onAction("GUARD")}
-          >
-            Guard
-          </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => onAction("WAIT")}
-          >
-            Wait
-          </button>
-          <button type="button" disabled={busy} onClick={onFlee}>
-            Escape
-          </button>
+          <button type="button" disabled={busy} onClick={() => onAction("GUARD")}>Guard</button>
+          <button type="button" disabled={busy} onClick={() => onAction("WAIT")}>Wait</button>
+          <button type="button" disabled={busy} onClick={onFlee}>Flee</button>
         </div>
       ) : (
-        <div className="combat-result">
+        <div className="jrpg-panel" style={{ width: '250px' }}>
           {combat.status === "VICTORY" && (
-            <p>
-              Gained {combat.rewards.experience} XP and {combat.rewards.gold}{" "}
-              gold
-              {combat.rewards.items.length > 0
-                ? `. Loot: ${combat.rewards.items.join(", ")}.`
-                : "."}
+            <p className="success" style={{ fontSize: '0.9rem' }}>
+              Victory! +{combat.rewards.experience} XP, +{combat.rewards.gold} Gold.
+              {combat.rewards.items.length > 0 ? ` Loot: ${combat.rewards.items.join(", ")}` : ""}
             </p>
           )}
           {combat.status === "DEFEAT" && (
-            <p>The party was defeated. The character returns with 1 HP.</p>
+            <p className="danger" style={{ fontSize: '0.9rem' }}>The party was defeated...</p>
           )}
-          {combat.status === "FLED" && <p>The party escaped the encounter.</p>}
-          <button type="button" disabled={busy} onClick={onReturn}>
-            Return to archive
+          {combat.status === "FLED" && <p style={{ fontSize: '0.9rem' }}>Escaped!</p>}
+          <button type="button" disabled={busy} onClick={onReturn} style={{ width: '100%', marginTop: '0.5rem' }}>
+            Continue
           </button>
         </div>
       )}
-
-      <div className="combat-log" aria-live="polite">
-        <h3>Combat log</h3>
-        <ol>
-          {combat.recent_log.map((entry) => (
-            <li key={entry.id}>
-              <span>Round {entry.round_number}</span>
-              {entry.text}
-            </li>
-          ))}
-        </ol>
-      </div>
     </section>
   );
 };

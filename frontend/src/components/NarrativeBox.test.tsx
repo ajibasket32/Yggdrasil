@@ -22,12 +22,12 @@ it("presents bounded JRPG narrative without free-form input", () => {
   );
 
   expect(screen.getByLabelText("Story dialogue")).toBeInTheDocument();
-  expect(screen.getByText("Local narration")).toBeInTheDocument();
+  expect(screen.getByText("[Offline Mode]")).toBeInTheDocument();
   expect(
-    screen.getByText(/Grounded in 2 relevant memories/),
+    screen.getByText(/Grounded in 2 memories/),
   ).toBeInTheDocument();
   expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+  fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
   expect(onClose).toHaveBeenCalledOnce();
 });

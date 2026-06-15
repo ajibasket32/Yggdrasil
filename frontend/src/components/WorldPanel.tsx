@@ -48,7 +48,7 @@ const WorldPanel = ({
   onDungeonAction,
 }: WorldPanelProps) => (
   <>
-    <section className="panel">
+    <section className="jrpg-panel">
       <h3>Quest journal</h3>
       {quests.length === 0 ? (
         <p className="muted">No available or recorded quests.</p>
@@ -126,14 +126,14 @@ const WorldPanel = ({
       )}
     </section>
 
-    <section className="panel split-panel">
+    <section className="jrpg-panel split-panel" style={{ marginTop: '1.5rem' }}>
       <div>
         <h3>People nearby</h3>
         {npcs.length === 0 ? (
           <p className="muted">No NPCs are present.</p>
         ) : (
           npcs.map((npc) => (
-            <article className="world-card" key={npc.id}>
+            <article className="grid-card" key={npc.id}>
               <h4>{npc.name}</h4>
               <p>{npc.occupation}</p>
               <div className="action-row">
@@ -184,7 +184,7 @@ const WorldPanel = ({
       <div>
         <h3>Factions</h3>
         {factions.map((faction) => (
-          <article className="world-card" key={faction.id}>
+          <article className="grid-card" key={faction.id}>
             <h4>{faction.name}</h4>
             <p>{faction.description}</p>
             <p className="muted">
@@ -204,14 +204,14 @@ const WorldPanel = ({
       </div>
     </section>
 
-    <section className="panel split-panel">
+    <section className="jrpg-panel split-panel" style={{ marginTop: '1.5rem', marginBottom: '4rem' }}>
       <div>
         <h3>Dungeons</h3>
         {dungeons.length === 0 ? (
           <p className="muted">No dungeon is visible here.</p>
         ) : (
           dungeons.map((dungeon) => (
-            <article className="world-card" key={dungeon.id}>
+            <article className="grid-card" key={dungeon.id}>
               <h4>{dungeon.name}</h4>
               <p>{dungeon.description}</p>
               <p className="muted">

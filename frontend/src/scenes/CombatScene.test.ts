@@ -15,11 +15,11 @@ describe("CombatScene", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
     (scene as any).tweens = { add: vi.fn() };
     
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
-    (scene as any).add = { sprite: vi.fn().mockReturnValue({ setScale: vi.fn(), setFlipX: vi.fn() }) };
+    // remove scene.add mock so it falls back to setup.ts
     scene.create();
     // eslint-disable-next-line @typescript-eslint/unbound-method
-    expect(scene.cameras.main.setBackgroundColor).toHaveBeenCalled();
+    // eslint-disable-next-line @typescript-eslint/unbound-method
+    expect(scene.add.graphics).toHaveBeenCalled();
     // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(scene.tweens.add).toHaveBeenCalled();
     // eslint-disable-next-line @typescript-eslint/unbound-method

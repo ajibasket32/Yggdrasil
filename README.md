@@ -1,25 +1,5 @@
 # Yggdrasil Chronicles
 
-Version: 2.0 -- Enterprise Edition
-Status: Informational
-Last reviewed: 2026-06-14
-
-Yggdrasil Chronicles is a browser-based JRPG with deterministic game systems and an AI narrative layer. The game engine owns all gameplay outcomes. AI may enrich dialogue, lore, and narration, but it never controls damage, rewards, progression, loot, quest state, or persistence.
-
-## Project Status
-
-Current phase: v1.0.0 MVP Release complete. The project has reached its initial
-Minimum Viable Product state with a playable vertical slice and core systems.
-
-The implementation is not release-ready. `RELEASE_CHECKLIST.md` governs
-Markdown cleanliness only; software release still requires the implementation,
-test, security, legal, and operational evidence described by the canonical
-contracts.
-
-## Core Law
-
-```text
-ENGINE FIRST. AI SECOND. ALWAYS.
 ```
 
 If gameplay and AI conflict, gameplay wins.

@@ -1,13 +1,16 @@
 import { useEffect, useRef } from "react";
-import { Game, AUTO } from "phaser";
+import { Game, AUTO, Scale } from "phaser";
 import WorldScene from "../scenes/WorldScene";
 import CombatScene from "../scenes/CombatScene";
+import type { CombatState } from "../types/gameplay";
 
 interface GameCanvasProps {
   mode: "EXPLORATION" | "COMBAT";
+  locationName?: string;
+  combatState?: CombatState | null;
 }
 
-const GameCanvas = ({ mode }: GameCanvasProps) => {
+const GameCanvas = ({ mode, locationName, combatState }: GameCanvasProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const gameRef = useRef<Game | null>(null);
 
@@ -16,10 +19,15 @@ const GameCanvas = ({ mode }: GameCanvasProps) => {
 
     const config = {
       type: AUTO,
-      width: 800,
-      height: 400,
+      width: window.innerWidth,
+      height: window.innerHeight,
       parent: containerRef.current,
+      scale: {
+        mode: Scale.RESIZE,
+        autoCenter: Scale.CENTER_BOTH
+      },
       scene: [WorldScene, CombatScene],
+      backgroundColor: '#0a0c10',
     };
 
     gameRef.current = new Game(config);
@@ -32,15 +40,30 @@ const GameCanvas = ({ mode }: GameCanvasProps) => {
 
   useEffect(() => {
     if (!gameRef.current) return;
+    
+    if (locationName) {
+      gameRef.current.registry.set("locationName", locationName);
+    }
+    if (combatState) {
+      gameRef.current.registry.set("combatState", combatState);
+    }
 
     if (mode === "COMBAT") {
-      gameRef.current.scene.start("CombatScene");
-      gameRef.current.scene.stop("WorldScene");
+      if (gameRef.current.scene.isActive("WorldScene")) {
+        gameRef.current.scene.stop("WorldScene");
+      }
+      if (!gameRef.current.scene.isActive("CombatScene")) {
+        gameRef.current.scene.start("CombatScene");
+      }
     } else {
-      gameRef.current.scene.start("WorldScene");
-      gameRef.current.scene.stop("CombatScene");
+      if (gameRef.current.scene.isActive("CombatScene")) {
+        gameRef.current.scene.stop("CombatScene");
+      }
+      if (!gameRef.current.scene.isActive("WorldScene")) {
+        gameRef.current.scene.start("WorldScene");
+      }
     }
-  }, [mode]);
+  }, [mode, locationName, combatState]);
 
   return <div ref={containerRef} className="game-canvas-container" />;
 };
