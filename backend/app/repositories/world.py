@@ -7,7 +7,7 @@ from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncSessionTransaction
 
 from app.models.gameplay import Character, CharacterJob, CharacterSkill, Job, JobSkill
-from app.models.memory import Memory, MemoryIndexJob
+from app.models.memory import Memory
 from app.models.world import (
     NPC,
     CharacterDungeonState,
@@ -474,7 +474,6 @@ class WorldUnitOfWork:
 
 __all__ = [
     "Memory",
-    "MemoryIndexJob",
     "WorldRepository",
     "WorldSnapshot",
     "WorldUnitOfWork",
