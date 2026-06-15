@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&display=swap");
 
 :root {
   /* JRPG Color Palette */
@@ -11,10 +11,10 @@
   --jrpg-text-highlight: #fef08a;
   --jrpg-text-danger: #f87171;
   --jrpg-text-success: #86efac;
-  
-  --jrpg-font-ui: 'Inter', system-ui, sans-serif;
-  --jrpg-font-heading: 'PT Serif', Georgia, serif;
-  --jrpg-font-pixel: 'Press Start 2P', monospace;
+
+  --jrpg-font-ui: "Inter", system-ui, sans-serif;
+  --jrpg-font-heading: "PT Serif", Georgia, serif;
+  --jrpg-font-pixel: "Press Start 2P", monospace;
 }
 
 * {
@@ -32,7 +32,9 @@ body {
 }
 
 /* Base Elements */
-button, input, select {
+button,
+input,
+select {
   font-family: var(--jrpg-font-ui);
 }
 
@@ -47,7 +49,7 @@ button {
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 button:hover:not(:disabled) {
@@ -68,17 +70,28 @@ button:disabled {
   filter: grayscale(100%);
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--jrpg-font-heading);
   color: var(--jrpg-text-highlight);
   margin: 0 0 1rem 0;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-h1 { font-size: 3rem; }
-h2 { font-size: 2.2rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.2rem; }
+h1 {
+  font-size: 3rem;
+}
+h2 {
+  font-size: 2.2rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.2rem;
+}
 
 p {
   line-height: 1.6;
@@ -90,10 +103,10 @@ p {
   background: var(--jrpg-bg-panel);
   border: 2px solid var(--jrpg-border);
   border-radius: 8px;
-  box-shadow: 
+  box-shadow:
     0 0 0 2px #000,
-    inset 0 0 20px rgba(0,0,0,0.8),
-    0 8px 32px rgba(0,0,0,0.6);
+    inset 0 0 20px rgba(0, 0, 0, 0.8),
+    0 8px 32px rgba(0, 0, 0, 0.6);
   padding: 1.5rem;
   position: relative;
 }
@@ -119,15 +132,19 @@ p {
   justify-content: center;
   height: 100vh;
   width: 100vw;
-  background: 
-    linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.8)),
-    url('assets/tilesets/world.png') center/cover;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8)),
+    url("assets/tilesets/world.png") center/cover;
   animation: bgPan 60s linear infinite;
 }
 
 @keyframes bgPan {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 100% 100%; }
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
 }
 
 .title-logo {
@@ -137,14 +154,19 @@ p {
   background: linear-gradient(180deg, #fef08a 0%, #b45309 100%);
   -webkit-background-clip: text;
   background-clip: text;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
   margin-bottom: 3rem;
   animation: float 4s ease-in-out infinite;
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .title-menu {
@@ -178,15 +200,17 @@ p {
   color: var(--jrpg-text-highlight);
 }
 
-.creation-form input, .creation-form select {
-  background: rgba(0,0,0,0.5);
+.creation-form input,
+.creation-form select {
+  background: rgba(0, 0, 0, 0.5);
   border: 1px solid var(--jrpg-border);
   color: #fff;
   padding: 0.8rem;
   border-radius: 4px;
 }
 
-.creation-form input:focus, .creation-form select:focus {
+.creation-form input:focus,
+.creation-form select:focus {
   outline: none;
   border-color: var(--jrpg-border-highlight);
   box-shadow: 0 0 8px rgba(137, 180, 250, 0.5);
@@ -199,7 +223,7 @@ p {
   border-radius: 8px;
   overflow: hidden;
   margin: 1rem auto;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   background: #000;
   display: flex;
   align-items: center;
@@ -284,9 +308,15 @@ p {
   transition: width 0.3s ease-out;
 }
 
-.resource-fill.hp { background: linear-gradient(90deg, #991b1b, #ef4444); }
-.resource-fill.mp { background: linear-gradient(90deg, #1e3a8a, #3b82f6); }
-.resource-fill.sp { background: linear-gradient(90deg, #166534, #22c55e); }
+.resource-fill.hp {
+  background: linear-gradient(90deg, #991b1b, #ef4444);
+}
+.resource-fill.mp {
+  background: linear-gradient(90deg, #1e3a8a, #3b82f6);
+}
+.resource-fill.sp {
+  background: linear-gradient(90deg, #166534, #22c55e);
+}
 
 .resource-text {
   position: absolute;
@@ -316,7 +346,7 @@ p {
 }
 
 .action-bar button::before {
-  content: '▶';
+  content: "▶";
   position: absolute;
   left: 0.5rem;
   color: transparent;
@@ -366,8 +396,14 @@ p {
 }
 
 @keyframes typing {
-  from { max-height: 0; opacity: 0; }
-  to { max-height: 1000px; opacity: 1; }
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 1000px;
+    opacity: 1;
+  }
 }
 
 /* Menus & Modals */
@@ -377,7 +413,7 @@ p {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -415,7 +451,8 @@ p {
   gap: 1.5rem;
 }
 
-.location-grid, .encounter-grid {
+.location-grid,
+.encounter-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1rem;
@@ -423,14 +460,16 @@ p {
 }
 
 .grid-card {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   border: 1px solid var(--jrpg-border);
   padding: 1rem;
   border-radius: 4px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  transition: transform 0.2s, border-color 0.2s;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
 }
 
 .grid-card:hover {
@@ -443,8 +482,12 @@ p {
   font-size: 0.9rem;
 }
 
-.success { color: var(--jrpg-text-success); }
-.danger { color: var(--jrpg-text-danger); }
+.success {
+  color: var(--jrpg-text-success);
+}
+.danger {
+  color: var(--jrpg-text-danger);
+}
 
 /* Game Canvas styling */
 .game-canvas-container {
@@ -530,6 +573,10 @@ p {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

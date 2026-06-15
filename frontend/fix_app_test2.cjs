@@ -1,5 +1,5 @@
-const fs = require('fs');
-let c = fs.readFileSync('src/App.test.tsx', 'utf8');
+const fs = require("fs");
+let c = fs.readFileSync("src/App.test.tsx", "utf8");
 
 c = c.replace(/name: "Travel"/g, 'name: "Travel"'); // Probably fine
 c = c.replace(/name: "Combat & Encounters"/g, 'name: "Encounters"');
@@ -13,5 +13,5 @@ c = c.replace(/name: "Quit to Desktop"/g, 'name: "Conclude"');
 // So it will be in the document. Wait, if character is null, the title screen renders and says "Loading the character archive..." if !loadingDefinitions is false?
 // I'll just change the assertion to expect the title screen.
 
-fs.writeFileSync('src/App.test.tsx', c);
+fs.writeFileSync("src/App.test.tsx", c);
 console.log("Done");

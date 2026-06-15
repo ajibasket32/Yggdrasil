@@ -6,7 +6,6 @@ import NarrativeBox from "./components/NarrativeBox";
 import WorldPanel from "./components/WorldPanel";
 import GameCanvas from "./components/GameCanvas";
 import portraitAtlasUrl from "./assets/characters/RPG_assets.png";
-import logoIconUrl from "./assets/ui/rpg/iconCircle_beige.png";
 import { gameApi, getPlayerId } from "./services/gameApi";
 import type {
   CharacterDefinitions,
@@ -75,7 +74,13 @@ const App = () => {
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  type MenuView = "NONE" | "CHARACTER" | "WORLD_PANEL" | "ENCOUNTERS" | "TRAVEL" | "ENDING";
+  type MenuView =
+    | "NONE"
+    | "CHARACTER"
+    | "WORLD_PANEL"
+    | "ENCOUNTERS"
+    | "TRAVEL"
+    | "ENDING";
   const [menuView, setMenuView] = useState<MenuView>("NONE");
 
   const inspectCharacter = useCallback(
@@ -474,7 +479,11 @@ const App = () => {
   };
 
   const triggerEnding = () => {
-    if (confirm("Are you sure you want to conclude your journey? This will end the MVP.")) {
+    if (
+      confirm(
+        "Are you sure you want to conclude your journey? This will end the MVP.",
+      )
+    ) {
       setMenuView("ENDING");
     }
   };
@@ -489,9 +498,14 @@ const App = () => {
         {character === null && (
           <div className="title-screen">
             <div className="title-logo">Yggdrasil Chronicles</div>
-            <p className="eyebrow" style={{ color: '#fff', marginBottom: '2rem' }}>Playable MVP Candidate</p>
+            <p
+              className="eyebrow"
+              style={{ color: "#fff", marginBottom: "2rem" }}
+            >
+              Playable MVP Candidate
+            </p>
             {definitions === null ? (
-               <p style={{ color: '#fff' }}>Loading the character archive...</p>
+              <p style={{ color: "#fff" }}>Loading the character archive...</p>
             ) : (
               <div className="title-menu">
                 <p className="eyebrow">Select or create a character to begin</p>
@@ -508,7 +522,11 @@ const App = () => {
 
         {combat !== null && character !== null ? (
           <>
-            <GameCanvas mode="COMBAT" combatState={combat} locationName={character.current_location.name} />
+            <GameCanvas
+              mode="COMBAT"
+              combatState={combat}
+              locationName={character.current_location.name}
+            />
             <div className="jrpg-ui-layer">
               <div className="bottom-panel">
                 <CombatPanel
@@ -527,7 +545,7 @@ const App = () => {
           </>
         ) : character === null && definitions !== null ? (
           <section className="creation-layout jrpg-panel">
-            <div className="intro-panel" style={{ background: 'transparent' }}>
+            <div className="intro-panel" style={{ background: "transparent" }}>
               <p className="eyebrow">New Game</p>
               <h2>Create your character</h2>
               <div className="portrait-preview">
@@ -594,7 +612,10 @@ const App = () => {
           </section>
         ) : character !== null ? (
           <>
-            <GameCanvas mode="EXPLORATION" locationName={character.current_location.name} />
+            <GameCanvas
+              mode="EXPLORATION"
+              locationName={character.current_location.name}
+            />
             <div className="jrpg-ui-layer">
               <div className="hud-overlay jrpg-panel">
                 <div className="character-status-compact">
@@ -602,29 +623,63 @@ const App = () => {
                     <img src={portraitAtlasUrl} alt="Portrait" />
                   </div>
                   <div style={{ flexGrow: 1 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                      <strong style={{ fontSize: '1.2rem', color: '#fef08a' }}>{character.name}</strong>
-                      <span className="muted">Lv {character.level} {character.current_job.name}</span>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: "0.5rem",
+                      }}
+                    >
+                      <strong style={{ fontSize: "1.2rem", color: "#fef08a" }}>
+                        {character.name}
+                      </strong>
+                      <span className="muted">
+                        Lv {character.level} {character.current_job.name}
+                      </span>
                     </div>
-                    
+
                     <div className="resource-bar-container">
                       <span className="resource-bar-label">HP</span>
                       <div className="resource-bar">
-                        <div className="resource-fill hp" style={{ width: `${(character.current_hp / character.derived_stats.max_hp) * 100}%` }}></div>
-                        <span className="resource-text">{character.current_hp}/{character.derived_stats.max_hp}</span>
+                        <div
+                          className="resource-fill hp"
+                          style={{
+                            width: `${(character.current_hp / character.derived_stats.max_hp) * 100}%`,
+                          }}
+                        ></div>
+                        <span className="resource-text">
+                          {character.current_hp}/
+                          {character.derived_stats.max_hp}
+                        </span>
                       </div>
                     </div>
-                    
+
                     <div className="resource-bar-container">
                       <span className="resource-bar-label">MP</span>
                       <div className="resource-bar">
-                        <div className="resource-fill mp" style={{ width: `${(character.current_mp / character.derived_stats.max_mp) * 100}%` }}></div>
-                        <span className="resource-text">{character.current_mp}/{character.derived_stats.max_mp}</span>
+                        <div
+                          className="resource-fill mp"
+                          style={{
+                            width: `${(character.current_mp / character.derived_stats.max_mp) * 100}%`,
+                          }}
+                        ></div>
+                        <span className="resource-text">
+                          {character.current_mp}/
+                          {character.derived_stats.max_mp}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div style={{ marginTop: '1rem', borderTop: '1px solid #4a6fa5', paddingTop: '0.5rem', fontSize: '0.9rem', color: '#89b4fa' }}>
+                <div
+                  style={{
+                    marginTop: "1rem",
+                    borderTop: "1px solid #4a6fa5",
+                    paddingTop: "0.5rem",
+                    fontSize: "0.9rem",
+                    color: "#89b4fa",
+                  }}
+                >
                   📍 {character.current_location.name}
                 </div>
               </div>
@@ -632,33 +687,64 @@ const App = () => {
               {(interactionText !== null || narrative !== null) && (
                 <div className="narrative-container">
                   <div className="jrpg-panel" style={{ flexGrow: 1 }}>
-                    {interactionText && <div className="narrative-text typing-effect">{interactionText}</div>}
-                    {narrative && <NarrativeBox narrative={narrative} onClose={() => setNarrative(null)} />}
+                    {interactionText && (
+                      <div className="narrative-text typing-effect">
+                        {interactionText}
+                      </div>
+                    )}
+                    {narrative && (
+                      <NarrativeBox
+                        narrative={narrative}
+                        onClose={() => setNarrative(null)}
+                      />
+                    )}
                     {interactionText && !narrative && (
-                      <div style={{ textAlign: 'right', marginTop: '1rem' }}>
-                         <button onClick={() => setInteractionText(null)}>Close ▼</button>
+                      <div style={{ textAlign: "right", marginTop: "1rem" }}>
+                        <button onClick={() => setInteractionText(null)}>
+                          Close ▼
+                        </button>
                       </div>
                     )}
                   </div>
                 </div>
               )}
 
-              <div className="action-bar jrpg-panel" style={{ padding: '1rem' }}>
+              <div
+                className="action-bar jrpg-panel"
+                style={{ padding: "1rem" }}
+              >
                 <button onClick={() => setMenuView("TRAVEL")}>Travel</button>
-                <button onClick={() => setMenuView("ENCOUNTERS")}>Encounters</button>
-                <button onClick={() => setMenuView("WORLD_PANEL")}>Quests</button>
+                <button onClick={() => setMenuView("ENCOUNTERS")}>
+                  Encounters
+                </button>
+                <button onClick={() => setMenuView("WORLD_PANEL")}>
+                  Quests
+                </button>
                 <button onClick={() => setMenuView("CHARACTER")}>Status</button>
                 <button onClick={() => void saveGame()}>Save</button>
-                <button onClick={triggerEnding} style={{ color: '#f87171' }}>Conclude</button>
+                <button onClick={triggerEnding} style={{ color: "#f87171" }}>
+                  Conclude
+                </button>
               </div>
 
               {menuView !== "NONE" && (
-                <div className="menu-modal-backdrop" onClick={() => menuView !== "ENDING" && setMenuView("NONE")}>
-                  <div className="menu-modal-content" onClick={(e) => e.stopPropagation()}>
+                <div
+                  className="menu-modal-backdrop"
+                  onClick={() => menuView !== "ENDING" && setMenuView("NONE")}
+                >
+                  <div
+                    className="menu-modal-content"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     {menuView !== "ENDING" && (
-                      <button className="menu-close-btn" onClick={() => setMenuView("NONE")}>×</button>
+                      <button
+                        className="menu-close-btn"
+                        onClick={() => setMenuView("NONE")}
+                      >
+                        ×
+                      </button>
                     )}
-                    
+
                     {menuView === "CHARACTER" && (
                       <div className="archive">
                         <section className="panel">
@@ -668,7 +754,11 @@ const App = () => {
                               <div key={key}>
                                 <span>{label}</span>
                                 <strong>
-                                  {character.stats[key as keyof typeof character.stats]}
+                                  {
+                                    character.stats[
+                                      key as keyof typeof character.stats
+                                    ]
+                                  }
                                 </strong>
                               </div>
                             ))}
@@ -679,7 +769,8 @@ const App = () => {
                             <h3>Job progress</h3>
                             {character.jobs.map((job) => (
                               <p key={job.job.id}>
-                                <strong>{job.job.name}</strong> · Job level {job.job_level}
+                                <strong>{job.job.name}</strong> · Job level{" "}
+                                {job.job_level}
                                 {job.active ? " · Active" : ""}
                               </p>
                             ))}
@@ -688,7 +779,8 @@ const App = () => {
                             <h3>Skills</h3>
                             {character.skills.map((skill) => (
                               <p key={skill.id}>
-                                <strong>{skill.name}</strong> · Rank {skill.skill_level}
+                                <strong>{skill.name}</strong> · Rank{" "}
+                                {skill.skill_level}
                               </p>
                             ))}
                           </div>
@@ -697,7 +789,10 @@ const App = () => {
                           <div>
                             <h3>Inventory</h3>
                             <p className="muted">
-                              {inventory?.used_slots ?? 0}/{inventory?.slot_count ?? 0} slots · {inventory?.total_weight ?? 0}/{inventory?.max_weight ?? 0} weight
+                              {inventory?.used_slots ?? 0}/
+                              {inventory?.slot_count ?? 0} slots ·{" "}
+                              {inventory?.total_weight ?? 0}/
+                              {inventory?.max_weight ?? 0} weight
                             </p>
                             <ul>
                               {inventory?.items.map((item) => (
@@ -713,7 +808,8 @@ const App = () => {
                             <ul>
                               {equipment?.slots.map((slot) => (
                                 <li key={slot.slot_id}>
-                                  <span>{slot.name}</span> · {slot.item?.name ?? "Empty"}
+                                  <span>{slot.name}</span> ·{" "}
+                                  {slot.item?.name ?? "Empty"}
                                 </li>
                               ))}
                             </ul>
@@ -732,8 +828,12 @@ const App = () => {
                         busy={busy}
                         interactionText={interactionText}
                         narrative={narrative}
-                        onQuestAction={(quest, action) => void questAction(quest, action)}
-                        onNpcAction={(npc, action) => void npcAction(npc, action)}
+                        onQuestAction={(quest, action) =>
+                          void questAction(quest, action)
+                        }
+                        onNpcAction={(npc, action) =>
+                          void npcAction(npc, action)
+                        }
                         onDialogue={(npc, topic) => {
                           void dialogue(npc, topic);
                           setMenuView("NONE");
@@ -744,7 +844,9 @@ const App = () => {
                         }}
                         onCloseNarrative={() => setNarrative(null)}
                         onJoinFaction={(faction) => void joinFaction(faction)}
-                        onDungeonAction={(dungeon, action) => void dungeonAction(dungeon, action)}
+                        onDungeonAction={(dungeon, action) =>
+                          void dungeonAction(dungeon, action)
+                        }
                       />
                     )}
 
@@ -752,18 +854,24 @@ const App = () => {
                       <section className="panel">
                         <h3>Encounters</h3>
                         {encounters.length === 0 ? (
-                          <p className="muted">No combat encounters at this location.</p>
+                          <p className="muted">
+                            No combat encounters at this location.
+                          </p>
                         ) : (
                           <div className="encounter-grid">
                             {encounters.map((encounter) => (
                               <article key={encounter.id}>
-                                <p className="eyebrow">{encounter.difficulty}</p>
+                                <p className="eyebrow">
+                                  {encounter.difficulty}
+                                </p>
                                 <h4>{encounter.name}</h4>
                                 <p>
-                                  Level {encounter.monster_level} {encounter.monster_name}
+                                  Level {encounter.monster_level}{" "}
+                                  {encounter.monster_name}
                                 </p>
                                 <p className="muted">
-                                  {encounter.reward_experience} XP / {encounter.reward_gold} gold
+                                  {encounter.reward_experience} XP /{" "}
+                                  {encounter.reward_gold} gold
                                 </p>
                                 <button
                                   type="button"
@@ -799,26 +907,36 @@ const App = () => {
                         </div>
                         <div className="location-grid">
                           {locations
-                            .filter((location) => location.discovered || location.reachable)
+                            .filter(
+                              (location) =>
+                                location.discovered || location.reachable,
+                            )
                             .map((location) => (
                               <article key={location.id}>
-                                <p className="eyebrow">Danger {location.danger_level}</p>
+                                <p className="eyebrow">
+                                  Danger {location.danger_level}
+                                </p>
                                 <h4>{location.name}</h4>
                                 <p>{location.description}</p>
-                                {location.reachable && location.id !== character.current_location.id && (
-                                  <button
-                                    type="button"
-                                    disabled={busy}
-                                    onClick={() => {
-                                      void travel(location, character.id);
-                                      setMenuView("NONE");
-                                    }}
-                                  >
-                                    Travel here
-                                  </button>
-                                )}
-                                {location.id === character.current_location.id && (
-                                  <span className="current">Current location</span>
+                                {location.reachable &&
+                                  location.id !==
+                                    character.current_location.id && (
+                                    <button
+                                      type="button"
+                                      disabled={busy}
+                                      onClick={() => {
+                                        void travel(location, character.id);
+                                        setMenuView("NONE");
+                                      }}
+                                    >
+                                      Travel here
+                                    </button>
+                                  )}
+                                {location.id ===
+                                  character.current_location.id && (
+                                  <span className="current">
+                                    Current location
+                                  </span>
                                 )}
                               </article>
                             ))}
@@ -827,15 +945,31 @@ const App = () => {
                     )}
 
                     {menuView === "ENDING" && (
-                      <div style={{ textAlign: 'center', padding: '2rem' }}>
-                        <h2 style={{ fontSize: '3rem', marginBottom: '2rem' }}>The End</h2>
-                        <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>
-                          Thank you for playing the Yggdrasil Chronicles MVP Candidate.
-                          Your journey as {character.name} the {character.current_job.name} ends here.
+                      <div style={{ textAlign: "center", padding: "2rem" }}>
+                        <h2 style={{ fontSize: "3rem", marginBottom: "2rem" }}>
+                          The End
+                        </h2>
+                        <p style={{ fontSize: "1.2rem", marginBottom: "2rem" }}>
+                          Thank you for playing the Yggdrasil Chronicles MVP
+                          Candidate. Your journey as {character.name} the{" "}
+                          {character.current_job.name} ends here.
                         </p>
-                        <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                          <button onClick={() => setMenuView("NONE")}>Return to Game</button>
-                          <button onClick={() => void deleteCharacter()} style={{ borderColor: '#f87171', color: '#f87171' }}>Finalize & Delete Save</button>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            gap: "1rem",
+                          }}
+                        >
+                          <button onClick={() => setMenuView("NONE")}>
+                            Return to Game
+                          </button>
+                          <button
+                            onClick={() => void deleteCharacter()}
+                            style={{ borderColor: "#f87171", color: "#f87171" }}
+                          >
+                            Finalize & Delete Save
+                          </button>
                         </div>
                       </div>
                     )}
