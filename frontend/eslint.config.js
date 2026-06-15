@@ -5,16 +5,6 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  {
-    ignores: [
-      "**/*.test.ts",
-      "**/*.test.tsx",
-      "**/*.spec.ts",
-      "src/test/setup.ts",
-      "src/scenes/*.ts",
-      "src/scenes/*.test.ts",
-    ],
-  },
   { ignores: ["dist", "coverage"] },
   {
     extends: [
@@ -26,11 +16,7 @@ export default tseslint.config(
       ecmaVersion: 2022,
       globals: globals.browser,
       parserOptions: {
-        project: [
-          "./tsconfig.app.json",
-          "./tsconfig.node.json",
-          "./tsconfig.json",
-        ],
+        project: ["./tsconfig.app.json", "./tsconfig.node.json"],
         tsconfigRootDir: import.meta.dirname,
       },
     },

@@ -46,7 +46,7 @@ describe("CombatScene", () => {
       get: vi.fn(),
       _trigger: (event: string) => {
         if (registryCallbacks[event]) registryCallbacks[event]();
-      },
+      }
     };
   });
 
@@ -60,11 +60,7 @@ describe("CombatScene", () => {
     scene.create();
     expect(scene.add.graphics).toHaveBeenCalled();
     expect(scene.tweens.add).toHaveBeenCalled();
-    expect(scene.registry.events.on).toHaveBeenCalledWith(
-      "changedata-combatState",
-      expect.any(Function),
-      scene,
-    );
+    expect(scene.registry.events.on).toHaveBeenCalledWith("changedata-combatState", expect.any(Function), scene);
 
     // Test syncState with no combat
     scene.registry.get.mockReturnValue(undefined);
@@ -78,30 +74,12 @@ describe("CombatScene", () => {
       status: "ACTIVE",
       round_number: 1,
       participants: [
-        {
-          id: "p1",
-          name: "Player",
-          side: "PLAYER",
-          current_hp: 100,
-          max_hp: 100,
-          current_mp: 50,
-          max_mp: 50,
-          level: 1,
-        } as CombatParticipant,
-        {
-          id: "e1",
-          name: "Goblin",
-          side: "ENEMY",
-          current_hp: 50,
-          max_hp: 50,
-          current_mp: 0,
-          max_mp: 0,
-          level: 1,
-        } as CombatParticipant,
+        { id: "p1", name: "Player", side: "PLAYER", current_hp: 100, max_hp: 100, current_mp: 50, max_mp: 50, level: 1 } as CombatParticipant,
+        { id: "e1", name: "Goblin", side: "ENEMY", current_hp: 50, max_hp: 50, current_mp: 0, max_mp: 0, level: 1 } as CombatParticipant,
       ],
       turn_order: ["p1", "e1"],
 
-      rewards: { experience: 0, gold: 0, items: [] },
+      rewards: { experience: 0, gold: 0, items: [] }
     } as unknown as CombatState;
 
     scene.registry.get.mockReturnValue(mockCombat);
@@ -112,26 +90,8 @@ describe("CombatScene", () => {
     const mockCombatDamage = {
       ...mockCombat,
       participants: [
-        {
-          id: "p1",
-          name: "Player",
-          side: "PLAYER",
-          current_hp: 80,
-          max_hp: 100,
-          current_mp: 50,
-          max_mp: 50,
-          level: 1,
-        } as CombatParticipant,
-        {
-          id: "e1",
-          name: "Goblin",
-          side: "ENEMY",
-          current_hp: 20,
-          max_hp: 50,
-          current_mp: 0,
-          max_mp: 0,
-          level: 1,
-        } as CombatParticipant,
+        { id: "p1", name: "Player", side: "PLAYER", current_hp: 80, max_hp: 100, current_mp: 50, max_mp: 50, level: 1 } as CombatParticipant,
+        { id: "e1", name: "Goblin", side: "ENEMY", current_hp: 20, max_hp: 50, current_mp: 0, max_mp: 0, level: 1 } as CombatParticipant,
       ],
     };
     scene.registry.get.mockReturnValue(mockCombatDamage);
@@ -142,30 +102,8 @@ describe("CombatScene", () => {
     const mockCombatBoss = {
       ...mockCombat,
       participants: [
-        {
-          id: "p1",
-          name: "Player",
-          side: "PLAYER",
-          current_hp: 80,
-          max_hp: 100,
-          current_mp: 50,
-          max_mp: 50,
-          level: 1,
-          properties: {},
-          active_effects: [],
-        },
-        {
-          id: "e1",
-          name: "Dragon Boss",
-          side: "ENEMY",
-          current_hp: 500,
-          max_hp: 500,
-          current_mp: 0,
-          max_mp: 0,
-          level: 10,
-          properties: {},
-          active_effects: [],
-        },
+        { id: "p1", name: "Player", side: "PLAYER", current_hp: 80, max_hp: 100, current_mp: 50, max_mp: 50, level: 1, properties: {}, active_effects: [] },
+        { id: "e1", name: "Dragon Boss", side: "ENEMY", current_hp: 500, max_hp: 500, current_mp: 0, max_mp: 0, level: 10, properties: {}, active_effects: [] },
       ],
     };
     scene.registry.get.mockReturnValue(mockCombatBoss);

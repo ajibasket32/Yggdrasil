@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Literal, TypeVar
+from typing import Generic, Literal, TypeVar
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, JsonValue
@@ -79,7 +79,7 @@ class ResponseMeta(BaseModel):
 DataT = TypeVar("DataT")
 
 
-class ApiResponse[DataT](BaseModel):
+class ApiResponse(BaseModel, Generic[DataT]):
     """Standard successful API response envelope."""
 
     success: Literal[True] = True
