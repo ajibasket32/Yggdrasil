@@ -50,7 +50,7 @@ jobs:
       - run: poetry install --with dev --no-interaction
       - run: poetry run black --check app ../tests
       - run: poetry run ruff check app ../tests
-      - run: poetry run mypy app
+      - run: poetry run mypy app ../tests
       - run: poetry run alembic upgrade head
       - run: poetry run alembic downgrade -1
       - run: poetry run alembic upgrade head
