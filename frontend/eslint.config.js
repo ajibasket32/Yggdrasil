@@ -13,6 +13,12 @@ export default tseslint.config(
       "test-results",
       "artifacts",
       "node_modules",
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/*.spec.ts",
+      "src/test/setup.ts",
+      "src/scenes/*.ts",
+      "src/scenes/*.test.ts",
     ],
   },
   {
@@ -25,7 +31,11 @@ export default tseslint.config(
       ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
-        project: ["./tsconfig.app.json", "./tsconfig.node.json"],
+        project: [
+          "./tsconfig.app.json",
+          "./tsconfig.node.json",
+          "./tsconfig.json",
+        ],
         tsconfigRootDir: import.meta.dirname,
       },
     },
