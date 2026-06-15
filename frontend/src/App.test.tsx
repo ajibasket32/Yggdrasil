@@ -897,9 +897,10 @@ describe("App", () => {
     await screen.findByRole("heading", { name: "Aster Vale" });
   });
 
-  it("does nothing when character is null during delete or save", () => {
+  it("does nothing when character is null during delete or save", async () => {
     installFetch(false);
     render(<App />);
+    await screen.findByRole("button", { name: "Create character" });
     // character is null, buttons not rendered, but we can't even call the functions easily from outside
     // This is hard to test via UI if buttons aren't there.
   });

@@ -54,6 +54,7 @@ jobs:
       - run: poetry run alembic upgrade head
       - run: poetry run alembic downgrade -1
       - run: poetry run alembic upgrade head
+      - run: poetry run python ../tools/verify_test_seed_data.py
       - run: poetry run pytest -c pyproject.toml --cov=app --cov-report=term-missing ../tests
       - run: poetry run pip-audit
 

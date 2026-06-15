@@ -14,7 +14,8 @@ from app.services.gameplay import CharacterService
 from app.services.save import SaveService
 
 
-async def _create_character(player_id: UUID, key: str = "create-character"):
+import typing
+async def _create_character(player_id: UUID, key: str = "create-character") -> typing.Any:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))
         definitions = await service.creation_definitions()

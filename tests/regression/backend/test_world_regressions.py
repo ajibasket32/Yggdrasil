@@ -6,13 +6,12 @@ from app.core.database import session_factory
 from app.repositories.gameplay import GameStateRepository, GameUnitOfWork
 from app.repositories.save import SaveUnitOfWork
 from app.repositories.world import WorldUnitOfWork
-from app.schemas.gameplay import CreateCharacterRequest
+from app.schemas.gameplay import CharacterSheet, CreateCharacterRequest
 from app.services.gameplay import CharacterService
 from app.services.save import SaveService
 from app.services.world import WorldService
 
-
-async def _ready_character(player_id: UUID):
+async def _ready_character(player_id: UUID) -> CharacterSheet:
     async with session_factory() as session:
         gameplay = CharacterService(GameUnitOfWork(session))
         definitions = await gameplay.creation_definitions()

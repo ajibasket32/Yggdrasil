@@ -3,7 +3,7 @@ from uuid import uuid4
 
 import pytest
 
-from app.ai.contracts import NarrativeKind, NarrativeOutput, NarrativeRequest
+from app.ai.contracts import NarrativeKind, NarrativeOutput, NarrativeRequest, ProviderGeneration
 from app.ai.errors import ProviderError
 from app.ai.orchestrator import AIOrchestrator
 from app.ai.prompt import provider_system_prompt
@@ -19,14 +19,14 @@ class AllowBudget:
 class SecretErrorAdapter:
     name = "openai"
 
-    async def generate(self, request: NarrativeRequest) -> object:
+    async def generate(self, request: NarrativeRequest) -> ProviderGeneration:
         raise ProviderError("Bearer super-secret-provider-key")
 
 
 class CachedAdapter:
     name = "cached"
 
-    async def generate(self, request: NarrativeRequest) -> object:
+    async def generate(self, request: NarrativeRequest) -> ProviderGeneration:
         from app.ai.adapters.cached import CachedNarrativeAdapter
 
         return await CachedNarrativeAdapter().generate(request)

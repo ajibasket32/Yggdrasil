@@ -17,7 +17,8 @@ from app.services.gameplay import CharacterService
 from app.services.save import SaveService
 
 
-async def _create_at_encounter(player_id: UUID):
+import typing
+async def _create_at_encounter(player_id: UUID) -> typing.Any:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))
         definitions = await service.creation_definitions()
@@ -48,7 +49,7 @@ async def _create_at_encounter(player_id: UUID):
     return character
 
 
-async def _win(player_id: UUID, character_id: UUID, seed: int = 17):
+async def _win(player_id: UUID, character_id: UUID, seed: int = 17) -> tuple[typing.Any, typing.Any]:
     async with session_factory() as session:
         service = CombatService(CombatUnitOfWork(session))
         encounter = (await service.available_encounters(player_id, character_id))[0]

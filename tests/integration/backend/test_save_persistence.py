@@ -79,7 +79,8 @@ async def test_legacy_save_is_migrated_atomically_on_load(
     clean_save_database: None,
 ) -> None:
     player_id = uuid4()
-    legacy_payload = {
+    from pydantic import JsonValue
+    legacy_payload: dict[str, JsonValue] = {
         "schema_version": 0,
         "world_tick": 9,
         "character_state": {"level": 2},

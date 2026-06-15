@@ -7,12 +7,12 @@ from app.core.database import session_factory
 from app.repositories.combat import CombatUnitOfWork
 from app.repositories.gameplay import GameUnitOfWork
 from app.schemas.combat import StartCombatRequest
-from app.schemas.gameplay import CreateCharacterRequest
+from app.schemas.gameplay import CharacterSheet, CreateCharacterRequest
 from app.services.combat import CombatNotFoundError, CombatService
 from app.services.gameplay import CharacterService
 
 
-async def _ready_character(player_id: UUID):
+async def _ready_character(player_id: UUID) -> CharacterSheet:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))
         definitions = await service.creation_definitions()

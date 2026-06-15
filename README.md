@@ -62,8 +62,9 @@ Development endpoints:
 - Health summary: `http://localhost:8000/health`
 - Metrics: `http://localhost:8000/metrics`
 
-The committed `.env.example` contains development-only sample values. Never
-commit a real `.env` file or production credentials.
+Before starting the stack, copy `.env.example` to `.env`. The committed
+`.env.example` contains development-only sample values. Never commit a real
+`.env` file or production credentials.
 
 ## Local Test Start
 

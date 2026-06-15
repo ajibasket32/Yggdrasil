@@ -9,7 +9,7 @@ from app.core.config import get_settings
 
 @pytest.mark.asyncio
 async def test_redis_budget_enforces_actor_limit() -> None:
-    client = redis.from_url(get_settings().redis_url.get_secret_value())
+    client = redis.from_url(get_settings().redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     actor_id = uuid4()
     budget = RedisRequestBudget(client, per_minute=2, per_hour=3)
     try:

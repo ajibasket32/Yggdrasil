@@ -48,22 +48,32 @@ def test_character_creation_is_deterministic() -> None:
 
 def test_progression_applies_identical_levels_stats_and_unlocks() -> None:
     skill_id = uuid4()
-    arguments = {
-        "level": 1,
-        "experience": 0,
-        "job_level": 1,
-        "job_experience": 0,
-        "job_max_level": 15,
-        "skill_points": 0,
-        "stats": CharacterStats(10, 10, 10, 10, 10, 10, 10),
-        "job_stat_modifiers": {"strength": 3, "vitality": 2},
-        "skill_unlocks": [(skill_id, 2)],
-        "already_unlocked": set(),
-        "amount": 200,
-    }
-
-    first = ProgressionEngine.award_experience(**arguments)
-    second = ProgressionEngine.award_experience(**arguments)
+    first = ProgressionEngine.award_experience(
+        level=1,
+        experience=0,
+        job_level=1,
+        job_experience=0,
+        job_max_level=15,
+        skill_points=0,
+        stats=CharacterStats(10, 10, 10, 10, 10, 10, 10),
+        job_stat_modifiers={"strength": 3, "vitality": 2},
+        skill_unlocks=[(skill_id, 2)],
+        already_unlocked=set(),
+        amount=200,
+    )
+    second = ProgressionEngine.award_experience(
+        level=1,
+        experience=0,
+        job_level=1,
+        job_experience=0,
+        job_max_level=15,
+        skill_points=0,
+        stats=CharacterStats(10, 10, 10, 10, 10, 10, 10),
+        job_stat_modifiers={"strength": 3, "vitality": 2},
+        skill_unlocks=[(skill_id, 2)],
+        already_unlocked=set(),
+        amount=200,
+    )
 
     assert first == second
     assert first.level == 2
@@ -75,7 +85,7 @@ def test_progression_applies_identical_levels_stats_and_unlocks() -> None:
 def test_branching_job_prerequisites_support_all_and_any() -> None:
     warrior = uuid4()
     cleric = uuid4()
-    expression = {
+    expression: dict[str, object] = {
         "all": [
             {"job_level": {"job_id": str(warrior), "minimum": 10}},
             {

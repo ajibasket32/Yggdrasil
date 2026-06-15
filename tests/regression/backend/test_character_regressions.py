@@ -1,19 +1,18 @@
 from pathlib import Path
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 
 from app.core.database import session_factory
 from app.repositories.gameplay import GameUnitOfWork
-from app.schemas.gameplay import CreateCharacterRequest
+from app.schemas.gameplay import CharacterSheet, CreateCharacterRequest
 from app.services.gameplay import (
     CharacterNotFoundError,
     CharacterService,
     GameplayRuleViolation,
 )
 
-
-async def _created(player_id):
+async def _created(player_id: UUID) -> CharacterSheet:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))
         definitions = await service.creation_definitions()

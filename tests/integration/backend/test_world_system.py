@@ -17,7 +17,8 @@ from app.services.save import SaveService
 from app.services.world import WorldRuleViolation, WorldService
 
 
-async def _character_at_greenwood(player_id: UUID):
+import typing
+async def _character_at_greenwood(player_id: UUID) -> typing.Any:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))
         definitions = await service.creation_definitions()
