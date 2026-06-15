@@ -19,7 +19,8 @@ COPY backend/uvicorn_logging.json ./
 COPY database/migrations /database/migrations
 COPY docker/backend/entrypoint.sh ./entrypoint.sh
 
-RUN useradd --create-home --uid 10001 yggdrasil \
+RUN sed -i 's/\r$//' /app/entrypoint.sh \
+    && useradd --create-home --uid 10001 yggdrasil \
     && chmod +x /app/entrypoint.sh \
     && chown -R yggdrasil:yggdrasil /app
 
