@@ -26,7 +26,7 @@ describe("WorldScene", () => {
       main: { width: 800, height: 600, flash: vi.fn() },
     };
     scene.tweens = { add: vi.fn() };
-    
+
     // Mock registry
     const registryCallbacks: any = {};
     scene.registry = {
@@ -38,7 +38,7 @@ describe("WorldScene", () => {
       get: vi.fn(),
       _trigger: (event: string) => {
         if (registryCallbacks[event]) registryCallbacks[event]();
-      }
+      },
     };
   });
 
@@ -50,7 +50,7 @@ describe("WorldScene", () => {
     scene.create();
     expect(scene.add.graphics).toHaveBeenCalled();
     expect(scene.add.sprite).toHaveBeenCalled();
-    
+
     // Test branch where location is null
     scene.registry.get.mockReturnValue(null);
     scene.registry._trigger("changedata-locationName");

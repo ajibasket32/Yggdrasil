@@ -1,5 +1,5 @@
-const fs = require('fs');
-let c = fs.readFileSync('src/App.test.tsx', 'utf8');
+const fs = require("fs");
+let c = fs.readFileSync("src/App.test.tsx", "utf8");
 
 const target = `    expect(
       await screen.findByRole("heading", {
@@ -14,5 +14,5 @@ const replacement = `    expect(
 
 c = c.replaceAll(target, replacement);
 
-fs.writeFileSync('src/App.test.tsx', c);
+fs.writeFileSync("src/App.test.tsx", c);
 console.log("Done");
