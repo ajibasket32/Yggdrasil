@@ -6,10 +6,6 @@ import NarrativeBox from "./components/NarrativeBox";
 import WorldPanel from "./components/WorldPanel";
 import GameCanvas from "./components/GameCanvas";
 import portraitAtlasUrl from "./assets/characters/RPG_assets.png";
-<<<<<<< HEAD
-=======
-
->>>>>>> 66b3171 (chore: clean up playwright verification work)
 import { gameApi, getPlayerId } from "./services/gameApi";
 import type {
   CharacterDefinitions,

@@ -20,9 +20,5 @@
     "exactOptionalPropertyTypes": true,
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-<<<<<<< HEAD
   "include": ["src", "**/*.spec.ts", "**/*.test.ts", "**/*.test.tsx"]
-=======
-  "include": ["src", "tests"]
->>>>>>> 66b3171 (chore: clean up playwright verification work)
 }

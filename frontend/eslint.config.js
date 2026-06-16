@@ -7,12 +7,6 @@ import tseslint from "typescript-eslint";
 export default tseslint.config(
   {
     ignores: [
-      "dist",
-      "coverage",
-      "playwright-report",
-      "test-results",
-      "artifacts",
-      "node_modules",
       "**/*.test.ts",
       "**/*.test.tsx",
       "**/*.spec.ts",
@@ -21,6 +15,7 @@ export default tseslint.config(
       "src/scenes/*.test.ts",
     ],
   },
+  { ignores: ["dist", "coverage"] },
   {
     extends: [
       js.configs.recommended,
@@ -28,7 +23,7 @@ export default tseslint.config(
     ],
     files: ["**/*.{ts,tsx}"],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 2022,
       globals: globals.browser,
       parserOptions: {
         project: [
@@ -49,13 +44,6 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ],
-      "@typescript-eslint/no-unsafe-assignment": "off",
-      "@typescript-eslint/no-unsafe-member-access": "off",
-      "@typescript-eslint/no-unsafe-call": "off",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/unbound-method": "off",
-      "@typescript-eslint/no-unsafe-argument": "off",
-      "@typescript-eslint/no-unused-vars": "warn",
     },
   },
 );

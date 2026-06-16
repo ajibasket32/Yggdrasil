@@ -19,5 +19,3 @@ backend/.venv/
 
 test-results/
 playwright-report/
-*.tsbuildinfo
-frontend/artifacts/
