@@ -40,11 +40,13 @@ export default class CombatScene extends Scene {
     this.enemySprite = this.add.sprite(centerX - 200, centerY, "slime");
     this.enemySprite.setScale(5);
 
-    this.enemyNameText = this.add.text(centerX - 200, centerY - 120, "Enemy", {
-      fontFamily: "'Press Start 2P', monospace",
-      fontSize: "16px",
-      color: "#f87171"
-    }).setOrigin(0.5);
+    this.enemyNameText = this.add
+      .text(centerX - 200, centerY - 120, "Enemy", {
+        fontFamily: "'Press Start 2P', monospace",
+        fontSize: "16px",
+        color: "#f87171",
+      })
+      .setOrigin(0.5);
 
     this.enemyHpBar = this.add.graphics();
 
@@ -71,7 +73,11 @@ export default class CombatScene extends Scene {
     this.syncState();
 
     // Listen to React state changes
-    this.registry.events.on("changedata-combatState", () => this.syncState(), this);
+    this.registry.events.on(
+      "changedata-combatState",
+      () => this.syncState(),
+      this,
+    );
   }
 
   private syncState() {
@@ -87,13 +93,14 @@ export default class CombatScene extends Scene {
     const nameLower = enemy.name.toLowerCase();
     let spriteKey = "slime";
     if (nameLower.includes("goblin")) spriteKey = "goblin";
-    if (nameLower.includes("dragon") || nameLower.includes("boss")) spriteKey = "boss";
+    if (nameLower.includes("dragon") || nameLower.includes("boss"))
+      spriteKey = "boss";
 
     if (this.enemySprite.texture.key !== spriteKey) {
-       this.enemySprite.setTexture(spriteKey);
+      this.enemySprite.setTexture(spriteKey);
     }
 
-    this.enemyNameText.setText(`Lv ${enemy.level ?? '?'} ${enemy.name}`);
+    this.enemyNameText.setText(`Lv ${enemy.level ?? "?"} ${enemy.name}`);
 
     // Draw HP Bar
     this.enemyHpBar.clear();
@@ -105,7 +112,8 @@ export default class CombatScene extends Scene {
     this.enemyHpBar.fillStyle(0x000000, 0.8);
     this.enemyHpBar.fillRect(barX, barY, barWidth, barHeight);
 
-    const hpPercent = enemy.max_hp > 0 ? Math.max(0, enemy.current_hp / enemy.max_hp) : 0;
+    const hpPercent =
+      enemy.max_hp > 0 ? Math.max(0, enemy.current_hp / enemy.max_hp) : 0;
     this.enemyHpBar.fillStyle(0xef4444, 1);
     this.enemyHpBar.fillRect(barX, barY, barWidth * hpPercent, barHeight);
 
@@ -131,7 +139,7 @@ export default class CombatScene extends Scene {
       repeat: 3,
       onComplete: () => {
         target.alpha = 1;
-      }
+      },
     });
     this.cameras.main.shake(100, 0.01);
   }

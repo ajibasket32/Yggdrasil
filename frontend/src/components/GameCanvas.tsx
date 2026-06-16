@@ -24,10 +24,10 @@ const GameCanvas = ({ mode, locationName, combatState }: GameCanvasProps) => {
       parent: containerRef.current,
       scale: {
         mode: Scale.RESIZE,
-        autoCenter: Scale.CENTER_BOTH
+        autoCenter: Scale.CENTER_BOTH,
       },
       scene: [WorldScene, CombatScene],
-      backgroundColor: '#0a0c10',
+      backgroundColor: "#0a0c10",
     };
 
     gameRef.current = new Game(config);

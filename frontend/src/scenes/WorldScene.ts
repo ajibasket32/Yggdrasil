@@ -29,12 +29,14 @@ export default class WorldScene extends Scene {
     this.player = this.add.sprite(centerX, centerY, "player", 0);
     this.player.setScale(4);
 
-    this.locationText = this.add.text(centerX, centerY - 80, "Unknown Location", {
-      fontFamily: "'Press Start 2P', monospace",
-      fontSize: "24px",
-      color: "#fef08a",
-      align: "center"
-    }).setOrigin(0.5);
+    this.locationText = this.add
+      .text(centerX, centerY - 80, "Unknown Location", {
+        fontFamily: "'Press Start 2P', monospace",
+        fontSize: "24px",
+        color: "#fef08a",
+        align: "center",
+      })
+      .setOrigin(0.5);
 
     // Initial sync
     this.updateLocation();
@@ -53,7 +55,7 @@ export default class WorldScene extends Scene {
       duration: 1500,
       yoyo: true,
       repeat: -1,
-      ease: "Sine.easeInOut"
+      ease: "Sine.easeInOut",
     });
   }
 

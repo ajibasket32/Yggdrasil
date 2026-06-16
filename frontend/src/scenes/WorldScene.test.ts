@@ -39,7 +39,7 @@ describe("WorldScene", () => {
       get: vi.fn(),
       _trigger: (event: string) => {
         if (registryCallbacks[event]) registryCallbacks[event]();
-      }
+      },
     };
   });
 

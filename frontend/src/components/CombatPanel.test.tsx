@@ -106,7 +106,9 @@ it("renders statuses and routes each available engine action", () => {
 
   expect(screen.getByText("BURN (2)")).toBeInTheDocument();
 
-  const emberBtn = screen.getByRole("button", { name: (content, element) => element.textContent?.includes("Ember") ?? false });
+  const emberBtn = screen.getByRole("button", {
+    name: (content, element) => element.textContent?.includes("Ember") ?? false,
+  });
   expect(emberBtn).toBeDisabled();
   expect(
     screen.queryByRole("button", { name: /Focus/ }),
@@ -135,9 +137,7 @@ it("renders fled and loot-free victory outcomes", () => {
       onReturn={onReturn}
     />,
   );
-  expect(
-    screen.getByText("Escaped!"),
-  ).toBeInTheDocument();
+  expect(screen.getByText("Escaped!")).toBeInTheDocument();
 
   rerender(
     <CombatPanel
@@ -184,11 +184,7 @@ it("renders fled and loot-free victory outcomes", () => {
       onReturn={onReturn}
     />,
   );
-  expect(
-    screen.getByText(
-      /Defeated/i,
-    ),
-  ).toBeInTheDocument();
+  expect(screen.getByText(/Defeated/i)).toBeInTheDocument();
 
   fireEvent.click(screen.getByRole("button", { name: /Continue/i }));
   expect(onReturn).toHaveBeenCalledOnce();
