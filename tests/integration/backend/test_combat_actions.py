@@ -1,3 +1,4 @@
+import typing
 from uuid import UUID, uuid4
 
 import pytest
@@ -22,7 +23,6 @@ from app.services.gameplay import (
 from app.services.save import SaveActiveCombatError, SaveService
 
 
-import typing
 async def _ready_character(player_id: UUID, job_name: str = "Alchemist") -> typing.Any:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))

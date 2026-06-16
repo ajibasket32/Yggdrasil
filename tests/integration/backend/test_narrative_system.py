@@ -58,6 +58,8 @@ class RecordingGenerator:
 
 
 import typing
+
+
 async def _prepared_world(player_id: UUID) -> tuple[typing.Any, typing.Any, typing.Any, typing.Any]:
     async with session_factory() as session:
         gameplay = CharacterService(GameUnitOfWork(session))

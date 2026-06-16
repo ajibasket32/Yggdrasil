@@ -1,3 +1,4 @@
+import typing
 from uuid import UUID, uuid4
 
 import httpx
@@ -14,7 +15,6 @@ from app.services.gameplay import CharacterService
 from app.services.save import SaveService
 
 
-import typing
 async def _create_character(player_id: UUID, key: str = "create-character") -> typing.Any:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))

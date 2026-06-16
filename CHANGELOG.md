@@ -3,6 +3,16 @@
 All notable completed changes are recorded here. Planned work belongs in
 `TASKS.md`, not this file.
 
+## Unreleased
+
+### Added
+
+- Improved 2D JRPG exploration experience in Phaser.
+- Tile-based 2D map with keyboard movement (WASD/Arrows) and camera following.
+- Interactive NPC, Encounter, and Travel markers in the world scene with proximity hints.
+- Enhanced Combat presentation with backgrounds, separate HP bars, damage numbers, and attack animations.
+- Bi-directional React ↔ Phaser bridge for location and interaction sync.
+
 ## v1.0.0
 
 ### Added

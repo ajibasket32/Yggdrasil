@@ -26,6 +26,20 @@ if (typeof window.crypto.getRandomValues !== "function") {
 
 import { vi } from "vitest";
 
+(globalThis as any).Phaser = {
+  Math: {
+    Distance: {
+      Between: (x1: number, y1: number, x2: number, y2: number) =>
+        Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2),
+    },
+  },
+  Input: {
+    Keyboard: {
+      JustDown: vi.fn(() => false),
+    },
+  },
+};
+
 vi.mock("phaser", () => ({
   Game: class MockGame {
     destroy = vi.fn();
@@ -40,6 +54,10 @@ vi.mock("phaser", () => ({
       events: {
         on: vi.fn(),
       },
+    };
+    events = {
+      on: vi.fn(),
+      off: vi.fn(),
     };
   },
   Scene: class MockScene {

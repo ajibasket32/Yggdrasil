@@ -11,6 +11,7 @@ from app.services.gameplay import CharacterService
 from app.services.save import SaveService
 from app.services.world import WorldService
 
+
 async def _ready_character(player_id: UUID) -> CharacterSheet:
     async with session_factory() as session:
         gameplay = CharacterService(GameUnitOfWork(session))
