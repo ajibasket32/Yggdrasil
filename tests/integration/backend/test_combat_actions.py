@@ -56,7 +56,9 @@ async def _ready_character(player_id: UUID, job_name: str = "Alchemist") -> typi
     return character
 
 
-async def _start(player_id: UUID, character_id: UUID, seed: int) -> tuple[typing.Any, typing.Any]:
+async def _start(
+    player_id: UUID, character_id: UUID, seed: int
+) -> tuple[typing.Any, typing.Any]:
     async with session_factory() as session:
         service = CombatService(CombatUnitOfWork(session))
         definition = (await service.available_encounters(player_id, character_id))[0]

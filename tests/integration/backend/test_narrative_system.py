@@ -1,3 +1,4 @@
+import typing
 from uuid import UUID, uuid4
 
 import pytest
@@ -57,10 +58,9 @@ class RecordingGenerator:
         )
 
 
-import typing
-
-
-async def _prepared_world(player_id: UUID) -> tuple[typing.Any, typing.Any, typing.Any, typing.Any]:
+async def _prepared_world(
+    player_id: UUID,
+) -> tuple[typing.Any, typing.Any, typing.Any, typing.Any]:
     async with session_factory() as session:
         gameplay = CharacterService(GameUnitOfWork(session))
         definitions = await gameplay.creation_definitions()

@@ -49,7 +49,9 @@ async def _create_at_encounter(player_id: UUID) -> typing.Any:
     return character
 
 
-async def _win(player_id: UUID, character_id: UUID, seed: int = 17) -> tuple[typing.Any, typing.Any]:
+async def _win(
+    player_id: UUID, character_id: UUID, seed: int = 17
+) -> tuple[typing.Any, typing.Any]:
     async with session_factory() as session:
         service = CombatService(CombatUnitOfWork(session))
         encounter = (await service.available_encounters(player_id, character_id))[0]

@@ -43,9 +43,7 @@ async def lifespan(application: FastAPI) -> AsyncIterator[None]:
             settings.rag_qdrant_timeout_seconds,
         )
     ) as http_client:
-        redis_client = redis.from_url(
-            settings.redis_url.get_secret_value()
-        )  # type: ignore[no-untyped-call]
+        redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
         application.state.http_client = http_client
         application.state.redis_client = redis_client
         try:
@@ -251,10 +249,12 @@ def create_app() -> FastAPI:
     application.add_exception_handler(WorldError, handle_world_error)
     application.add_exception_handler(NarrativeError, handle_narrative_error)
     application.add_exception_handler(
-        ValidationError, handle_pydantic_validation_error  # type: ignore[arg-type]
+        ValidationError,
+        handle_pydantic_validation_error,  # type: ignore[arg-type]
     )
     application.add_exception_handler(
-        RequestValidationError, handle_fastapi_validation_error  # type: ignore[arg-type]
+        RequestValidationError,
+        handle_fastapi_validation_error,  # type: ignore[arg-type]
     )
     application.add_exception_handler(Exception, handle_unhandled_exception)
     application.include_router(health_router)
