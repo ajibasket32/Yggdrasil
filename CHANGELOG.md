@@ -390,3 +390,9 @@ All notable completed changes are recorded here. Planned work belongs in
 - No AI provider adapters, RAG collections, models, or prompts exist.
 - The worker health endpoint reports `degraded` because background workers are
   outside v0.1 scope.
+
+## [1.0.0] - 2026-06-16
+### Changed
+- Parameterized Dockerfile arguments and `compose.yaml` to allow image overrides (e.g., from AWS ECR public) and prevent Docker Hub 429 rate limit issues during deployment and automated testing.
+- Added `release-test.sh` and `release-validation.sh` for non-technical users to validate functionality, featuring a local-only testing fallback mechanism in the event of severe Docker limitations.
+- Documented Docker 429 mitigations in the README.md and RELEASE_STATUS.md.

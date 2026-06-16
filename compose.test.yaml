@@ -2,7 +2,7 @@ name: yggdrasil-chronicles-test
 
 services:
   postgres:
-    image: postgres:16.9-alpine
+    image: ${POSTGRES_IMAGE:-public.ecr.aws/docker/library/postgres:16.9-alpine}
     env_file:
       - .env.test
     ports:
@@ -16,7 +16,7 @@ services:
       retries: 30
 
   redis:
-    image: redis:7.4.2-alpine
+    image: ${REDIS_IMAGE:-public.ecr.aws/docker/library/redis:7.4.2-alpine}
     command: ["redis-server", "--save", "", "--appendonly", "no"]
     ports:
       - "127.0.0.1:${TEST_REDIS_PORT:-16379}:6379"
@@ -27,7 +27,7 @@ services:
       retries: 30
 
   qdrant:
-    image: qdrant/qdrant:v1.9.0
+    image: ${QDRANT_IMAGE:-qdrant/qdrant:v1.9.0}
     ports:
       - "127.0.0.1:${TEST_QDRANT_HTTP_PORT:-16333}:6333"
       - "127.0.0.1:${TEST_QDRANT_GRPC_PORT:-16334}:6334"
@@ -40,6 +40,7 @@ services:
       dockerfile: docker/backend/Dockerfile
       args:
         POETRY_INSTALL_ARGS: "--with dev --no-root"
+        PYTHON_IMAGE: ${PYTHON_IMAGE:-public.ecr.aws/docker/library/python:3.12.10-slim}
     env_file:
       - .env.test
     environment:
