@@ -44,7 +44,7 @@ export default class WorldScene extends Scene {
     // Listen for changes from React
     this.registry.events.on(
       "changedata-locationName",
-      () => this.updateLocation(),
+      this.updateLocation,
       this,
     );
 
