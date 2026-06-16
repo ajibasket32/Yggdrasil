@@ -1,5 +1,5 @@
-import typing
 from uuid import UUID, uuid4
+import typing
 
 import pytest
 from sqlalchemy import select
