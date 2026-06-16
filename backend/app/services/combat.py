@@ -569,7 +569,7 @@ class CombatService:
             None,
             enemy,
             "VICTORY",
-            (f"Victory. Gained {reward.experience} XP and " f"{reward.gold} gold."),
+            (f"Victory. Gained {reward.experience} XP and {reward.gold} gold."),
             encounter.rewards,
         )
         COMBAT_ENCOUNTERS_TOTAL.labels("victory").inc()

@@ -12,6 +12,7 @@ from app.services.gameplay import (
     GameplayRuleViolation,
 )
 
+
 async def _created(player_id: UUID) -> CharacterSheet:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))

@@ -615,6 +615,12 @@ const App = () => {
             <GameCanvas
               mode="EXPLORATION"
               locationName={character.current_location.name}
+              npcs={npcs}
+              reachableLocations={locations.filter((l) => l.reachable)}
+              encounters={encounters}
+              onTravel={(loc) => void travel(loc, character.id)}
+              onInteract={(npc) => void dialogue(npc, "GREETING")}
+              onEncounter={(enc) => void startCombat(enc)}
             />
             <div className="jrpg-ui-layer">
               <div className="hud-overlay jrpg-panel">

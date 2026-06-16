@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "yggdrasil-chronicles-backend"
-version = "0.8.0"
+version = "1.0.0"
 description = "Validated context-grounded narrative over deterministic JRPG systems"
 authors = ["Yggdrasil Chronicles Contributors"]
 package-mode = false

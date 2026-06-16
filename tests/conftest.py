@@ -40,13 +40,10 @@ async def clean_rag_infrastructure() -> AsyncIterator[None]:
     async with engine.begin() as connection:
         await connection.execute(
             text(
-                "TRUNCATE TABLE memory_index_jobs, memory_links, memories "
-                "RESTART IDENTITY CASCADE"
+                "TRUNCATE TABLE memory_index_jobs, memory_links, memories RESTART IDENTITY CASCADE"
             )
         )
-    redis_client = redis.from_url(
-        settings.redis_url.get_secret_value()
-    )  # type: ignore[no-untyped-call]
+    redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
     async with httpx.AsyncClient(
         timeout=settings.rag_qdrant_timeout_seconds
     ) as http_client:
@@ -63,8 +60,7 @@ async def clean_rag_infrastructure() -> AsyncIterator[None]:
     async with engine.begin() as connection:
         await connection.execute(
             text(
-                "TRUNCATE TABLE memory_index_jobs, memory_links, memories "
-                "RESTART IDENTITY CASCADE"
+                "TRUNCATE TABLE memory_index_jobs, memory_links, memories RESTART IDENTITY CASCADE"
             )
         )
     keys = await redis_client.keys("rag-*")

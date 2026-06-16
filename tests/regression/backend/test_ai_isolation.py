@@ -3,7 +3,12 @@ from uuid import uuid4
 
 import pytest
 
-from app.ai.contracts import NarrativeKind, NarrativeOutput, NarrativeRequest, ProviderGeneration
+from app.ai.contracts import (
+    NarrativeKind,
+    NarrativeOutput,
+    NarrativeRequest,
+    ProviderGeneration,
+)
 from app.ai.errors import ProviderError
 from app.ai.orchestrator import AIOrchestrator
 from app.ai.prompt import provider_system_prompt
