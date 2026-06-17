@@ -37,8 +37,8 @@ jobs:
       QDRANT_URL: http://127.0.0.1:6333
 
     steps:
-      - uses: actions/checkout@v6.0.3
-      - uses: actions/setup-python@v6.2.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: pipx install poetry==2.3.4
@@ -74,8 +74,8 @@ jobs:
       run:
         working-directory: frontend
     steps:
-      - uses: actions/checkout@v6.0.3
-      - uses: actions/setup-node@v6.4.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: npm
@@ -91,7 +91,7 @@ jobs:
   containers:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v4
       - run: docker info
       - run: docker compose ps -a
       - run: docker compose config
@@ -103,9 +103,9 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v3.0.0
+      - uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
