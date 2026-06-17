@@ -77,8 +77,12 @@ def orchestrator(
     attempts: int = 1,
     timeout: float = 0.05,
 ) -> AIOrchestrator:
-    registrations = [ProviderRegistration(adapter.name, adapter, timeout) for adapter in adapters]
-    registrations.append(ProviderRegistration("cached", CachedNarrativeAdapter(), timeout))
+    registrations = [
+        ProviderRegistration(adapter.name, adapter, timeout) for adapter in adapters
+    ]
+    registrations.append(
+        ProviderRegistration("cached", CachedNarrativeAdapter(), timeout)
+    )
     return AIOrchestrator(
         ProviderRegistry(tuple(registrations)),
         budget or AllowBudget(),
@@ -102,9 +106,9 @@ async def test_provider_failure_advances_to_next_provider() -> None:
 
 @pytest.mark.asyncio
 async def test_timeout_advances_to_next_provider() -> None:
-    result = await orchestrator([StubAdapter("gemini", delay=0.1), StubAdapter("groq")]).generate(
-        request()
-    )
+    result = await orchestrator(
+        [StubAdapter("gemini", delay=0.1), StubAdapter("groq")]
+    ).generate(request())
 
     assert result.provider == "groq"
 

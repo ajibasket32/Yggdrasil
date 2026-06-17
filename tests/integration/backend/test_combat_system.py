@@ -43,7 +43,9 @@ async def _create_at_encounter(player_id: UUID) -> typing.Any:
             and location.id != character.current_location.id
             and location.name == "Greenwood Verge"
         )
-        await service.travel(player_id, character.id, destination.id, f"travel-{player_id}")
+        await service.travel(
+            player_id, character.id, destination.id, f"travel-{player_id}"
+        )
     return character
 
 
@@ -92,7 +94,9 @@ async def test_victory_rewards_logs_events_and_save_restore_are_atomic(
     assert state.recent_log[-1].action_type == "VICTORY"
 
     async with session_factory() as session:
-        sheet = await CharacterService(GameUnitOfWork(session)).get_character(player_id, created.id)
+        sheet = await CharacterService(GameUnitOfWork(session)).get_character(
+            player_id, created.id
+        )
         log_count = await session.scalar(
             select(func.count())
             .select_from(CombatLogEntry)
@@ -109,17 +113,17 @@ async def test_victory_rewards_logs_events_and_save_restore_are_atomic(
     assert int(event_count or 0) >= 3
 
     async with session_factory() as session:
-        save = await SaveService(SaveUnitOfWork(session), GameStateRepository(session)).create_save(
-            player_id, created.id, "After combat", "save-combat-result"
-        )
+        save = await SaveService(
+            SaveUnitOfWork(session), GameStateRepository(session)
+        ).create_save(player_id, created.id, "After combat", "save-combat-result")
     async with session_factory() as session:
         await CharacterService(GameUnitOfWork(session)).award_experience(
             player_id, created.id, 60, "mutate-after-combat-save"
         )
     async with session_factory() as session:
-        loaded = await SaveService(SaveUnitOfWork(session), GameStateRepository(session)).load_save(
-            player_id, save.save_id, "restore-combat-result"
-        )
+        loaded = await SaveService(
+            SaveUnitOfWork(session), GameStateRepository(session)
+        ).load_save(player_id, save.save_id, "restore-combat-result")
     assert loaded.snapshot.character["experience"] == 45
 
 
@@ -143,7 +147,9 @@ async def test_combat_action_idempotency_does_not_duplicate_rewards(
     assert replayed == state
 
     async with session_factory() as session:
-        sheet = await CharacterService(GameUnitOfWork(session)).get_character(player_id, created.id)
+        sheet = await CharacterService(GameUnitOfWork(session)).get_character(
+            player_id, created.id
+        )
     assert sheet.gold == created.gold + 18
     assert sheet.experience == 45
 
@@ -183,7 +189,9 @@ async def test_combat_http_flow_exposes_replayable_log(
             assert action.status_code == 200
             state = action.json()["data"]
             index += 1
-        logs = await client.get(f"/api/v1/combat/{state['combat_id']}/log", headers=headers)
+        logs = await client.get(
+            f"/api/v1/combat/{state['combat_id']}/log", headers=headers
+        )
 
     assert encounters.status_code == 200
     assert start.status_code == 201

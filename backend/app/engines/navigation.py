@@ -41,7 +41,9 @@ class NavigationEngine:
         try:
             minimum_level = int(raw_minimum)
         except ValueError as error:
-            raise NavigationRuleError("Route level requirement must be an integer") from error
+            raise NavigationRuleError(
+                "Route level requirement must be an integer"
+            ) from error
         if character_level < minimum_level:
             raise NavigationRuleError("Character does not meet route requirements")
         return route

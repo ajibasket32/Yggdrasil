@@ -55,7 +55,9 @@ class QdrantClient:
     async def ensure_collection(self, memory_type: MemoryType) -> None:
         collection = MEMORY_COLLECTIONS[memory_type]
         try:
-            response = await self._client.get(f"{self._base_url}/collections/{collection}")
+            response = await self._client.get(
+                f"{self._base_url}/collections/{collection}"
+            )
         except httpx.HTTPError as error:
             raise QdrantError("Qdrant collection lookup failed") from error
         if response.status_code == 200:
@@ -111,7 +113,9 @@ class QdrantClient:
         query: RetrievalQuery,
     ) -> tuple[QdrantPoint, ...]:
         await self.ensure_collection(memory_type)
-        must: list[object] = [{"key": "player_id", "match": {"value": str(query.player_id)}}]
+        must: list[object] = [
+            {"key": "player_id", "match": {"value": str(query.player_id)}}
+        ]
         if query.allowed_entity_ids:
             must.append(
                 {
@@ -124,9 +128,13 @@ class QdrantClient:
                     },
                 }
             )
-        must.extend({"key": "tags", "match": {"value": tag}} for tag in sorted(query.required_tags))
+        must.extend(
+            {"key": "tags", "match": {"value": tag}}
+            for tag in sorted(query.required_tags)
+        )
         must_not: list[object] = [
-            {"key": "tags", "match": {"value": tag}} for tag in sorted(query.excluded_tags)
+            {"key": "tags", "match": {"value": tag}}
+            for tag in sorted(query.excluded_tags)
         ]
         payload: dict[str, object] = {
             "vector": vector,
@@ -149,7 +157,9 @@ class QdrantClient:
     async def recreate_collections(self) -> None:
         for memory_type, collection in MEMORY_COLLECTIONS.items():
             try:
-                response = await self._client.delete(f"{self._base_url}/collections/{collection}")
+                response = await self._client.delete(
+                    f"{self._base_url}/collections/{collection}"
+                )
             except httpx.HTTPError as error:
                 raise QdrantError("Qdrant collection deletion failed") from error
             if response.status_code not in {200, 404}:

@@ -129,11 +129,14 @@ class SaveService:
         operation = "save.create"
 
         async with self._uow:
-            if self._game_state is not None and await self._game_state.has_active_combat(
-                player_id, character_id
+            if (
+                self._game_state is not None
+                and await self._game_state.has_active_combat(player_id, character_id)
             ):
                 SAVE_FAILURES_TOTAL.labels("create", "active_combat").inc()
-                raise SaveActiveCombatError("Cannot create a save while combat is active")
+                raise SaveActiveCombatError(
+                    "Cannot create a save while combat is active"
+                )
             canonical_snapshot = snapshot
             if canonical_snapshot is None and self._game_state is not None:
                 captured = await self._game_state.capture(player_id, character_id)
@@ -160,8 +163,12 @@ class SaveService:
                     "snapshot": payload,
                 }
             )
-            await self._uow.saves.lock_key(f"idempotency:{player_id}:{operation}:{idempotency_key}")
-            existing = await self._uow.idempotency.get(player_id, idempotency_key, operation)
+            await self._uow.saves.lock_key(
+                f"idempotency:{player_id}:{operation}:{idempotency_key}"
+            )
+            existing = await self._uow.idempotency.get(
+                player_id, idempotency_key, operation
+            )
             if existing is not None:
                 self._assert_same_fingerprint(existing, fingerprint)
                 summary = await self._summary_from_idempotency(player_id, existing)
@@ -211,8 +218,12 @@ class SaveService:
         operation = "save.load"
 
         async with self._uow:
-            await self._uow.saves.lock_key(f"idempotency:{player_id}:{operation}:{idempotency_key}")
-            existing = await self._uow.idempotency.get(player_id, idempotency_key, operation)
+            await self._uow.saves.lock_key(
+                f"idempotency:{player_id}:{operation}:{idempotency_key}"
+            )
+            existing = await self._uow.idempotency.get(
+                player_id, idempotency_key, operation
+            )
             if existing is not None:
                 self._assert_same_fingerprint(existing, fingerprint)
                 stored_id = UUID(str(existing.response_body["save_id"]))
@@ -244,8 +255,12 @@ class SaveService:
         operation = "save.delete"
 
         async with self._uow:
-            await self._uow.saves.lock_key(f"idempotency:{player_id}:{operation}:{idempotency_key}")
-            existing = await self._uow.idempotency.get(player_id, idempotency_key, operation)
+            await self._uow.saves.lock_key(
+                f"idempotency:{player_id}:{operation}:{idempotency_key}"
+            )
+            existing = await self._uow.idempotency.get(
+                player_id, idempotency_key, operation
+            )
             if existing is not None:
                 self._assert_same_fingerprint(existing, fingerprint)
                 return DeleteSaveResult(save_id=save_id, deleted=True)
@@ -266,7 +281,9 @@ class SaveService:
                     and not await self._uow.saves.has_other_verified(save)
                     and await self._uow.saves.has_newer_unverified(save)
                 ):
-                    SAVE_FAILURES_TOTAL.labels("delete", "recovery_point_required").inc()
+                    SAVE_FAILURES_TOTAL.labels(
+                        "delete", "recovery_point_required"
+                    ).inc()
                     raise RecoveryPointError(
                         "Cannot delete the only verified recovery point while "
                         "a newer save is unverified"
@@ -353,7 +370,9 @@ class SaveService:
                 )
             except (KeyError, TypeError, ValueError) as error:
                 SAVE_FAILURES_TOTAL.labels("load", "game_state_invalid").inc()
-                raise SaveIntegrityError("Saved canonical gameplay state is invalid") from error
+                raise SaveIntegrityError(
+                    "Saved canonical gameplay state is invalid"
+                ) from error
 
         return LoadedSave(**self._summary(save).model_dump(), snapshot=snapshot)
 

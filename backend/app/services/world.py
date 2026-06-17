@@ -82,7 +82,8 @@ class WorldService:
             return [
                 await self._quest_view(quest, state)
                 for quest, state in rows
-                if state is not None or quest.location_id == character.current_location_id
+                if state is not None
+                or quest.location_id == character.current_location_id
             ]
 
     async def accept_quest(
@@ -134,7 +135,9 @@ class WorldService:
                 "QUEST_ACCEPTED",
                 f"Accepted {quest.title}.",
             )
-            await self._outbox(player_id, "quest.accepted", "quest", quest.id, character.id, key)
+            await self._outbox(
+                player_id, "quest.accepted", "quest", quest.id, character.id, key
+            )
             await self._record(player_id, key, operation, character.id)
             QUEST_TRANSITIONS_TOTAL.labels("NOT_STARTED", "ACTIVE", "success").inc()
             return await self._quest_view(quest, state)
@@ -203,7 +206,9 @@ class WorldService:
             state.rewards_claimed = True
             state.completed_at = datetime.now(UTC)
             if quest.faction_id is not None:
-                standing = await self._standing(player_id, character.id, quest.faction_id)
+                standing = await self._standing(
+                    player_id, character.id, quest.faction_id
+                )
                 standing.reputation = min(1000, standing.reputation + reputation)
                 standing.rank = self._rank(standing.reputation, standing.joined)
             await self._journal(
@@ -232,7 +237,9 @@ class WorldService:
                 event,
                 ("quest", "completed"),
             )
-            await self._outbox(player_id, "quest.completed", "quest", quest.id, character.id, key)
+            await self._outbox(
+                player_id, "quest.completed", "quest", quest.id, character.id, key
+            )
             await self._record(player_id, key, operation, character.id)
             QUEST_TRANSITIONS_TOTAL.labels("ACTIVE", "COMPLETED", "success").inc()
             return await self._quest_view(quest, state)
@@ -242,7 +249,9 @@ class WorldService:
             character = await self._character(player_id, character_id)
             return [
                 self._npc_view(value, character.current_location_id)
-                for value in await self._uow.world.list_npcs(character.current_location_id)
+                for value in await self._uow.world.list_npcs(
+                    character.current_location_id
+                )
             ]
 
     async def relationship(
@@ -389,20 +398,27 @@ class WorldService:
                 await self._dungeon_view(player_id, character.id, dungeon)
                 for dungeon in await self._uow.world.list_dungeons()
                 if dungeon.location_id == character.current_location_id
-                or await self._uow.world.get_dungeon_state(character.id, dungeon.id) is not None
+                or await self._uow.world.get_dungeon_state(character.id, dungeon.id)
+                is not None
             ]
 
     async def enter_dungeon(
         self, player_id: UUID, character_id: UUID, dungeon_id: UUID, key: str
     ) -> DungeonView:
-        return await self._mutate_dungeon(player_id, character_id, dungeon_id, key, clear=False)
+        return await self._mutate_dungeon(
+            player_id, character_id, dungeon_id, key, clear=False
+        )
 
     async def clear_dungeon(
         self, player_id: UUID, character_id: UUID, dungeon_id: UUID, key: str
     ) -> DungeonView:
-        return await self._mutate_dungeon(player_id, character_id, dungeon_id, key, clear=True)
+        return await self._mutate_dungeon(
+            player_id, character_id, dungeon_id, key, clear=True
+        )
 
-    async def journal(self, player_id: UUID, character_id: UUID) -> list[JournalEntryView]:
+    async def journal(
+        self, player_id: UUID, character_id: UUID
+    ) -> list[JournalEntryView]:
         async with self._uow:
             await self._character(player_id, character_id)
             return [
@@ -417,7 +433,9 @@ class WorldService:
                 world_tick=0,
                 npcs=[
                     self._npc_view(value, character.current_location_id)
-                    for value in await self._uow.world.list_npcs(character.current_location_id)
+                    for value in await self._uow.world.list_npcs(
+                        character.current_location_id
+                    )
                 ],
                 factions=[
                     await self._faction_view(player_id, character.id, faction)
@@ -455,7 +473,9 @@ class WorldService:
             if existing is None:
                 previous = state.status
                 try:
-                    state.status = QuestEngine.transition(state.status, target).current.value
+                    state.status = QuestEngine.transition(
+                        state.status, target
+                    ).current.value
                 except QuestRuleError as error:
                     raise WorldRuleViolation(str(error)) from error
                 await self._journal(
@@ -512,11 +532,15 @@ class WorldService:
                 state.entered = True
                 if clear and not state.cleared:
                     if character.level < dungeon.recommended_level:
-                        raise WorldRuleViolation("Character level is below dungeon recommendation")
+                        raise WorldRuleViolation(
+                            "Character level is below dungeon recommendation"
+                        )
                     state.cleared = True
                     state.boss_alive = False
                     state.cleared_at = datetime.now(UTC)
-                    await self._progress_matching(player_id, character, "DUNGEON_CLEAR", dungeon.id)
+                    await self._progress_matching(
+                        player_id, character, "DUNGEON_CLEAR", dungeon.id
+                    )
                     event = await self._world_event(
                         player_id,
                         character,
@@ -544,7 +568,9 @@ class WorldService:
                         key,
                     )
                 await self._record(player_id, key, operation, character.id)
-                DUNGEON_OPERATIONS_TOTAL.labels("clear" if clear else "enter", "success").inc()
+                DUNGEON_OPERATIONS_TOTAL.labels(
+                    "clear" if clear else "enter", "success"
+                ).inc()
             return self._dungeon_view_from(dungeon, state)
 
     async def _progress_matching(
@@ -554,7 +580,9 @@ class WorldService:
         objective_type: str,
         target_id: UUID,
     ) -> bool:
-        for quest, state in await self._uow.world.list_character_quests(player_id, character.id):
+        for quest, state in await self._uow.world.list_character_quests(
+            player_id, character.id
+        ):
             if state is None or state.status != "ACTIVE" or state.objectives_complete:
                 continue
             steps = await self._uow.world.list_steps(quest.id)
@@ -620,14 +648,18 @@ class WorldService:
         character_job.experience = result.job_experience
         for skill_id in result.unlocked_skill_ids:
             await self._uow.world.add(
-                CharacterSkill(character_id=character.id, skill_id=skill_id, skill_level=1)
+                CharacterSkill(
+                    character_id=character.id, skill_id=skill_id, skill_level=1
+                )
             )
         derived = CharacterEngine.derive(result.stats)
         character.current_hp = derived.max_hp
         character.current_mp = derived.max_mp
         character.current_stamina = derived.max_stamina
 
-    async def _quest_view(self, quest: Quest, state: CharacterQuest | None) -> QuestView:
+    async def _quest_view(
+        self, quest: Quest, state: CharacterQuest | None
+    ) -> QuestView:
         steps = await self._uow.world.list_steps(quest.id)
         current_step = state.current_step if state else 0
         progress = state.step_progress if state else 0
@@ -652,9 +684,7 @@ class WorldService:
                     progress=(
                         step.required_count
                         if state and step.sequence < current_step
-                        else progress
-                        if state and step.sequence == current_step
-                        else 0
+                        else progress if state and step.sequence == current_step else 0
                     ),
                     complete=bool(
                         state
@@ -691,7 +721,9 @@ class WorldService:
             )
         return existing
 
-    async def _record(self, player_id: UUID, key: str, operation: str, character_id: UUID) -> None:
+    async def _record(
+        self, player_id: UUID, key: str, operation: str, character_id: UUID
+    ) -> None:
         await self._uow.idempotency.add(
             IdempotencyRecord(
                 player_id=player_id,
@@ -707,7 +739,9 @@ class WorldService:
     async def _character(
         self, player_id: UUID, character_id: UUID, *, for_update: bool = False
     ) -> Character:
-        value = await self._uow.world.get_character(player_id, character_id, for_update=for_update)
+        value = await self._uow.world.get_character(
+            player_id, character_id, for_update=for_update
+        )
         if value is None:
             raise WorldNotFoundError("Character was not found")
         return value
@@ -754,9 +788,13 @@ class WorldService:
         *,
         for_update: bool = False,
     ) -> Relationship:
-        value = await self._uow.world.get_relationship(character_id, npc_id, for_update=for_update)
+        value = await self._uow.world.get_relationship(
+            character_id, npc_id, for_update=for_update
+        )
         if value is None:
-            value = Relationship(player_id=player_id, character_id=character_id, npc_id=npc_id)
+            value = Relationship(
+                player_id=player_id, character_id=character_id, npc_id=npc_id
+            )
             await self._uow.world.add(value)
         return value
 
@@ -807,7 +845,9 @@ class WorldService:
 
     async def _prerequisites_complete(self, character_id: UUID, quest: Quest) -> bool:
         for value in quest.prerequisites:
-            state = await self._uow.world.get_character_quest(character_id, UUID(str(value)))
+            state = await self._uow.world.get_character_quest(
+                character_id, UUID(str(value))
+            )
             if state is None or state.status not in {"COMPLETED", "ARCHIVED"}:
                 return False
         return True
@@ -931,7 +971,10 @@ class WorldService:
     @staticmethod
     def _apply_relationship(relationship: Relationship, deltas: dict[str, int]) -> None:
         values = RelationshipEngine.apply(
-            {field: int(getattr(relationship, field)) for field in RelationshipEngine.FIELDS},
+            {
+                field: int(getattr(relationship, field))
+                for field in RelationshipEngine.FIELDS
+            },
             deltas,
         )
         for field, value in values.items():
@@ -950,7 +993,9 @@ class WorldService:
             knowledge=npc.knowledge,
             is_alive=npc.is_alive,
             available_actions=(
-                ["GREET", "OFFER_HELP"] if npc.home_location_id == current_location_id else []
+                ["GREET", "OFFER_HELP"]
+                if npc.home_location_id == current_location_id
+                else []
             ),
         )
 
@@ -966,7 +1011,9 @@ class WorldService:
         )
 
     @staticmethod
-    def _dungeon_view_from(dungeon: Dungeon, state: CharacterDungeonState) -> DungeonView:
+    def _dungeon_view_from(
+        dungeon: Dungeon, state: CharacterDungeonState
+    ) -> DungeonView:
         return DungeonView(
             id=dungeon.id,
             name=dungeon.name,
@@ -1002,5 +1049,7 @@ class WorldService:
 
     @staticmethod
     def _fingerprint(payload: dict[str, object]) -> str:
-        serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
+        serialized = json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), default=str
+        )
         return hashlib.sha256(serialized.encode()).hexdigest()

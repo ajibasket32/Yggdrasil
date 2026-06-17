@@ -163,8 +163,12 @@ def test_equipment_and_navigation_reject_invalid_actions() -> None:
     destination = uuid4()
     valid_route = TravelRoute(origin, destination, {})
     assert (
-        NavigationEngine.validate_travel(origin, destination, [valid_route], character_level=1)
+        NavigationEngine.validate_travel(
+            origin, destination, [valid_route], character_level=1
+        )
         == valid_route
     )
     with pytest.raises(NavigationRuleError, match="No direct route"):
-        NavigationEngine.validate_travel(origin, UUID(int=0), [valid_route], character_level=1)
+        NavigationEngine.validate_travel(
+            origin, UUID(int=0), [valid_route], character_level=1
+        )

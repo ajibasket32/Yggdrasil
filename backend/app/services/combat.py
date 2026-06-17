@@ -65,7 +65,9 @@ class CombatService:
     ) -> list[EncounterDefinitionView]:
         async with self._uow:
             character = await self._owned_character(player_id, character_id)
-            rows = await self._uow.combat.list_definitions(character.current_location_id)
+            rows = await self._uow.combat.list_definitions(
+                character.current_location_id
+            )
             return [
                 EncounterDefinitionView(
                     id=definition.id,
@@ -89,7 +91,9 @@ class CombatService:
         operation = "combat.start"
         fingerprint = self._fingerprint(request.model_dump(mode="json"))
         async with self._uow:
-            existing = await self._guard(player_id, idempotency_key, operation, fingerprint)
+            existing = await self._guard(
+                player_id, idempotency_key, operation, fingerprint
+            )
             if existing is not None:
                 return await self._view(
                     await self._owned_encounter(
@@ -102,16 +106,22 @@ class CombatService:
             if character.current_hp <= 0:
                 raise GameplayRuleViolation("Character must recover before combat")
             if (
-                await self._uow.combat.active_for_character(character.id, for_update=True)
+                await self._uow.combat.active_for_character(
+                    character.id, for_update=True
+                )
                 is not None
             ):
                 raise CombatConflictError("Character already has an active combat")
-            definition_row = await self._uow.combat.get_definition(request.encounter_definition_id)
+            definition_row = await self._uow.combat.get_definition(
+                request.encounter_definition_id
+            )
             if definition_row is None:
                 raise DefinitionNotFoundError("Encounter definition was not found")
             definition, monster = definition_row
             if definition.location_id != character.current_location_id:
-                raise GameplayRuleViolation("Encounter is not available at the current location")
+                raise GameplayRuleViolation(
+                    "Encounter is not available at the current location"
+                )
 
             player_state = await self._player_state(character)
             enemy_state = self._monster_state(monster)
@@ -178,13 +188,21 @@ class CombatService:
         operation = "combat.action"
         fingerprint = self._fingerprint(request.model_dump(mode="json"))
         async with self._uow:
-            existing = await self._guard(player_id, idempotency_key, operation, fingerprint)
+            existing = await self._guard(
+                player_id, idempotency_key, operation, fingerprint
+            )
             if existing is not None:
-                return await self._view(await self._owned_encounter(player_id, request.combat_id))
-            encounter = await self._owned_encounter(player_id, request.combat_id, for_update=True)
+                return await self._view(
+                    await self._owned_encounter(player_id, request.combat_id)
+                )
+            encounter = await self._owned_encounter(
+                player_id, request.combat_id, for_update=True
+            )
             if encounter.status != "ACTIVE":
                 raise CombatConflictError("Combat is already complete")
-            participants = await self._uow.combat.participants(encounter.id, for_update=True)
+            participants = await self._uow.combat.participants(
+                encounter.id, for_update=True
+            )
             player = self._by_side(participants, "PLAYER")
             enemy = self._by_side(participants, "ENEMY")
             if self._next_actor(encounter) != player.id:
@@ -229,13 +247,21 @@ class CombatService:
         operation = "combat.flee"
         fingerprint = self._fingerprint({"combat_id": str(combat_id)})
         async with self._uow:
-            existing = await self._guard(player_id, idempotency_key, operation, fingerprint)
+            existing = await self._guard(
+                player_id, idempotency_key, operation, fingerprint
+            )
             if existing is not None:
-                return await self._view(await self._owned_encounter(player_id, combat_id))
-            encounter = await self._owned_encounter(player_id, combat_id, for_update=True)
+                return await self._view(
+                    await self._owned_encounter(player_id, combat_id)
+                )
+            encounter = await self._owned_encounter(
+                player_id, combat_id, for_update=True
+            )
             if encounter.status != "ACTIVE":
                 raise CombatConflictError("Combat is already complete")
-            participants = await self._uow.combat.participants(encounter.id, for_update=True)
+            participants = await self._uow.combat.participants(
+                encounter.id, for_update=True
+            )
             player = self._by_side(participants, "PLAYER")
             enemy = self._by_side(participants, "ENEMY")
             if self._next_actor(encounter) != player.id:
@@ -305,14 +331,17 @@ class CombatService:
         async with self._uow:
             await self._owned_encounter(player_id, combat_id)
             return [
-                CombatLogView.model_validate(row) for row in await self._uow.combat.logs(combat_id)
+                CombatLogView.model_validate(row)
+                for row in await self._uow.combat.logs(combat_id)
             ]
 
     async def _advance_enemies(
         self, encounter: CombatEncounter, monster: Monster, character: Character
     ) -> None:
         while encounter.status == "ACTIVE":
-            participants = await self._uow.combat.participants(encounter.id, for_update=True)
+            participants = await self._uow.combat.participants(
+                encounter.id, for_update=True
+            )
             player = self._by_side(participants, "PLAYER")
             enemy = self._by_side(participants, "ENEMY")
             if self._next_actor(encounter) != enemy.id:
@@ -427,7 +456,11 @@ class CombatService:
                 raise GameplayRuleViolation("Skill action requires a skill")
             rows = await self._uow.characters.list_skills(character.id)
             skill_row = next(
-                ((owned, skill) for owned, skill in rows if skill.id == request.skill_id),
+                (
+                    (owned, skill)
+                    for owned, skill in rows
+                    if skill.id == request.skill_id
+                ),
                 None,
             )
             if skill_row is None:
@@ -490,7 +523,9 @@ class CombatService:
     ) -> None:
         if encounter.rewards_applied:
             return
-        definition_row = await self._uow.combat.get_definition(encounter.encounter_definition_id)
+        definition_row = await self._uow.combat.get_definition(
+            encounter.encounter_definition_id
+        )
         if definition_row is None:
             raise DefinitionNotFoundError("Encounter definition was not found")
         monster = definition_row[1]
@@ -519,7 +554,9 @@ class CombatService:
         encounter.rewards_applied = True
         character.current_hp = max(
             1,
-            self._by_side(await self._uow.combat.participants(encounter.id), "PLAYER").current_hp,
+            self._by_side(
+                await self._uow.combat.participants(encounter.id), "PLAYER"
+            ).current_hp,
         )
         await self._event(
             encounter,
@@ -563,7 +600,9 @@ class CombatService:
                 charisma=character.charisma,
             ),
             job_stat_modifiers=job.stat_modifiers,
-            skill_unlocks=[(unlock.skill_id, unlock.required_level) for unlock in unlocks],
+            skill_unlocks=[
+                (unlock.skill_id, unlock.required_level) for unlock in unlocks
+            ],
             already_unlocked=unlocked,
             amount=amount,
         )
@@ -584,7 +623,9 @@ class CombatService:
             )
 
     async def _add_item(self, character_id: UUID, item: Item, quantity: int) -> None:
-        inventory = await self._uow.inventory.get_for_character(character_id, for_update=True)
+        inventory = await self._uow.inventory.get_for_character(
+            character_id, for_update=True
+        )
         if inventory is None:
             raise GameplayRuleViolation("Inventory was not found")
         rows = await self._uow.inventory.list_entries(character_id, for_update=True)
@@ -793,7 +834,9 @@ class CombatService:
     def _next_actor(encounter: CombatEncounter) -> UUID:
         if not encounter.turn_order:
             raise CombatConflictError("Combat turn order is empty")
-        return UUID(encounter.turn_order[encounter.action_sequence % len(encounter.turn_order)])
+        return UUID(
+            encounter.turn_order[encounter.action_sequence % len(encounter.turn_order)]
+        )
 
     @staticmethod
     def _advance_round(encounter: CombatEncounter) -> None:
@@ -845,7 +888,9 @@ class CombatService:
         self, encounter: CombatEncounter, encounter_name: str | None = None
     ) -> CombatStateView:
         if encounter_name is None:
-            definition = await self._uow.combat.get_definition(encounter.encounter_definition_id)
+            definition = await self._uow.combat.get_definition(
+                encounter.encounter_definition_id
+            )
             if definition is None:
                 raise DefinitionNotFoundError("Encounter definition was not found")
             encounter_name = definition[0].name
@@ -893,7 +938,9 @@ class CombatService:
             rewards=CombatRewardView(
                 experience=self._json_int(rewards.get("experience", 0)),
                 gold=self._json_int(rewards.get("gold", 0)),
-                items=([str(value) for value in items] if isinstance(items, list) else []),
+                items=(
+                    [str(value) for value in items] if isinstance(items, list) else []
+                ),
             ),
             recent_log=[CombatLogView.model_validate(row) for row in logs[-12:]],
         )
@@ -911,7 +958,9 @@ class CombatService:
     async def _owned_encounter(
         self, player_id: UUID, combat_id: UUID, *, for_update: bool = False
     ) -> CombatEncounter:
-        encounter = await self._uow.combat.get_owned(player_id, combat_id, for_update=for_update)
+        encounter = await self._uow.combat.get_owned(
+            player_id, combat_id, for_update=for_update
+        )
         if encounter is None:
             raise CombatNotFoundError("Combat was not found")
         return encounter
@@ -966,5 +1015,7 @@ class CombatService:
 
     @staticmethod
     def _fingerprint(payload: dict[str, JsonValue]) -> str:
-        serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+        serialized = json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True
+        )
         return hashlib.sha256(serialized.encode("utf-8")).hexdigest()

@@ -47,7 +47,9 @@ class RequestIdMiddleware(BaseHTTPMiddleware):
         response.headers[REQUEST_ID_HEADER] = request_id
 
         HTTP_REQUESTS_TOTAL.labels(request.method, path, str(status_code)).inc()
-        HTTP_REQUEST_DURATION_SECONDS.labels(request.method, path).observe(duration_seconds)
+        HTTP_REQUEST_DURATION_SECONDS.labels(request.method, path).observe(
+            duration_seconds
+        )
         if status_code >= 400:
             HTTP_ERRORS_TOTAL.labels(request.method, path, str(status_code)).inc()
 

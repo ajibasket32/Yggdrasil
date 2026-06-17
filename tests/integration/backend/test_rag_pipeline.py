@@ -94,7 +94,9 @@ async def test_retrieval_enforces_scope_cache_and_deletion(
     blocked_entity = uuid4()
     dispatcher = RecordingDispatcher()
     redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
-    async with httpx.AsyncClient(timeout=settings.rag_qdrant_timeout_seconds) as http_client:
+    async with httpx.AsyncClient(
+        timeout=settings.rag_qdrant_timeout_seconds
+    ) as http_client:
         try:
             allowed_memory_id = await create_memory(
                 player_id,
@@ -208,7 +210,9 @@ async def test_qdrant_failure_is_retryable_and_canonical_memory_survives(
             return httpx.Response(503)
 
         async with (
-            httpx.AsyncClient(transport=httpx.MockTransport(unavailable)) as failed_client,
+            httpx.AsyncClient(
+                transport=httpx.MockTransport(unavailable)
+            ) as failed_client,
             session_factory() as session,
         ):
             indexer = MemoryIndexer(
@@ -229,7 +233,9 @@ async def test_qdrant_failure_is_retryable_and_canonical_memory_survives(
             await session.commit()
 
         async with (
-            httpx.AsyncClient(timeout=settings.rag_qdrant_timeout_seconds) as recovered_client,
+            httpx.AsyncClient(
+                timeout=settings.rag_qdrant_timeout_seconds
+            ) as recovered_client,
             session_factory() as session,
         ):
             recovered = MemoryIndexer(
@@ -254,7 +260,9 @@ async def test_full_rebuild_queues_every_active_postgres_memory(
     player_id = uuid4()
     initial_dispatcher = RecordingDispatcher()
     redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
-    async with httpx.AsyncClient(timeout=settings.rag_qdrant_timeout_seconds) as http_client:
+    async with httpx.AsyncClient(
+        timeout=settings.rag_qdrant_timeout_seconds
+    ) as http_client:
         try:
             memory_ids = {
                 await create_memory(
@@ -284,7 +292,9 @@ async def test_full_rebuild_queues_every_active_postgres_memory(
 
             async with session_factory() as session:
                 indexed = (
-                    await session.scalars(select(Memory).where(Memory.id.in_(memory_ids)))
+                    await session.scalars(
+                        select(Memory).where(Memory.id.in_(memory_ids))
+                    )
                 ).all()
             assert len(rebuild_jobs) == 2
             assert {memory.index_status for memory in indexed} == {"INDEXED"}

@@ -22,7 +22,9 @@ async def _character_at_greenwood(player_id: UUID) -> typing.Any:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))
         definitions = await service.creation_definitions()
-        warrior = next(value for value in definitions.starting_jobs if value.name == "Warrior")
+        warrior = next(
+            value for value in definitions.starting_jobs if value.name == "Warrior"
+        )
         character = await service.create_character(
             player_id,
             CreateCharacterRequest(
@@ -35,8 +37,12 @@ async def _character_at_greenwood(player_id: UUID) -> typing.Any:
             f"create-{player_id}",
         )
         locations = await service.locations(player_id, character.id)
-        greenwood = next(value for value in locations if value.name == "Greenwood Verge")
-        await service.travel(player_id, character.id, greenwood.id, f"greenwood-{player_id}")
+        greenwood = next(
+            value for value in locations if value.name == "Greenwood Verge"
+        )
+        await service.travel(
+            player_id, character.id, greenwood.id, f"greenwood-{player_id}"
+        )
     return character
 
 
@@ -50,7 +56,9 @@ async def test_complete_world_flow_is_deterministic_and_persistent(
     async with session_factory() as session:
         world = WorldService(WorldUnitOfWork(session))
         quest = (await world.quests(player_id, character.id))[0]
-        accepted = await world.accept_quest(player_id, character.id, quest.id, "accept-world-quest")
+        accepted = await world.accept_quest(
+            player_id, character.id, quest.id, "accept-world-quest"
+        )
         npc = (await world.npcs(player_id, character.id))[0]
         interaction = await world.interact(
             player_id, character.id, npc.id, "OFFER_HELP", "help-warden"
@@ -65,26 +73,36 @@ async def test_complete_world_flow_is_deterministic_and_persistent(
     assert repeated.relationship.trust == 5
 
     async with session_factory() as session:
-        save = await SaveService(SaveUnitOfWork(session), GameStateRepository(session)).create_save(
-            player_id, character.id, "Before hollow", "save-before-hollow"
-        )
+        save = await SaveService(
+            SaveUnitOfWork(session), GameStateRepository(session)
+        ).create_save(player_id, character.id, "Before hollow", "save-before-hollow")
 
     async with session_factory() as session:
         gameplay = CharacterService(GameUnitOfWork(session))
         locations = await gameplay.locations(player_id, character.id)
-        crossroads = next(value for value in locations if value.name == "Ancient Crossroads")
-        await gameplay.travel(player_id, character.id, crossroads.id, "travel-crossroads")
+        crossroads = next(
+            value for value in locations if value.name == "Ancient Crossroads"
+        )
+        await gameplay.travel(
+            player_id, character.id, crossroads.id, "travel-crossroads"
+        )
 
     async with session_factory() as session:
         world = WorldService(WorldUnitOfWork(session))
         dungeon = (await world.dungeons(player_id, character.id))[0]
-        entered = await world.enter_dungeon(player_id, character.id, dungeon.id, "enter-hollow")
-        cleared = await world.clear_dungeon(player_id, character.id, dungeon.id, "clear-hollow")
+        entered = await world.enter_dungeon(
+            player_id, character.id, dungeon.id, "enter-hollow"
+        )
+        cleared = await world.clear_dungeon(
+            player_id, character.id, dungeon.id, "clear-hollow"
+        )
         completed = await world.submit_quest(
             player_id, character.id, quest.id, "submit-world-quest"
         )
         faction = (await world.factions(player_id, character.id))[0]
-        joined = await world.join_faction(player_id, character.id, faction.id, "join-wardens")
+        joined = await world.join_faction(
+            player_id, character.id, faction.id, "join-wardens"
+        )
         journal = await world.journal(player_id, character.id)
     assert entered.entered
     assert cleared.cleared and not cleared.boss_alive
@@ -93,14 +111,16 @@ async def test_complete_world_flow_is_deterministic_and_persistent(
     assert any(value.category == "QUEST_COMPLETED" for value in journal)
 
     async with session_factory() as session:
-        await SaveService(SaveUnitOfWork(session), GameStateRepository(session)).load_save(
-            player_id, save.save_id, "load-before-hollow"
-        )
+        await SaveService(
+            SaveUnitOfWork(session), GameStateRepository(session)
+        ).load_save(player_id, save.save_id, "load-before-hollow")
 
     async with session_factory() as session:
         world = WorldService(WorldUnitOfWork(session))
         persisted_quest = next(
-            value for value in await world.quests(player_id, character.id) if value.id == quest.id
+            value
+            for value in await world.quests(player_id, character.id)
+            if value.id == quest.id
         )
         persisted_dungeon = next(
             value
@@ -112,7 +132,9 @@ async def test_complete_world_flow_is_deterministic_and_persistent(
             for value in await world.factions(player_id, character.id)
             if value.id == faction.id
         )
-        persisted_relationship = await world.relationship(player_id, character.id, npc.id)
+        persisted_relationship = await world.relationship(
+            player_id, character.id, npc.id
+        )
     assert persisted_quest.status == "COMPLETED"
     assert persisted_dungeon.cleared and not persisted_dungeon.boss_alive
     assert persisted_faction.joined
@@ -135,8 +157,12 @@ async def test_quest_failure_archive_and_invalid_transition_are_enforced(
         world = WorldService(WorldUnitOfWork(session))
         quest = (await world.quests(player_id, character.id))[0]
         await world.accept_quest(player_id, character.id, quest.id, "accept-fail")
-        failed = await world.fail_quest(player_id, character.id, quest.id, "fail-active")
-        archived = await world.archive_quest(player_id, character.id, quest.id, "archive-failed")
+        failed = await world.fail_quest(
+            player_id, character.id, quest.id, "fail-active"
+        )
+        archived = await world.archive_quest(
+            player_id, character.id, quest.id, "archive-failed"
+        )
     assert failed.status == "FAILED"
     assert archived.status == "ARCHIVED"
 

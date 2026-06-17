@@ -84,7 +84,9 @@ class CombatRepository:
         await self._session.flush()
         return encounter
 
-    async def add_participant(self, participant: CombatParticipant) -> CombatParticipant:
+    async def add_participant(
+        self, participant: CombatParticipant
+    ) -> CombatParticipant:
         self._session.add(participant)
         await self._session.flush()
         return participant
@@ -102,7 +104,9 @@ class CombatRepository:
         result = await self._session.execute(statement)
         return list(result.scalars().all())
 
-    async def logs(self, encounter_id: UUID, *, limit: int | None = None) -> list[CombatLogEntry]:
+    async def logs(
+        self, encounter_id: UUID, *, limit: int | None = None
+    ) -> list[CombatLogEntry]:
         statement = (
             select(CombatLogEntry)
             .where(CombatLogEntry.encounter_id == encounter_id)

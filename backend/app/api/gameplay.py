@@ -80,7 +80,9 @@ async def list_characters(
     service: CharacterServiceDependency,
 ) -> ApiResponse[list[CharacterSummary]]:
     """List characters owned by the current player."""
-    return ApiResponse(data=await service.list_characters(player_id), meta=_meta(request))
+    return ApiResponse(
+        data=await service.list_characters(player_id), meta=_meta(request)
+    )
 
 
 @router.get(
@@ -165,7 +167,9 @@ async def unlock_job(
 ) -> ApiResponse[CharacterSheet]:
     """Unlock a job only when its data-driven prerequisites pass."""
     return ApiResponse(
-        data=await service.unlock_job(player_id, character_id, payload.job_id, idempotency_key),
+        data=await service.unlock_job(
+            player_id, character_id, payload.job_id, idempotency_key
+        ),
         meta=_meta(request),
     )
 
@@ -184,7 +188,9 @@ async def change_job(
 ) -> ApiResponse[CharacterSheet]:
     """Change the active job to one already unlocked."""
     return ApiResponse(
-        data=await service.change_job(player_id, character_id, payload.job_id, idempotency_key),
+        data=await service.change_job(
+            player_id, character_id, payload.job_id, idempotency_key
+        ),
         meta=_meta(request),
     )
 
@@ -285,7 +291,9 @@ async def sort_inventory(
 ) -> ApiResponse[InventoryView]:
     """Apply deterministic server-side inventory ordering."""
     return ApiResponse(
-        data=await service.sort_inventory(player_id, payload.character_id, idempotency_key),
+        data=await service.sort_inventory(
+            player_id, payload.character_id, idempotency_key
+        ),
         meta=_meta(request),
     )
 
@@ -376,6 +384,8 @@ async def travel(
 ) -> ApiResponse[TravelResult]:
     """Move only across a valid canonical route and persist discovery."""
     return ApiResponse(
-        data=await service.travel(player_id, character_id, payload.destination_id, idempotency_key),
+        data=await service.travel(
+            player_id, character_id, payload.destination_id, idempotency_key
+        ),
         meta=_meta(request),
     )

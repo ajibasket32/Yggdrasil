@@ -165,7 +165,9 @@ def test_healing_and_barrier_skills_validate_and_spend_mp() -> None:
         CombatEngine.resolve_action(
             replace(wounded, mp=1),
             wounded,
-            CombatAction("ITEM", modifier_percent=10, resource_cost=2, skill_id=PLAYER_ID),
+            CombatAction(
+                "ITEM", modifier_percent=10, resource_cost=2, skill_id=PLAYER_ID
+            ),
             seed=2,
             sequence=0,
         )
@@ -193,7 +195,9 @@ def test_enemy_policy_escape_and_rewards_are_seeded() -> None:
     enemy = _combatant(ENEMY_ID, side="ENEMY", hp=20, mp=10)
 
     assert (
-        CombatEngine.enemy_action(enemy, player, round_number=2, skill_id=ENEMY_ID).action_type
+        CombatEngine.enemy_action(
+            enemy, player, round_number=2, skill_id=ENEMY_ID
+        ).action_type
         == "GUARD"
     )
     assert (
@@ -202,7 +206,9 @@ def test_enemy_policy_escape_and_rewards_are_seeded() -> None:
         ).action_type
         == "SKILL"
     )
-    assert not CombatEngine.escape_succeeds(player, enemy, seed=5, sequence=0, escape_blocked=True)
+    assert not CombatEngine.escape_succeeds(
+        player, enemy, seed=5, sequence=0, escape_blocked=True
+    )
     assert CombatEngine.rewards(
         experience=10, gold=5, loot_chance_percent=100, seed=7
     ) == CombatEngine.rewards(experience=10, gold=5, loot_chance_percent=100, seed=7)

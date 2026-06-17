@@ -29,7 +29,9 @@ class CommitCheckingDispatcher:
                 select(MemoryIndexJob).where(MemoryIndexJob.id == job_id)
             )
             memory = (
-                await verification_session.get(Memory, job.memory_id) if job is not None else None
+                await verification_session.get(Memory, job.memory_id)
+                if job is not None
+                else None
             )
         self.memory_visible_before_dispatch = memory is not None
         self.job_ids.append(job_id)
@@ -125,7 +127,9 @@ async def test_dispatch_failure_retains_job_and_recovery_reannounces_it(
             )
             assert job is not None
             assert job.status == "PENDING"
-            await session.execute(delete(MemoryIndexJob).where(MemoryIndexJob.id == job.id))
+            await session.execute(
+                delete(MemoryIndexJob).where(MemoryIndexJob.id == job.id)
+            )
             await session.commit()
 
         recovery_dispatcher = CommitCheckingDispatcher()
