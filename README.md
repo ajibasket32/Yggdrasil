@@ -25,6 +25,10 @@ Supporting records: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_NOTES.md`](RELEASE
 - Infrastructure: PostgreSQL 16, Redis 7, Qdrant, Docker Compose, Nginx, Ollama
 - AI: Provider-agnostic orchestrator with adapters only under `backend/app/ai/adapters/`
 
+## Beginner Windows Start
+
+If you are a Windows user looking for the easiest way to start the game, please see the [**Windows Quickstart Guide**](WINDOWS_QUICKSTART.md).
+
 ## Development Start
 
 Start the complete foundation stack:

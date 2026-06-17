@@ -24,9 +24,7 @@ class JsonLogFormatter(logging.Formatter):
             "timestamp": datetime.now(UTC).isoformat(),
             "level": record.levelname.lower(),
             "service": context.get("service", "yggdrasil-backend"),
-            "environment": context.get(
-                "environment", os.getenv("ENVIRONMENT", "development")
-            ),
+            "environment": context.get("environment", os.getenv("ENVIRONMENT", "development")),
             "request_id": context.get("request_id"),
             "event_name": f"{record.name}.log",
             "message": message,

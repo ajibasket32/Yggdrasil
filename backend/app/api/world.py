@@ -23,9 +23,7 @@ from app.schemas.world import (
 
 router = APIRouter(tags=["world"])
 PlayerId = Annotated[UUID, Header(alias="X-Player-ID")]
-IdempotencyKey = Annotated[
-    str, Header(alias="Idempotency-Key", min_length=1, max_length=200)
-]
+IdempotencyKey = Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)]
 
 
 def _meta(request: Request) -> ResponseMeta:
@@ -46,9 +44,7 @@ async def list_quests(
     service: WorldServiceDependency,
 ) -> ApiResponse[list[QuestView]]:
     """List location-available and known character quests."""
-    return ApiResponse(
-        data=await service.quests(player_id, character_id), meta=_meta(request)
-    )
+    return ApiResponse(data=await service.quests(player_id, character_id), meta=_meta(request))
 
 
 @router.post("/quests/{quest_id}/accept", response_model=ApiResponse[QuestView])
@@ -62,9 +58,7 @@ async def accept_quest(
 ) -> ApiResponse[QuestView]:
     """Accept an available quest through the Quest Engine."""
     return ApiResponse(
-        data=await service.accept_quest(
-            player_id, payload.character_id, quest_id, idempotency_key
-        ),
+        data=await service.accept_quest(player_id, payload.character_id, quest_id, idempotency_key),
         meta=_meta(request),
     )
 
@@ -80,9 +74,7 @@ async def submit_quest(
 ) -> ApiResponse[QuestView]:
     """Complete objectives and apply engine-owned rewards atomically."""
     return ApiResponse(
-        data=await service.submit_quest(
-            player_id, payload.character_id, quest_id, idempotency_key
-        ),
+        data=await service.submit_quest(player_id, payload.character_id, quest_id, idempotency_key),
         meta=_meta(request),
     )
 
@@ -98,9 +90,7 @@ async def fail_quest(
 ) -> ApiResponse[QuestView]:
     """Fail an active quest through the Quest Engine."""
     return ApiResponse(
-        data=await service.fail_quest(
-            player_id, payload.character_id, quest_id, idempotency_key
-        ),
+        data=await service.fail_quest(player_id, payload.character_id, quest_id, idempotency_key),
         meta=_meta(request),
     )
 
@@ -134,9 +124,7 @@ async def list_npcs(
     service: WorldServiceDependency,
 ) -> ApiResponse[list[NPCView]]:
     """List deterministic NPCs at the character's location."""
-    return ApiResponse(
-        data=await service.npcs(player_id, character_id), meta=_meta(request)
-    )
+    return ApiResponse(data=await service.npcs(player_id, character_id), meta=_meta(request))
 
 
 @router.post(
@@ -193,9 +181,7 @@ async def list_factions(
     service: WorldServiceDependency,
 ) -> ApiResponse[list[FactionView]]:
     """List faction definitions and character standing."""
-    return ApiResponse(
-        data=await service.factions(player_id, character_id), meta=_meta(request)
-    )
+    return ApiResponse(data=await service.factions(player_id, character_id), meta=_meta(request))
 
 
 @router.post("/factions/{faction_id}/join", response_model=ApiResponse[FactionView])
@@ -227,9 +213,7 @@ async def list_dungeons(
     service: WorldServiceDependency,
 ) -> ApiResponse[list[DungeonView]]:
     """List visible and previously entered dungeons."""
-    return ApiResponse(
-        data=await service.dungeons(player_id, character_id), meta=_meta(request)
-    )
+    return ApiResponse(data=await service.dungeons(player_id, character_id), meta=_meta(request))
 
 
 @router.post("/dungeons/{dungeon_id}/enter", response_model=ApiResponse[DungeonView])
@@ -279,9 +263,7 @@ async def list_journal(
     service: WorldServiceDependency,
 ) -> ApiResponse[list[JournalEntryView]]:
     """Return permanent engine-authored journal entries."""
-    return ApiResponse(
-        data=await service.journal(player_id, character_id), meta=_meta(request)
-    )
+    return ApiResponse(data=await service.journal(player_id, character_id), meta=_meta(request))
 
 
 @router.get(
@@ -295,6 +277,4 @@ async def get_world_state(
     service: WorldServiceDependency,
 ) -> ApiResponse[WorldStateView]:
     """Return the bounded canonical v0.7 world state."""
-    return ApiResponse(
-        data=await service.state(player_id, character_id), meta=_meta(request)
-    )
+    return ApiResponse(data=await service.state(player_id, character_id), meta=_meta(request))

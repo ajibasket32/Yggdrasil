@@ -49,9 +49,7 @@ class Memory(EntityMixin, Base):
         ),
     )
 
-    player_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     memory_type: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
     source_entity_type: Mapped[str] = mapped_column(String(40), nullable=False)
     source_entity_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False)
@@ -60,14 +58,10 @@ class Memory(EntityMixin, Base):
     world_event_id: Mapped[UUID | None] = mapped_column(
         Uuid(as_uuid=True), nullable=True, index=True
     )
-    entity_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    entity_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     entity_type: Mapped[str] = mapped_column(String(40), nullable=False)
     participants: Mapped[list[str]] = mapped_column(JSONB, nullable=False, default=list)
-    location_id: Mapped[UUID | None] = mapped_column(
-        Uuid(as_uuid=True), nullable=True, index=True
-    )
+    location_id: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), nullable=True, index=True)
     tags: Mapped[list[str]] = mapped_column(JSONB, nullable=False, default=list)
     occurred_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, index=True
@@ -75,12 +69,8 @@ class Memory(EntityMixin, Base):
     content_hash: Mapped[str] = mapped_column(String(64), nullable=False)
     version: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
     status: Mapped[str] = mapped_column(String(20), nullable=False, default="ACTIVE")
-    index_status: Mapped[str] = mapped_column(
-        String(20), nullable=False, default="PENDING"
-    )
-    deleted_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
+    index_status: Mapped[str] = mapped_column(String(20), nullable=False, default="PENDING")
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class MemoryLink(EntityMixin, Base):

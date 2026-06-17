@@ -143,13 +143,9 @@ class NarrativeService:
         request_key: str,
         npc_id: UUID | None = None,
     ) -> NarrativeView:
-        fingerprint = self._fingerprint(
-            character_id, entity_id, entity_type, kind, topic_id
-        )
+        fingerprint = self._fingerprint(character_id, entity_id, entity_type, kind, topic_id)
         async with self._uow:
-            prior = await self._uow.narrative.get_by_request(
-                player_id, kind.value, request_key
-            )
+            prior = await self._uow.narrative.get_by_request(player_id, kind.value, request_key)
             if prior is not None:
                 if prior.request_fingerprint != fingerprint:
                     raise NarrativeIdempotencyConflict(
@@ -158,9 +154,7 @@ class NarrativeService:
                 return self._view(prior, cached=True)
             try:
                 context = (
-                    await self._contexts.for_npc(
-                        player_id, character_id, npc_id, topic_id
-                    )
+                    await self._contexts.for_npc(player_id, character_id, npc_id, topic_id)
                     if npc_id
                     else await self._contexts.for_entity(
                         player_id,
@@ -188,9 +182,7 @@ class NarrativeService:
                 else None
             )
         if cached is not None:
-            record = self._cached_copy(
-                cached, request_key, fingerprint, context, npc_id
-            )
+            record = self._cached_copy(cached, request_key, fingerprint, context, npc_id)
             async with self._uow:
                 await self._uow.narrative.add(record)
             NARRATIVE_GENERATIONS_TOTAL.labels(kind.value, "cache").inc()
@@ -259,8 +251,7 @@ class NarrativeService:
             tone=result.output.tone,
             tags=list(result.output.tags),
             referenced_entity_ids=[
-                str(value)
-                for value in sorted(result.output.referenced_entity_ids, key=str)
+                str(value) for value in sorted(result.output.referenced_entity_ids, key=str)
             ],
             fallback_used=result.fallback_used,
             cached=result.cached,

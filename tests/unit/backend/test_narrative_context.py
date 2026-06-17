@@ -36,9 +36,7 @@ def test_context_hash_is_stable_for_identical_canonical_data() -> None:
     reversed_ids = tuple(reversed(tuple(value.allowed_entity_ids)))
     assert (
         value.content_hash()
-        == value.model_copy(
-            update={"allowed_entity_ids": frozenset(reversed_ids)}
-        ).content_hash()
+        == value.model_copy(update={"allowed_entity_ids": frozenset(reversed_ids)}).content_hash()
     )
 
 

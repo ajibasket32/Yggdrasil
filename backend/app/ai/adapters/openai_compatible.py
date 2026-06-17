@@ -51,9 +51,7 @@ class OpenAICompatibleAdapter(HttpAdapter):
         content = self._string(message.get("content"), "content")
         usage = self._dictionary(data.get("usage", {}), "usage")
         input_tokens = self._integer(usage.get("prompt_tokens"), "prompt_tokens")
-        output_tokens = self._integer(
-            usage.get("completion_tokens"), "completion_tokens"
-        )
+        output_tokens = self._integer(usage.get("completion_tokens"), "completion_tokens")
         model = self._string(data.get("model", self._model), "model")
         return ProviderGeneration(
             provider=self.name,

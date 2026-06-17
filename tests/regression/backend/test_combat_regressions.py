@@ -30,12 +30,8 @@ async def _ready_character(player_id: UUID) -> CharacterSheet:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))
         locations = await service.locations(player_id, character.id)
-        greenwood = next(
-            value for value in locations if value.name == "Greenwood Verge"
-        )
-        await service.travel(
-            player_id, character.id, greenwood.id, f"travel-{player_id}"
-        )
+        greenwood = next(value for value in locations if value.name == "Greenwood Verge")
+        await service.travel(player_id, character.id, greenwood.id, f"travel-{player_id}")
     return character
 
 

@@ -237,9 +237,7 @@ class ProgressionEngine:
                 for child in children
             )
         if "character_level_at_least" in expression:
-            return character_level >= cls._integer(
-                expression["character_level_at_least"]
-            )
+            return character_level >= cls._integer(expression["character_level_at_least"])
         if "karma_at_least" in expression:
             return karma >= cls._integer(expression["karma_at_least"])
         if "race_id" in expression:
@@ -255,9 +253,7 @@ class ProgressionEngine:
 
     @staticmethod
     def _children(value: object) -> list[PrerequisiteExpression]:
-        if not isinstance(value, list) or not all(
-            isinstance(child, dict) for child in value
-        ):
+        if not isinstance(value, list) or not all(isinstance(child, dict) for child in value):
             raise CharacterRuleError("Prerequisite branches must be object lists")
         return value
 

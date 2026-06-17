@@ -57,9 +57,7 @@ class GeminiAdapter(HttpAdapter):
         text = self._string(part.get("text"), "text")
         usage = self._dictionary(data.get("usageMetadata", {}), "usageMetadata")
         input_tokens = self._integer(usage.get("promptTokenCount"), "promptTokenCount")
-        output_tokens = self._integer(
-            usage.get("candidatesTokenCount"), "candidatesTokenCount"
-        )
+        output_tokens = self._integer(usage.get("candidatesTokenCount"), "candidatesTokenCount")
         return ProviderGeneration(
             provider=self.name,
             model=self._model,

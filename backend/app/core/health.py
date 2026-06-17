@@ -42,14 +42,10 @@ class HealthService:
             "ai_primary": self.get_ollama_health,
         }
         results = await asyncio.gather(*(check() for check in checks.values()))
-        services = {
-            name: result.status for name, result in zip(checks, results, strict=True)
-        }
+        services = {name: result.status for name, result in zip(checks, results, strict=True)}
         services["ai_fallback"] = services["ai_primary"]
         overall: HealthStatus = (
-            "healthy"
-            if all(status == "healthy" for status in services.values())
-            else "degraded"
+            "healthy" if all(status == "healthy" for status in services.values()) else "degraded"
         )
         return SystemHealth(status=overall, services=services)
 
@@ -96,15 +92,11 @@ class HealthService:
             return DependencyHealth(status="unhealthy")
         finally:
             await client.aclose()
-        return DependencyHealth(
-            status="healthy" if heartbeat == b"healthy" else "degraded"
-        )
+        return DependencyHealth(status="healthy" if heartbeat == b"healthy" else "degraded")
 
     async def get_ollama_health(self) -> DependencyHealth:
         """Check Ollama infrastructure without loading or invoking a model."""
-        return await self._check_http_dependency(
-            f"{self._settings.ollama_url}/api/tags"
-        )
+        return await self._check_http_dependency(f"{self._settings.ollama_url}/api/tags")
 
     async def _check_http_dependency(self, url: str) -> DependencyHealth:
         try:

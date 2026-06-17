@@ -55,16 +55,10 @@ class Job(EntityMixin, Base):
     lore: Mapped[str] = mapped_column(Text, nullable=False)
     tier: Mapped[str] = mapped_column(String(20), nullable=False)
     max_level: Mapped[int] = mapped_column(SmallInteger, nullable=False)
-    selectable_at_creation: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=False
-    )
+    selectable_at_creation: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     prerequisites: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
-    skill_unlocks: Mapped[list[dict[str, object]]] = mapped_column(
-        JSONB, nullable=False
-    )
-    passive_unlocks: Mapped[list[dict[str, object]]] = mapped_column(
-        JSONB, nullable=False
-    )
+    skill_unlocks: Mapped[list[dict[str, object]]] = mapped_column(JSONB, nullable=False)
+    passive_unlocks: Mapped[list[dict[str, object]]] = mapped_column(JSONB, nullable=False)
     stat_modifiers: Mapped[dict[str, int]] = mapped_column(JSONB, nullable=False)
 
 
@@ -83,9 +77,7 @@ class Skill(EntityMixin, Base):
     mana_cost: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     cooldown: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     target_type: Mapped[str] = mapped_column(String(30), nullable=False)
-    effect_definitions: Mapped[list[dict[str, object]]] = mapped_column(
-        JSONB, nullable=False
-    )
+    effect_definitions: Mapped[list[dict[str, object]]] = mapped_column(JSONB, nullable=False)
 
 
 class JobSkill(EntityMixin, Base):
@@ -121,9 +113,7 @@ class Location(EntityMixin, Base):
     location_type: Mapped[str] = mapped_column(String(30), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False)
     danger_level: Mapped[int] = mapped_column(SmallInteger, nullable=False)
-    is_starting_location: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=False
-    )
+    is_starting_location: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
 
 
 class LocationRoute(EntityMixin, Base):
@@ -174,9 +164,7 @@ class Character(EntityMixin, Base):
         ),
     )
 
-    player_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     name: Mapped[str] = mapped_column(String(32), nullable=False)
     race_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("races.id"), nullable=False, index=True
@@ -205,9 +193,7 @@ class Character(EntityMixin, Base):
     gold: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     fame: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     karma: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    deleted_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class CharacterJob(EntityMixin, Base):
@@ -220,9 +206,7 @@ class CharacterJob(EntityMixin, Base):
         CheckConstraint("experience >= 0", name="ck_character_jobs_experience"),
     )
 
-    player_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     character_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
         ForeignKey("characters.id", ondelete="CASCADE"),
@@ -241,9 +225,7 @@ class CharacterSkill(EntityMixin, Base):
 
     __tablename__ = "character_skills"
     __table_args__ = (
-        UniqueConstraint(
-            "character_id", "skill_id", name="uq_character_skills_character_skill"
-        ),
+        UniqueConstraint("character_id", "skill_id", name="uq_character_skills_character_skill"),
         CheckConstraint("skill_level >= 1", name="ck_character_skills_level"),
     )
 
@@ -333,9 +315,7 @@ class InventoryItem(EntityMixin, Base):
     )
     quantity: Mapped[int] = mapped_column(Integer, nullable=False)
     slot_index: Mapped[int] = mapped_column(Integer, nullable=False)
-    unique_instance_id: Mapped[UUID | None] = mapped_column(
-        Uuid(as_uuid=True), nullable=True
-    )
+    unique_instance_id: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), nullable=True)
 
 
 class EquipmentSlot(EntityMixin, Base):

@@ -32,9 +32,7 @@ class NarrativeRepository:
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def get_character(
-        self, player_id: UUID, character_id: UUID
-    ) -> Character | None:
+    async def get_character(self, player_id: UUID, character_id: UUID) -> Character | None:
         result = await self._session.execute(
             select(Character).where(
                 Character.id == character_id,
@@ -53,9 +51,7 @@ class NarrativeRepository:
     async def get_faction(self, faction_id: UUID) -> Faction | None:
         return await self._session.get(Faction, faction_id)
 
-    async def get_relationship(
-        self, character_id: UUID, npc_id: UUID
-    ) -> Relationship | None:
+    async def get_relationship(self, character_id: UUID, npc_id: UUID) -> Relationship | None:
         result = await self._session.execute(
             select(Relationship).where(
                 Relationship.character_id == character_id,
@@ -82,20 +78,14 @@ class NarrativeRepository:
         self, character_id: UUID, location_id: UUID
     ) -> list[QuestContextRow]:
         quests = list(
-            (
-                await self._session.execute(
-                    select(Quest).where(Quest.location_id == location_id)
-                )
-            )
+            (await self._session.execute(select(Quest).where(Quest.location_id == location_id)))
             .scalars()
             .all()
         )
         states = list(
             (
                 await self._session.execute(
-                    select(CharacterQuest).where(
-                        CharacterQuest.character_id == character_id
-                    )
+                    select(CharacterQuest).where(CharacterQuest.character_id == character_id)
                 )
             )
             .scalars()
@@ -106,17 +96,11 @@ class NarrativeRepository:
         existing_ids = {value.id for value in quests}
         if known_ids:
             known_quests = list(
-                (
-                    await self._session.execute(
-                        select(Quest).where(Quest.id.in_(known_ids))
-                    )
-                )
+                (await self._session.execute(select(Quest).where(Quest.id.in_(known_ids))))
                 .scalars()
                 .all()
             )
-            quests.extend(
-                quest for quest in known_quests if quest.id not in existing_ids
-            )
+            quests.extend(quest for quest in known_quests if quest.id not in existing_ids)
         active_steps = {
             (state.quest_id, state.current_step)
             for state in states
