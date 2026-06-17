@@ -43,6 +43,7 @@ jobs:
       DATABASE_URL: postgresql://yggdrasil:local_development_only@localhost:5432/yggdrasil
       REDIS_URL: redis://localhost:6379/0
       QDRANT_URL: http://localhost:6333
+      PYTHONPATH: .
 
     steps:
       - uses: actions/checkout@v4
@@ -98,3 +99,5 @@ jobs:
         with:
           fetch-depth: 0
       - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
