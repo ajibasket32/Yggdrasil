@@ -52,13 +52,13 @@ jobs:
       - name: Wait for Qdrant
         run: |
           for i in {1..60}; do
-            if curl -fsS http://127.0.0.1:6333/healthz; then
+            if wget -q -O - http://127.0.0.1:6333/healthz >/dev/null; then
               echo "Qdrant is up!"
               break
             fi
             sleep 2
           done
-          if ! curl -fsS http://127.0.0.1:6333/healthz; then
+          if ! wget -q -O - http://127.0.0.1:6333/healthz >/dev/null; then
             echo "Qdrant did not become healthy"
             docker ps -a
             docker logs $(docker ps -aq --filter ancestor=qdrant/qdrant:v1.9.0) || true
