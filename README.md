@@ -127,4 +127,4 @@ PYTHON_IMAGE=public.ecr.aws/docker/library/python:3.12.10-slim
 NODE_IMAGE=public.ecr.aws/docker/library/node:22.15.0-alpine
 ```
 
-You can also run the local fallback script `./release-validation.sh` to run tests locally outside of docker if needed.
+You can also run the local fallback script `./release-validation.sh --fallback` to run tests locally outside of docker if needed. **Note:** Fallback mode is *only* for partial testing when Docker is unavailable and does not constitute full MVP validation.
