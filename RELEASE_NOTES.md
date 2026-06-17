@@ -62,4 +62,4 @@ Maintenance and Content Expansion.
 
 We have encountered severe Docker Hub 429 rate limit issues during deployment and automated validation steps for the MVP. To circumvent this blocker without rewriting the entire ecosystem:
 1. Docker images in `compose.yaml` and `.env.example` are now parameterizable. End-users can define alternative mirrors, such as AWS ECR Public, to retrieve common images like Postgres, Redis, Python, and Node.
-2. `release-test.sh` and `release-validation.sh` were added to verify test readiness natively if container pulls fail completely.
+2. `release-test.sh` and `release-validation.sh` were added to verify test readiness natively if container pulls fail completely. **Note:** Using `--fallback` testing mode is meant solely as a diagnostic tool and does not mean the system has passed full MVP readiness validation. The MVP is only considered valid if all Docker full-stack validation passes in strict mode.
