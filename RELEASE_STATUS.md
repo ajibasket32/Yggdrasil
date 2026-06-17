@@ -39,3 +39,6 @@ Task completion is **100%** (63 of 63 release tasks).
 ## Next Recommended Release
 
 Maintenance and Content Expansion.
+
+## Release Validation Issues
+In restricted environments (such as some automated sandboxes), the full MVP critical gameplay journey (including DB-dependent endpoints and UI tests) cannot be validated due to Docker Hub unauthenticated pull rate limits. To mitigate this, `compose.yaml` and `.env.example` allow parameterizing image mirrors (like AWS ECR Public). A `./release-validation.sh` fallback script was added to test code functionality locally using standard package managers as a stopgap measure, but manual confirmation of end-to-end functionality via Docker remains necessary before true production shipment.

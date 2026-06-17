@@ -113,3 +113,18 @@ Before writing code, read:
 
 Generated code that violates the engine-first boundary must be rejected and regenerated.
 Complete only the first unfinished release and stop before starting the next.
+
+### Troubleshooting Docker Pull Rate Limits
+If you encounter `429 Too Many Requests` or `unauthenticated pull rate limit` errors from Docker Hub, you can override the default images to use AWS ECR public mirrors.
+
+Copy the image overrides from `.env.example` into your `.env` or `.env.test` file:
+
+```env
+POSTGRES_IMAGE=public.ecr.aws/docker/library/postgres:16.9-alpine
+REDIS_IMAGE=public.ecr.aws/docker/library/redis:7.4.2-alpine
+NGINX_IMAGE=public.ecr.aws/nginx/nginx:1.28.0-alpine
+PYTHON_IMAGE=public.ecr.aws/docker/library/python:3.12.10-slim
+NODE_IMAGE=public.ecr.aws/docker/library/node:22.15.0-alpine
+```
+
+You can also run the local fallback script `./release-validation.sh` to run tests locally outside of docker if needed.

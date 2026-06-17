@@ -55,3 +55,11 @@ Last reviewed: 2026-06-14
 ### Next Recommended Release
 
 Maintenance and Content Expansion.
+
+## Release Validation: Validation Process Updates
+**Release Version**: 1.0.0
+**Date**: 2026-06-16
+
+We have encountered severe Docker Hub 429 rate limit issues during deployment and automated validation steps for the MVP. To circumvent this blocker without rewriting the entire ecosystem:
+1. Docker images in `compose.yaml` and `.env.example` are now parameterizable. End-users can define alternative mirrors, such as AWS ECR Public, to retrieve common images like Postgres, Redis, Python, and Node.
+2. `release-test.sh` and `release-validation.sh` were added to verify test readiness natively if container pulls fail completely.

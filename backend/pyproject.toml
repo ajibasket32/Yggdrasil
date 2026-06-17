@@ -19,6 +19,7 @@ sqlalchemy = { version = "2.0.41", extras = ["asyncio"] }
 starlette = "1.0.1"
 structlog = "25.3.0"
 uvicorn = { version = "0.34.2", extras = ["standard"] }
+aiosqlite = "^0.22.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "26.5.1"
