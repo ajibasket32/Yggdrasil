@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.2
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5.4.0
         with:
           python-version: "3.12"
       - uses: snok/install-poetry@v1
@@ -96,6 +96,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.2.2
+      - run: docker info
+      - run: docker compose ps -a
       - run: docker compose config
       - run: docker compose build backend frontend
 
