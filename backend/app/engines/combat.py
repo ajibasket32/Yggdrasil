@@ -308,9 +308,14 @@ class CombatEngine:
             statuses=target.statuses + statuses,
         )
         label = "critical " if critical else ""
-        logs = [f"{actor.name} deals {damage} {label}damage to {target.name}."]
+        action_name = (
+            f"uses {action.effect}" if action.action_type == "SKILL" else "attacks"
+        )
+        logs = [
+            f"{actor.name} {action_name} {target.name} and deals {damage} {label}damage."
+        ]
         if updated_target.defeated:
-            logs.append(f"{target.name} is defeated.")
+            logs.append(f"{target.name} is defeated!")
         return ActionResolution(
             next_actor,
             updated_target,
@@ -330,8 +335,12 @@ class CombatEngine:
         round_number: int,
         skill_id: UUID | None,
     ) -> CombatAction:
+        # Tactical enemy behavior
+        # 1. Low HP -> Guard (50% chance if below 25% HP)
         if enemy.hp * 4 <= enemy.max_hp and round_number % 2 == 0:
             return CombatAction("GUARD", target_id=enemy.id)
+
+        # 2. Use Skill if available and enough MP (every 3 rounds)
         if skill_id is not None and enemy.mp >= 4 and round_number % 3 == 0:
             return CombatAction(
                 "SKILL",
@@ -341,6 +350,8 @@ class CombatEngine:
                 resource_cost=4,
                 effect="fire",
             )
+
+        # 3. Default to Attack
         return CombatAction("ATTACK", target_id=player.id)
 
     @staticmethod

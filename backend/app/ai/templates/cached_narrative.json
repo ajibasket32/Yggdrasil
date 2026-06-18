@@ -1,24 +1,24 @@
 {
   "dialogue": {
-    "text": "The speaker pauses, choosing silence for the moment.",
+    "text": "The speaker pauses, choosing their words with care. Though the world seems quiet, their purpose remains firm.",
     "tone": "neutral",
     "tags": ["offline"],
     "referenced_entity_ids": []
   },
   "lore": {
-    "text": "No additional lore is available right now.",
+    "text": "Ancient records speak of this through fragments and shadows. The true depth remains hidden for now.",
     "tone": "neutral",
     "tags": ["offline"],
     "referenced_entity_ids": []
   },
   "narration": {
-    "text": "The journey continues without further narration.",
+    "text": "The air grows heavy with untold stories. Your path continues through the shifting mists of time.",
     "tone": "neutral",
     "tags": ["offline"],
     "referenced_entity_ids": []
   },
   "description": {
-    "text": "The scene remains clear enough to continue.",
+    "text": "The surroundings are etched in sharp detail, a quiet stillness hanging over the landscape as you observe.",
     "tone": "neutral",
     "tags": ["offline"],
     "referenced_entity_ids": []

@@ -1,12 +1,12 @@
 # Release Readiness Report
 
-*Last Updated CI Status Check: 2026-06-18*
+*Last Updated CI Status Check: 2026-06-18 (v1.1.0 RC)*
 
 | Component / Test | Status | Notes |
 | :--- | :--- | :--- |
 | GitHub CI | PASS | Resolved backend pip-audit failures |
 | Backend tests | PASS | 56/56 passing (integration/regression/unit) |
-| Frontend tests | PASS | 61/61 passing (App/Scene/Component) |
+| Frontend tests | PASS | 45/45 passing (Flow-based / Scene / Component) |
 | Migrations | PASS | Verified in GitHub Actions Run 27742245824 |
 | Docker compose config | PASS | |
 | Docker compose build | PASS | Verified in GitHub Actions Run 27742245824 |

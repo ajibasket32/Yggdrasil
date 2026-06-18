@@ -1,9 +1,9 @@
 # Asset Catalog
 # YGGDRASIL CHRONICLES
 
-Version: 2.1
+Version: 1.1.0
 Status: Operational
-Last reviewed: 2026-06-14
+Last reviewed: 2026-06-15
 
 ---
 
@@ -36,7 +36,7 @@ Any other source requires review before use.
 | Type | yes |
 | Source | yes |
 | License | yes |
-| Author | yes, if known |
+| Author | yes |
 | Attribution Required | yes |
 | Used In | yes |
 | Review Status | yes |
@@ -47,15 +47,16 @@ Any other source requires review before use.
 
 | Asset ID | File Path | Type | Source | License | Author | Attribution Required | Used In | Review Status |
 |---|---|---|---|---|---|---|---|---|
-| kenney-ui-pack | assets/ui/kenney_ui-pack.zip | UI | Kenney | CC0 | Kenney | No | Frontend UI | Approved |
-| kenney-rpg-ui | assets/ui/UIpack_RPG.zip | UI | Kenney | CC0 | Kenney | No | Frontend RPG UI | Approved |
-| grafxkid-rpg-chars | assets/characters/RPG_assets.png | Character | OpenGameArt | CC0 | GrafxKid | No | Character Selection | Approved |
-| redshrike-rpg-enemies | assets/monsters/rpg_enemies.png | Monster | OpenGameArt | CC0 | Redshrike | No | Combat (Slime) | Approved |
-| redshrike-goblins | assets/monsters/8goblins.png | Monster | OpenGameArt | CC0 | Redshrike | No | Combat (Goblin) | Approved |
-| bencreating-tileset | assets/tilesets/16x16_jrpg_tileset.png | Tileset | OpenGameArt | CC0 | BenCreating | No | World Map | Approved |
-| kenney-bg-elements | assets/backgrounds/kenney_backgroundElements.zip | Background | Kenney | CC0 | Kenney | No | Combat Backgrounds | Approved |
-| kenney-board-icons | assets/items/kenney_board-game-icons.zip | Icons | Kenney | CC0 | Kenney | No | Items & Skills | Approved |
-| redshrike-boss | assets/monsters/boss.png | Monster | OpenGameArt | CC0 | Redshrike | No | Combat (Boss) | Approved |
+| kenney-ui-pack | src/assets/ui/grey/ | UI | Kenney | CC0 | Kenney | No | Frontend UI (Buttons, Panels) | Approved |
+| kenney-rpg-ui | src/assets/ui/rpg/ | UI | Kenney | CC0 | Kenney | No | JRPG HUD (Bars, Insets) | Approved |
+| grafxkid-rpg-chars | src/assets/characters/RPG_assets.png | Character | OpenGameArt | CC0 | GrafxKid | No | Character Selection & World | Approved |
+| redshrike-rpg-enemies | src/assets/monsters/rpg_enemies.png | Monster | OpenGameArt | CC0 | Redshrike | No | Combat (Slime, Wasp) | Approved |
+| redshrike-goblins | src/assets/monsters/8goblins.png | Monster | OpenGameArt | CC0 | Redshrike | No | Combat (Goblin) | Approved |
+| redshrike-sentries | src/assets/monsters/sentries.png | Monster | OpenGameArt | CC0 | Redshrike | No | Combat (Ancient Sentry) | Approved |
+| bencreating-tileset | src/assets/tilesets/16x16_jrpg_tileset.png | Tileset | OpenGameArt | CC0 | BenCreating | No | World Map | Approved |
+| kenney-bg-elements | src/assets/backgrounds/ | Background | Kenney | CC0 | Kenney | No | Combat Backgrounds | Approved |
+| kenney-board-icons | src/assets/items/ | Icons | Kenney | CC0 | Kenney | No | Items & Skills | Approved |
+| redshrike-boss | src/assets/monsters/boss.png | Monster | OpenGameArt | CC0 | Redshrike | No | Combat (Boss) | Approved |
 
 ---
 

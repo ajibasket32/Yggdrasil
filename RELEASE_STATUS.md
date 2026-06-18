@@ -1,6 +1,6 @@
 # Release Status
 
-Version: 1.0.0
+Version: 1.1.0
 Status: Complete
 Last reviewed: 2026-06-18
 
@@ -21,6 +21,7 @@ Last reviewed: 2026-06-18
 9. v0.9 Asset Discovery and License Tracking
 10. v0.10 Playable Vertical Slice
 11. v1.0.0 MVP Release
+12. v1.1.0 JRPG Polish
 
 ## Unfinished Releases
 
