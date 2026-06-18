@@ -3,7 +3,7 @@
 All notable completed changes are recorded here. Planned work belongs in
 `TASKS.md`, not this file.
 
-## Unreleased
+## [1.0.0] - 2026-06-18
 
 ### Added
 
@@ -12,11 +12,6 @@ All notable completed changes are recorded here. Planned work belongs in
 - Interactive NPC, Encounter, and Travel markers in the world scene with proximity hints.
 - Enhanced Combat presentation with backgrounds, separate HP bars, damage numbers, and attack animations.
 - Bi-directional React ↔ Phaser bridge for location and interaction sync.
-
-## v1.0.0
-
-### Added
-
 - Expanded world content to reach MVP targets: 5 regions, 5 factions, 5 dungeons, and multiple NPCs/Quests.
 - World Items: World Stone Fragment, Eternity Bloom, Dragon Scale.
 - Comprehensive security audits with `pip-audit` and `npm audit` passing.
@@ -25,6 +20,9 @@ All notable completed changes are recorded here. Planned work belongs in
 ### Changed
 
 - Advanced project status to v1.0.0 MVP Release complete.
+- Parameterized Dockerfile arguments and `compose.yaml` to allow image overrides (e.g., from AWS ECR public) and prevent Docker Hub 429 rate limit issues during deployment and automated testing.
+- Added `release-test.sh` and `release-validation.sh` for non-technical users to validate functionality, featuring a local-only testing fallback mechanism in the event of severe Docker limitations.
+- Documented Docker 429 mitigations in the README.md and RELEASE_STATUS.md.
 
 ## v0.10.0
 
@@ -390,9 +388,3 @@ All notable completed changes are recorded here. Planned work belongs in
 - No AI provider adapters, RAG collections, models, or prompts exist.
 - The worker health endpoint reports `degraded` because background workers are
   outside v0.1 scope.
-
-## [1.0.0] - 2026-06-16
-### Changed
-- Parameterized Dockerfile arguments and `compose.yaml` to allow image overrides (e.g., from AWS ECR public) and prevent Docker Hub 429 rate limit issues during deployment and automated testing.
-- Added `release-test.sh` and `release-validation.sh` for non-technical users to validate functionality, featuring a local-only testing fallback mechanism in the event of severe Docker limitations.
-- Documented Docker 429 mitigations in the README.md and RELEASE_STATUS.md.
