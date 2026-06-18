@@ -1,0 +1,55 @@
+name: Strict Release Validation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Full-Stack Release Validation
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run Strict Release Validation
+        run: |
+          chmod +x release-validation.sh
+          ./release-validation.sh --strict 2>&1 | tee release-validation.log
+        env:
+          DOCKER_BUILDKIT: 1
+          COMPOSE_DOCKER_CLI_BUILD: 1
+
+      - name: Diagnostics on Failure
+        if: failure()
+        run: |
+          echo "=== Docker Compose Status ==="
+          docker compose ps
+          echo "=== Docker Compose Logs ==="
+          docker compose logs --tail=100
+          echo "=== Backend Container Logs ==="
+          docker compose logs backend --tail=100
+          echo "=== Frontend Container Logs ==="
+          docker compose logs frontend --tail=100
+          echo "=== Nginx Container Logs ==="
+          docker compose logs nginx --tail=100
+
+      - name: Upload Logs and Validation Summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-validation-artifacts
+          path: |
+            *.log
+          if-no-files-found: warn

@@ -16,7 +16,7 @@ if [ "$1" == "--fallback" ]; then
   # Release test script will set its own state regarding migrations
   # We assume local tests pass critical journey logic if release-test.sh passes
   CRITICAL_JOURNEY_VALIDATED=true
-else
+elif [ "$1" == "--strict" ] || [ -z "$1" ]; then
   echo "Starting Release Validation (Strict Full-Stack Mode)..."
   echo "Attempting to run full Docker E2E stack validation..."
 
@@ -70,6 +70,9 @@ else
 
   echo "Tearing down Docker stack..."
   docker compose down
+else
+  echo "Invalid argument: $1"
+  exit 1
 fi
 
 echo ""
