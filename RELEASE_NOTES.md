@@ -1,65 +1,48 @@
 # Release Notes
 
-Version: 1.8
-Status: Informational
-Last reviewed: 2026-06-14
+Version: 1.0.0
+Status: GA (General Availability)
+Last reviewed: 2026-06-18
 
-## Current Status
+## Release Summary
+Yggdrasil Chronicles v1.0.0 is the official MVP Release. This milestone delivers a fully playable 2D JRPG vertical slice with exploration, combat, questing, and persistent state.
 
-**v1.0 MVP Release is complete.** No release is currently in progress.
+## Validation Evidence
+- **GitHub Actions CI**: PASS
+- **Strict Release Validation**: PASS (Workflow Run ID: [27742245824](https://github.com/ajibasket32/yggdrasil-chronicles/actions/runs/27742245824))
+- **Release Readiness Report**: PASS (Verified in `docs/RELEASE_READINESS_REPORT.md`)
+- **Security Audit**: Zero high/critical vulnerabilities (Verified via `pip-audit` and `npm audit`)
 
-## Latest Release
+## Key Features
+- **Exploration**: 2D Tile-based world with WASD/Arrow movement and interactive markers.
+- **Combat**: Turn-based deterministic combat engine with Kenney assets and monster sprites.
+- **Quest System**: Persistent quests, NPC interactions, and faction relationships.
+- **Save System**: Transactional Save/Load preserving character, world, and narrative state.
+- **AI Narrative**: Integrated AI narration and dialogue with local fallback (Ollama/Cached).
+- **Asset Catalog**: 100% locally hosted assets from Kenney and OpenGameArt with full provenance.
 
-**v1.0.0 MVP Release**
+## Windows Quickstart
+1. Ensure **Docker Desktop** is installed and running.
+2. Run `.\start-yggdrasil.ps1` (PowerShell) or `.\start-yggdrasil.cmd` (Command Prompt).
+3. Open your browser to **http://localhost:8080**.
+4. See `WINDOWS_QUICKSTART.md` for detailed instructions.
 
-### Completed
+## Known Limitations
+- **Narrative**: Generation is bounded to specific NPC topics and location atmosphere.
+- **Idempotency**: Dialogue replays preserve text but not speaker/memory metadata.
+- **Authentication**: `X-Player-ID` is used for development identity; production auth is not implemented.
+- **Multiplayer**: This is a single-player MVP; no multiplayer features are included.
 
-- Added versioned, provider-neutral prompts and player-scoped context assembly for narrative.
-- Added strict output validation, cosmetic narrative persistence, and local fallback presentation.
-- Completed asset discovery, review, and local integration with full provenance in `assets/CATALOG.md`.
-- Integrated Phaser 3 for 2D JRPG World and Combat scenes in the browser.
-- Added full transactional Save Game / End Chronicle workflows to the UI.
-- Expanded content to the MVP targets: 5 regions, 5 factions, 5 dungeons, and world items.
-- Hardened security, verified migrations, and passed `npm audit` and `pip-audit`.
-- Passed all unit, integration, and E2E gates, meeting MVP testing thresholds.
+## AI Fallback Behavior
+The game is "Engine First, AI Second." If AI providers are unavailable, the system automatically degrades to:
+1. **Ollama**: Local LLM generation (if configured).
+2. **Cached Narrative**: Pre-approved, generic narrative templates.
+3. **Menu-Driven Dialogue**: Deterministic interactions remain fully functional.
+**No cloud API keys are required for basic gameplay.**
 
-### Not Yet Implemented
+## Access URL
+- **Gameplay**: http://localhost:8080
+- **Backend Health**: http://localhost:8000/health
 
-- Complete production authentication.
-- Full post-MVP simulation (economy, housing, multiplayer).
-
-### Known Limitations
-
-- Narrative generation is bounded to four NPC topics plus lore, quest framing,
-  and current-location atmosphere.
-- The approved local fallback is intentionally generic and cosmetic.
-- Idempotent replay does not reconstruct speaker and grounded-memory display
-  metadata, although stored text and safety metadata are preserved.
-- `X-Player-ID` remains a development-only identity boundary.
-
-### Risks
-
-- Future prompts and providers must continue to pass output validation without
-  expanding AI authority over gameplay.
-- Asset selection in v0.9 must avoid protected identity and retain complete
-  source/license evidence.
-- Production authentication remains required before any public release.
-
-### Technical Debt
-
-- Reconstruct speaker and context-count metadata for idempotent narrative
-  replay.
-- Add production semantic embeddings and broader narrative evaluation data.
-- Expand the bounded seed catalog only in the releases that authorize it.
-
-### Next Recommended Release
-
+## Next Recommended Phase
 Maintenance and Content Expansion.
-
-## Release Validation: Validation Process Updates
-**Release Version**: 1.0.0
-**Date**: 2026-06-16
-
-We have encountered severe Docker Hub 429 rate limit issues during deployment and automated validation steps for the MVP. To circumvent this blocker without rewriting the entire ecosystem:
-1. Docker images in `compose.yaml` and `.env.example` are now parameterizable. End-users can define alternative mirrors, such as AWS ECR Public, to retrieve common images like Postgres, Redis, Python, and Node.
-2. `release-test.sh` and `release-validation.sh` were added to verify test readiness natively if container pulls fail completely. **Note:** Using `--fallback` testing mode is meant solely as a diagnostic tool and does not mean the system has passed full MVP readiness validation. The MVP is only considered valid if all Docker full-stack validation passes in strict mode.

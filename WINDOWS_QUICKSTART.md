@@ -1,5 +1,7 @@
 # Windows Quickstart Guide
 
+**Version**: v1.0.0 (MVP Release) - 2026-06-18
+
 Welcome to Yggdrasil Chronicles! This guide will help you get the game running on your Windows machine easily.
 
 ## Prerequisites

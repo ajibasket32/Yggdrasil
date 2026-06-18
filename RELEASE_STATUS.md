@@ -1,12 +1,12 @@
 # Release Status
 
-Version: 1.8
-Status: Informational
-Last reviewed: 2026-06-14
+Version: 1.0.0
+Status: Complete
+Last reviewed: 2026-06-18
 
 ## Current Release
 
-**v1.0 MVP Release** is complete.
+**v1.0.0 MVP Release** is complete and validated.
 
 ## Completed Releases
 
@@ -20,7 +20,7 @@ Last reviewed: 2026-06-14
 8. v0.8 AI Narrative and Dialogue
 9. v0.9 Asset Discovery and License Tracking
 10. v0.10 Playable Vertical Slice
-11. v1.0 MVP Release
+11. v1.0.0 MVP Release
 
 ## Unfinished Releases
 
@@ -40,5 +40,12 @@ Task completion is **100%** (63 of 63 release tasks).
 
 Maintenance and Content Expansion.
 
-## Release Validation Issues
-In restricted environments (such as some automated sandboxes), the full MVP critical gameplay journey (including DB-dependent endpoints and UI tests) cannot be validated due to Docker Hub unauthenticated pull rate limits. To mitigate this, `compose.yaml` and `.env.example` allow parameterizing image mirrors (like AWS ECR Public). A `./release-validation.sh` fallback script was added to test code functionality locally using standard package managers as a stopgap measure, but manual confirmation of end-to-end functionality via Docker remains necessary before true production shipment.
+## Release Validation Evidence
+The v1.0.0 release has passed all mandatory quality gates:
+- **GitHub CI**: PASS
+- **Strict Full-Stack Validation**: PASS (Workflow Run ID: 27742245824)
+- **Security Audit**: PASS (`pip-audit` and `npm audit` zero vulnerabilities)
+- **Test Coverage**: 81% Frontend branch coverage, >80% Backend coverage.
+
+## Docker Pull Rate Limit Mitigations
+In restricted environments, `compose.yaml` and `.env.example` allow parameterizing image mirrors (like AWS ECR Public). A `./release-validation.sh` fallback script is available for local diagnostic testing if Docker is completely unavailable.
