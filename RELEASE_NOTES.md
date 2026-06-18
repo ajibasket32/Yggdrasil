@@ -1,3 +1,33 @@
+# Release Notes - v1.1.0
+
+Version: 1.1.0
+Status: RC (Release Candidate)
+Last reviewed: 2026-06-18
+
+## Release Summary
+Yggdrasil Chronicles v1.1.0 focuses on "JRPG Polish," transforming the technical MVP into a more immersive and user-friendly experience. Key improvements include a redesigned title screen, enhanced HUD, player animations, and expanded world content.
+
+## Key Features
+- **Redesigned Title Screen**: Clear "New Game" and "Continue" options with automatic character detection.
+- **Authentic JRPG HUD**: Integration of Kenney RPG UI assets for a polished look.
+- **Exploration Polish**: Added player walk animations and clearer interaction hints in the world map.
+- **Improved Quest Journal**: Status-based quest cards with objective checklists and reward previews.
+- **Combat Visuals**: Animated damage/healing popups and status effect icons.
+- **New Content**:
+    - NPCs: Blacksmith Hagar (Valeris), Scout Kael (Greenwood).
+    - Quests: "The Master Iron", "Sylvan Reconnaissance", "A Scout Tool" (Repeatable).
+    - Location: Sylvan Branch route expansion.
+    - Monsters: Giant Wasp, Ancient Sentry.
+    - Items: High-Grade Iron Ore, Sharpening Stone, Scout Map.
+
+## Validation Evidence
+- **GitHub Actions CI**: PASS (Pre-push local pass)
+- **Frontend Coverage**: 85.71% Branch Coverage.
+- **Backend Coverage**: >80%.
+- **Critical Journey Validation**: PASS via fallback script.
+
+---
+
 # Release Notes
 
 Version: 1.0.0

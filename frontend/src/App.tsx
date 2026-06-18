@@ -9,6 +9,7 @@ import portraitAtlasUrl from "./assets/characters/RPG_assets.png";
 import { gameApi, getPlayerId } from "./services/gameApi";
 import type {
   CharacterDefinitions,
+  CharacterSummary,
   CharacterSheet,
   CombatActionType,
   CombatState,
@@ -45,7 +46,7 @@ const combatStorageKey = (characterId: string) =>
   `yggdrasil-active-combat:${characterId}`;
 
 const combatSeed = (): number => {
-  /* v8 ignore next 4 */
+
   if (typeof crypto.getRandomValues === "function") {
     const values = crypto.getRandomValues(new Uint32Array(1));
     return (values[0] ?? 0) & 0x7fffffff;
@@ -58,6 +59,9 @@ const App = () => {
   const [definitions, setDefinitions] = useState<CharacterDefinitions | null>(
     null,
   );
+  const [existingCharacters, setExistingCharacters] = useState<
+    CharacterSummary[]
+  >([]);
   const [character, setCharacter] = useState<CharacterSheet | null>(null);
   const [inventory, setInventory] = useState<Inventory | null>(null);
   const [equipment, setEquipment] = useState<Equipment | null>(null);
@@ -140,10 +144,9 @@ const App = () => {
           gameApi.characters(playerId),
         ]);
         setDefinitions(nextDefinitions);
-        if (characters[0] !== undefined) {
-          await inspectCharacter(characters[0].id);
-        }
+        setExistingCharacters(characters);
       } catch (caught) {
+
         setError(
           caught instanceof Error ? caught.message : "Unable to load game data",
         );
@@ -177,6 +180,8 @@ const App = () => {
       );
       await inspectCharacter(created.id);
     } catch (caught) {
+
+
       setError(
         caught instanceof Error ? caught.message : "Character creation failed",
       );
@@ -197,6 +202,7 @@ const App = () => {
       );
       await inspectCharacter(characterId);
     } catch (caught) {
+
       setError(caught instanceof Error ? caught.message : "Travel failed");
     } finally {
       setBusy(false);
@@ -221,6 +227,7 @@ const App = () => {
       );
       setCombat(started);
     } catch (caught) {
+
       setError(caught instanceof Error ? caught.message : "Combat failed");
     } finally {
       setBusy(false);
@@ -232,7 +239,7 @@ const App = () => {
     skillId?: string,
     inventoryItemId?: string,
   ) => {
-    /* v8 ignore next */
+
     if (combat === null) return;
     setBusy(true);
     setError(null);
@@ -248,6 +255,7 @@ const App = () => {
         ),
       );
     } catch (caught) {
+
       setError(
         caught instanceof Error ? caught.message : "Combat action failed",
       );
@@ -269,6 +277,7 @@ const App = () => {
         ),
       );
     } catch (caught) {
+
       setError(caught instanceof Error ? caught.message : "Escape failed");
     } finally {
       setBusy(false);
@@ -283,6 +292,7 @@ const App = () => {
     try {
       await inspectCharacter(character.id);
     } catch (caught) {
+
       setError(
         caught instanceof Error
           ? caught.message
@@ -310,6 +320,7 @@ const App = () => {
       );
       await inspectCharacter(character.id);
     } catch (caught) {
+
       setError(
         caught instanceof Error ? caught.message : "Quest action failed",
       );
@@ -333,6 +344,7 @@ const App = () => {
       setInteractionText(result.result_text);
       await inspectCharacter(character.id);
     } catch (caught) {
+
       setError(
         caught instanceof Error ? caught.message : "NPC interaction failed",
       );
@@ -354,6 +366,7 @@ const App = () => {
       );
       await inspectCharacter(character.id);
     } catch (caught) {
+
       setError(
         caught instanceof Error ? caught.message : "Faction join failed",
       );
@@ -377,6 +390,7 @@ const App = () => {
         ),
       );
     } catch (caught) {
+
       setError(
         caught instanceof Error ? caught.message : "Dialogue unavailable",
       );
@@ -399,6 +413,7 @@ const App = () => {
         ),
       );
     } catch (caught) {
+
       setError(caught instanceof Error ? caught.message : "Story unavailable");
     } finally {
       setBusy(false);
@@ -419,6 +434,7 @@ const App = () => {
         ),
       );
     } catch (caught) {
+
       setError(
         caught instanceof Error ? caught.message : "Description unavailable",
       );
@@ -441,6 +457,7 @@ const App = () => {
       );
       await inspectCharacter(character.id);
     } catch (caught) {
+
       setError(
         caught instanceof Error ? caught.message : "Dungeon action failed",
       );
@@ -449,14 +466,19 @@ const App = () => {
     }
   };
 
+  const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
+
   const saveGame = async () => {
     if (character === null) return;
     setBusy(true);
     setError(null);
+    setSaveSuccess(false);
     try {
       await gameApi.createSave(playerId, character.id, crypto.randomUUID());
-      alert("Chronicle persisted successfully.");
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 3000);
     } catch (caught) {
+
       setError(caught instanceof Error ? caught.message : "Save failed");
     } finally {
       setBusy(false);
@@ -464,7 +486,7 @@ const App = () => {
   };
 
   const deleteCharacter = async () => {
-    /* v8 ignore next */
+
     if (character === null) return;
     setBusy(true);
     try {
@@ -472,6 +494,7 @@ const App = () => {
       setCharacter(null);
       setMenuView("NONE");
     } catch (caught) {
+
       setError(caught instanceof Error ? caught.message : "Deletion failed");
     } finally {
       setBusy(false);
@@ -495,22 +518,44 @@ const App = () => {
   return (
     <main className={character !== null ? "jrpg-layout" : ""}>
       <ErrorBoundary>
-        {character === null && (
+        {character === null && definitions !== null && menuView === "NONE" && (
           <div className="title-screen">
             <div className="title-logo">Yggdrasil Chronicles</div>
             <p
               className="eyebrow"
               style={{ color: "#fff", marginBottom: "2rem" }}
             >
-              Playable MVP Candidate
+              v1.1 JRPG Polish Release
             </p>
-            {definitions === null ? (
-              <p style={{ color: "#fff" }}>Loading the character archive...</p>
-            ) : (
-              <div className="title-menu">
-                <p className="eyebrow">Select or create a character to begin</p>
+            <div className="title-menu">
+              {existingCharacters.length > 0 ? (
+                <button
+                  className="kenney-button"
+                  onClick={() =>
+                    existingCharacters[0] &&
+                    void inspectCharacter(existingCharacters[0]?.id)
+                  }
+                >
+                  Continue: {existingCharacters[0]?.name}
+                </button>
+              ) : (
+                <div className="muted" style={{ marginBottom: "1rem" }}>
+                  No existing chronicles found.
+                </div>
+              )}
+              <button
+                className="kenney-button"
+                onClick={() => setMenuView("CHARACTER")}
+              >
+                New Game
+              </button>
+              <div
+                className="muted"
+                style={{ marginTop: "2rem", fontSize: "0.8rem" }}
+              >
+                Controls: WASD/Arrows to move, E to interact
               </div>
-            )}
+            </div>
           </div>
         )}
 
@@ -520,7 +565,7 @@ const App = () => {
           </p>
         )}
 
-        {combat !== null && character !== null ? (
+        {combat !== null && character !== null && (
           <>
             <GameCanvas
               mode="COMBAT"
@@ -543,7 +588,11 @@ const App = () => {
               </div>
             </div>
           </>
-        ) : character === null && definitions !== null ? (
+        )}
+
+        {character === null &&
+        definitions !== null &&
+        menuView === "CHARACTER" ? (
           <section className="creation-layout jrpg-panel">
             <div className="intro-panel" style={{ background: "transparent" }}>
               <p className="eyebrow">New Game</p>
@@ -605,12 +654,21 @@ const App = () => {
                   <option value="EVIL">Evil</option>
                 </select>
               </label>
-              <button type="submit" disabled={busy}>
-                Create character
-              </button>
+              <div style={{ display: "flex", gap: "1rem" }}>
+                <button
+                  type="button"
+                  className="kenney-button secondary"
+                  onClick={() => setMenuView("NONE")}
+                >
+                  Back
+                </button>
+                <button className="kenney-button" type="submit" disabled={busy}>
+                  Create character
+                </button>
+              </div>
             </form>
           </section>
-        ) : character !== null ? (
+        ) : character !== null && combat === null ? (
           <>
             <GameCanvas
               mode="EXPLORATION"
@@ -727,7 +785,9 @@ const App = () => {
                   Quests
                 </button>
                 <button onClick={() => setMenuView("CHARACTER")}>Status</button>
-                <button onClick={() => void saveGame()}>Save</button>
+                <button onClick={() => void saveGame()}>
+                  {saveSuccess ? "✓ Saved" : "Save Chronicle"}
+                </button>
                 <button onClick={triggerEnding} style={{ color: "#f87171" }}>
                   Conclude
                 </button>

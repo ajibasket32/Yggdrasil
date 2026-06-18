@@ -130,7 +130,7 @@ it("renders empty and permanent-state summaries", () => {
   );
 
   expect(
-    screen.getByText("No available or recorded quests."),
+    screen.getByText("No active or available quests. Explore to find more!"),
   ).toBeInTheDocument();
   expect(screen.getByText("No NPCs are present.")).toBeInTheDocument();
   expect(screen.getByText("Permanently cleared")).toBeInTheDocument();
@@ -196,4 +196,81 @@ it("covers accept, abandon, archive, journal, and unopened dungeon states", () =
     "enter",
   );
   expect(screen.getByText(/Quest accepted/)).toBeInTheDocument();
+});
+
+it("renders completed quest state", () => {
+  render(
+    <WorldPanel
+      quests={[
+        { ...quest, status: "COMPLETED" as const, objectives_complete: true },
+      ]}
+      npcs={[]}
+      factions={[]}
+      dungeons={[]}
+      journal={[]}
+      busy={false}
+      interactionText={null}
+      narrative={null}
+      onQuestAction={vi.fn()}
+      onNpcAction={vi.fn()}
+      onDialogue={vi.fn()}
+      onQuestFraming={vi.fn()}
+      onCloseNarrative={vi.fn()}
+      onJoinFaction={vi.fn()}
+      onDungeonAction={vi.fn()}
+    />,
+  );
+
+  expect(screen.getByText("COMPLETED")).toBeInTheDocument();
+  expect(screen.getByText("Archive")).toBeInTheDocument();
+  expect(screen.getByText("☑")).toBeInTheDocument();
+});
+
+it("renders failed quest state", () => {
+  render(
+    <WorldPanel
+      quests={[{ ...quest, status: "FAILED" as const }]}
+      npcs={[]}
+      factions={[]}
+      dungeons={[]}
+      journal={[]}
+      busy={false}
+      interactionText={null}
+      narrative={null}
+      onQuestAction={vi.fn()}
+      onNpcAction={vi.fn()}
+      onDialogue={vi.fn()}
+      onQuestFraming={vi.fn()}
+      onCloseNarrative={vi.fn()}
+      onJoinFaction={vi.fn()}
+      onDungeonAction={vi.fn()}
+    />,
+  );
+
+  expect(screen.getByText("FAILED")).toBeInTheDocument();
+  expect(screen.getByText("Archive")).toBeInTheDocument();
+});
+
+it("handles busy state on buttons", () => {
+  render(
+    <WorldPanel
+      quests={[quest]}
+      npcs={[]}
+      factions={[]}
+      dungeons={[]}
+      journal={[]}
+      busy={true}
+      interactionText={null}
+      narrative={null}
+      onQuestAction={vi.fn()}
+      onNpcAction={vi.fn()}
+      onDialogue={vi.fn()}
+      onQuestFraming={vi.fn()}
+      onCloseNarrative={vi.fn()}
+      onJoinFaction={vi.fn()}
+      onDungeonAction={vi.fn()}
+    />,
+  );
+
+  expect(screen.getByRole("button", { name: "Hear story" })).toBeDisabled();
 });

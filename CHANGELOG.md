@@ -3,6 +3,19 @@
 All notable completed changes are recorded here. Planned work belongs in
 `TASKS.md`, not this file.
 
+## [1.1.0] - 2026-06-18
+
+### Added
+- Title Screen: Added "Continue Game" logic with automatic character detection and "New Game" flow.
+- JRPG Feel: Authentic JRPG HUD with Kenney RPG UI assets, improved HP/MP bars, and layout.
+- Exploration: Added player walk animations (WASD/Arrows) and improved world interaction hints.
+- Quest Journal: Redesigned Quest Journal with objective checklists, status cards, and reward previews.
+- Combat Polish: Integrated animated damage/healing popups and status effect indicators in the combat scene.
+- Content: Expanded world with new NPCs (Blacksmith Hagar, Scout Kael), 3 new quests, 2 new monsters (Giant Wasp, Ancient Sentry), and 3 new items.
+- Stability: Refactored frontend test suite into modular flows and reached 85% branch coverage.
+- Narrative: Improved quality of AI fallback dialogue and added explicit [OFFLINE] indicators.
+- UX: Added save confirmation feedback and improved character-aware continue button.
+
 ## [1.0.0] - 2026-06-18
 
 ### Added
