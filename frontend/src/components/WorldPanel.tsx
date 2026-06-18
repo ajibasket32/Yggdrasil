@@ -68,8 +68,7 @@ const WorldPanel = ({
               style={{
                 borderLeft:
                   quest.status === "ACTIVE"
-                    ?
-                      "4px solid #fef08a"
+                    ? "4px solid #fef08a"
                     : quest.status === "COMPLETED"
                       ? "4px solid #86efac"
                       : "4px solid #4a6fa5",
@@ -88,8 +87,7 @@ const WorldPanel = ({
                       quest.status === "ACTIVE"
                         ? "#fef08a"
                         : quest.status === "COMPLETED"
-                          ?
-                            "#86efac"
+                          ? "#86efac"
                           : "#94a3b8",
                   }}
                 >
@@ -297,8 +295,6 @@ const WorldPanel = ({
       <div>
         <h3>Dungeons</h3>
         {dungeons.length === 0 ? (
-
-
           <p className="muted">No dungeon is visible here.</p>
         ) : (
           dungeons.map((dungeon) => (

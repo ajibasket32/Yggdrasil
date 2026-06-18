@@ -69,4 +69,29 @@ describe("Combat Flow", () => {
       await screen.findByRole("heading", { name: "Known world" }),
     ).toBeInTheDocument();
   });
+
+  it("can use skill and item in combat", async () => {
+    installFetch(true);
+    render(<App />);
+
+    await continueExistingGame("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Encounters" }));
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Begin combat" }),
+    );
+
+    // Use Skill
+    const skillBtn = await screen.findByText(/Power Strike/i);
+    fireEvent.click(skillBtn);
+
+    // Use Item
+    const itemBtn = await screen.findByText(/Item/i);
+    fireEvent.click(itemBtn);
+
+    const continueBtn = await screen.findByRole("button", {
+      name: /Continue/i,
+    });
+    fireEvent.click(continueBtn);
+    expect(await screen.findByText(/Frontier Gate/i)).toBeInTheDocument();
+  });
 });

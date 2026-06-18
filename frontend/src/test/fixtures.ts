@@ -362,13 +362,11 @@ export const installFetch = (
             });
       }
       if (url.endsWith("/npcs/npc-1/dialogue")) {
-
         return options.narrativeSucceeds === false
           ? response("Dialogue unavailable", false)
           : response(narrative);
       }
       if (url.endsWith("/quests/quest-1/framing")) {
-
         return options.framingSucceeds === false
           ? response("Story unavailable", false)
           : response({
@@ -380,7 +378,6 @@ export const installFetch = (
             });
       }
       if (url.endsWith("/locations/location-1/description")) {
-
         return options.descriptionSucceeds === false || false
           ? response("Description unavailable", false)
           : response({

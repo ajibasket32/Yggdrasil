@@ -46,7 +46,6 @@ const combatStorageKey = (characterId: string) =>
   `yggdrasil-active-combat:${characterId}`;
 
 const combatSeed = (): number => {
-
   if (typeof crypto.getRandomValues === "function") {
     const values = crypto.getRandomValues(new Uint32Array(1));
     return (values[0] ?? 0) & 0x7fffffff;
@@ -146,7 +145,6 @@ const App = () => {
         setDefinitions(nextDefinitions);
         setExistingCharacters(characters);
       } catch (caught) {
-
         setError(
           caught instanceof Error ? caught.message : "Unable to load game data",
         );
@@ -180,8 +178,6 @@ const App = () => {
       );
       await inspectCharacter(created.id);
     } catch (caught) {
-
-
       setError(
         caught instanceof Error ? caught.message : "Character creation failed",
       );
@@ -202,7 +198,6 @@ const App = () => {
       );
       await inspectCharacter(characterId);
     } catch (caught) {
-
       setError(caught instanceof Error ? caught.message : "Travel failed");
     } finally {
       setBusy(false);
@@ -227,7 +222,6 @@ const App = () => {
       );
       setCombat(started);
     } catch (caught) {
-
       setError(caught instanceof Error ? caught.message : "Combat failed");
     } finally {
       setBusy(false);
@@ -239,7 +233,6 @@ const App = () => {
     skillId?: string,
     inventoryItemId?: string,
   ) => {
-
     if (combat === null) return;
     setBusy(true);
     setError(null);
@@ -255,7 +248,6 @@ const App = () => {
         ),
       );
     } catch (caught) {
-
       setError(
         caught instanceof Error ? caught.message : "Combat action failed",
       );
@@ -277,7 +269,6 @@ const App = () => {
         ),
       );
     } catch (caught) {
-
       setError(caught instanceof Error ? caught.message : "Escape failed");
     } finally {
       setBusy(false);
@@ -292,7 +283,6 @@ const App = () => {
     try {
       await inspectCharacter(character.id);
     } catch (caught) {
-
       setError(
         caught instanceof Error
           ? caught.message
@@ -320,7 +310,6 @@ const App = () => {
       );
       await inspectCharacter(character.id);
     } catch (caught) {
-
       setError(
         caught instanceof Error ? caught.message : "Quest action failed",
       );
@@ -344,7 +333,6 @@ const App = () => {
       setInteractionText(result.result_text);
       await inspectCharacter(character.id);
     } catch (caught) {
-
       setError(
         caught instanceof Error ? caught.message : "NPC interaction failed",
       );
@@ -366,7 +354,6 @@ const App = () => {
       );
       await inspectCharacter(character.id);
     } catch (caught) {
-
       setError(
         caught instanceof Error ? caught.message : "Faction join failed",
       );
@@ -390,7 +377,6 @@ const App = () => {
         ),
       );
     } catch (caught) {
-
       setError(
         caught instanceof Error ? caught.message : "Dialogue unavailable",
       );
@@ -413,7 +399,6 @@ const App = () => {
         ),
       );
     } catch (caught) {
-
       setError(caught instanceof Error ? caught.message : "Story unavailable");
     } finally {
       setBusy(false);
@@ -434,7 +419,6 @@ const App = () => {
         ),
       );
     } catch (caught) {
-
       setError(
         caught instanceof Error ? caught.message : "Description unavailable",
       );
@@ -457,7 +441,6 @@ const App = () => {
       );
       await inspectCharacter(character.id);
     } catch (caught) {
-
       setError(
         caught instanceof Error ? caught.message : "Dungeon action failed",
       );
@@ -478,7 +461,6 @@ const App = () => {
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (caught) {
-
       setError(caught instanceof Error ? caught.message : "Save failed");
     } finally {
       setBusy(false);
@@ -486,7 +468,6 @@ const App = () => {
   };
 
   const deleteCharacter = async () => {
-
     if (character === null) return;
     setBusy(true);
     try {
@@ -494,7 +475,6 @@ const App = () => {
       setCharacter(null);
       setMenuView("NONE");
     } catch (caught) {
-
       setError(caught instanceof Error ? caught.message : "Deletion failed");
     } finally {
       setBusy(false);

@@ -439,11 +439,44 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.execute(sa.text("DELETE FROM quest_steps WHERE quest_id IN (:q1, :q2, :q3)").bindparams(q1=QUEST_IRON_ID, q2=QUEST_RECON_ID, q3=QUEST_SIDE_ID))
-    op.execute(sa.text("DELETE FROM quests WHERE id IN (:q1, :q2, :q3)").bindparams(q1=QUEST_IRON_ID, q2=QUEST_RECON_ID, q3=QUEST_SIDE_ID))
-    op.execute(sa.text("DELETE FROM encounter_definitions WHERE id IN (:e1, :e2)").bindparams(e1=WASP_ENCOUNTER_ID, e2=SKELETON_ENCOUNTER_ID))
-    op.execute(sa.text("DELETE FROM monsters WHERE id IN (:m1, :m2)").bindparams(m1=WASP_ID, m2=SKELETON_MONSTER_ID))
-    op.execute(sa.text("DELETE FROM npcs WHERE id IN (:n1, :n2)").bindparams(n1=HAGAR_ID, n2=KAEL_ID))
-    op.execute(sa.text("DELETE FROM location_routes WHERE destination_location_id = :l1 OR origin_location_id = :l1").bindparams(l1=SYLVAN_BRANCH_ID))
-    op.execute(sa.text("DELETE FROM locations WHERE id = :l1").bindparams(l1=SYLVAN_BRANCH_ID))
-    op.execute(sa.text("DELETE FROM items WHERE id IN (:i1, :i2, :i3)").bindparams(i1=ORE_ID, i2=STONE_ID, i3=MAP_ID))
+    # Explicitly cast to UUID in SQL to avoid asyncpg type mismatch
+    op.execute(
+        sa.text(
+            "DELETE FROM quest_steps WHERE quest_id IN (CAST(:q1 AS UUID), CAST(:q2 AS UUID), CAST(:q3 AS UUID))"
+        ).bindparams(q1=QUEST_IRON_ID, q2=QUEST_RECON_ID, q3=QUEST_SIDE_ID)
+    )
+    op.execute(
+        sa.text(
+            "DELETE FROM quests WHERE id IN (CAST(:q1 AS UUID), CAST(:q2 AS UUID), CAST(:q3 AS UUID))"
+        ).bindparams(q1=QUEST_IRON_ID, q2=QUEST_RECON_ID, q3=QUEST_SIDE_ID)
+    )
+    op.execute(
+        sa.text(
+            "DELETE FROM encounter_definitions WHERE id IN (CAST(:e1 AS UUID), CAST(:e2 AS UUID))"
+        ).bindparams(e1=WASP_ENCOUNTER_ID, e2=SKELETON_ENCOUNTER_ID)
+    )
+    op.execute(
+        sa.text("DELETE FROM monsters WHERE id IN (CAST(:m1 AS UUID), CAST(:m2 AS UUID))").bindparams(
+            m1=WASP_ID, m2=SKELETON_MONSTER_ID
+        )
+    )
+    op.execute(
+        sa.text("DELETE FROM npcs WHERE id IN (CAST(:n1 AS UUID), CAST(:n2 AS UUID))").bindparams(
+            n1=HAGAR_ID, n2=KAEL_ID
+        )
+    )
+    op.execute(
+        sa.text(
+            "DELETE FROM location_routes WHERE destination_location_id = CAST(:l1 AS UUID) OR origin_location_id = CAST(:l1 AS UUID)"
+        ).bindparams(l1=SYLVAN_BRANCH_ID)
+    )
+    op.execute(
+        sa.text("DELETE FROM locations WHERE id = CAST(:l1 AS UUID)").bindparams(
+            l1=SYLVAN_BRANCH_ID
+        )
+    )
+    op.execute(
+        sa.text(
+            "DELETE FROM items WHERE id IN (CAST(:i1 AS UUID), CAST(:i2 AS UUID), CAST(:i3 AS UUID))"
+        ).bindparams(i1=ORE_ID, i2=STONE_ID, i3=MAP_ID)
+    )

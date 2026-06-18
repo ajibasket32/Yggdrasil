@@ -24,6 +24,10 @@ export default defineConfig({
         statements: 80,
       },
     },
-    exclude: ["audit_gameplay.spec.ts", "verify_v1_1.spec.ts", "node_modules/**/*"],
+    exclude: [
+      "audit_gameplay.spec.ts",
+      "verify_v1_1.spec.ts",
+      "node_modules/**/*",
+    ],
   },
 });

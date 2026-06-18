@@ -83,7 +83,9 @@ describe("Title Flow and Character Creation", () => {
     await continueExistingGame("Aster Vale");
     expect(screen.getByText("📍 Frontier Gate")).toBeInTheDocument();
 
-    const confirmSpy = vi.spyOn(window, "confirm").mockImplementation(() => true);
+    const confirmSpy = vi
+      .spyOn(window, "confirm")
+      .mockImplementation(() => true);
 
     fireEvent.click(screen.getByText("Conclude"));
     expect(confirmSpy).toHaveBeenCalled();
