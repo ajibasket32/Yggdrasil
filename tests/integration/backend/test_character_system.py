@@ -15,9 +15,7 @@ from app.services.gameplay import CharacterService
 from app.services.save import SaveService
 
 
-async def _create_character(
-    player_id: UUID, key: str = "create-character"
-) -> typing.Any:
+async def _create_character(player_id: UUID, key: str = "create-character") -> typing.Any:
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))
         definitions = await service.creation_definitions()
@@ -47,12 +45,8 @@ async def test_character_creation_is_atomic_complete_and_idempotent(
     assert len(first.jobs) == 1
     assert len(first.skills) == 1
     async with session_factory() as session:
-        character_count = await session.scalar(
-            select(func.count()).select_from(Character)
-        )
-        item_count = await session.scalar(
-            select(func.count()).select_from(InventoryItem)
-        )
+        character_count = await session.scalar(select(func.count()).select_from(Character))
+        item_count = await session.scalar(select(func.count()).select_from(InventoryItem))
     assert character_count == 1
     assert item_count == 3
 
@@ -103,14 +97,10 @@ async def test_inventory_equipment_travel_and_save_restore(
             for location in locations
             if location.reachable and location.id != created.current_location.id
         )
-        await service.travel(
-            player_id, created.id, destination.id, "travel-before-save"
-        )
+        await service.travel(player_id, created.id, destination.id, "travel-before-save")
 
     async with session_factory() as session:
-        save_service = SaveService(
-            SaveUnitOfWork(session), GameStateRepository(session)
-        )
+        save_service = SaveService(SaveUnitOfWork(session), GameStateRepository(session))
         save = await save_service.create_save(
             player_id, created.id, "Canonical", "create-canonical-save"
         )
@@ -132,14 +122,12 @@ async def test_inventory_equipment_travel_and_save_restore(
             for location in locations
             if location.reachable and location.id != destination.id
         )
-        await service.travel(
-            player_id, created.id, return_location.id, "travel-after-save"
-        )
+        await service.travel(player_id, created.id, return_location.id, "travel-after-save")
 
     async with session_factory() as session:
-        loaded = await SaveService(
-            SaveUnitOfWork(session), GameStateRepository(session)
-        ).load_save(player_id, save.save_id, "load-canonical-save")
+        loaded = await SaveService(SaveUnitOfWork(session), GameStateRepository(session)).load_save(
+            player_id, save.save_id, "load-canonical-save"
+        )
     assert loaded.snapshot.character["id"] == str(created.id)
 
     async with session_factory() as session:
@@ -148,10 +136,7 @@ async def test_inventory_equipment_travel_and_save_restore(
         inventory = await service.inventory(player_id, created.id)
         equipment = await service.equipment(player_id, created.id)
     assert restored.current_location.id == destination.id
-    assert (
-        next(item for item in inventory.items if item.name == "Field Potion").quantity
-        == 5
-    )
+    assert next(item for item in inventory.items if item.name == "Field Potion").quantity == 5
     assert next(slot for slot in equipment.slots if slot.code == "main_hand").item
 
 

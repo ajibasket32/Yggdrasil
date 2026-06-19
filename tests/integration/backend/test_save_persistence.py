@@ -119,9 +119,7 @@ async def test_legacy_save_is_migrated_atomically_on_load(
     assert loaded.snapshot.world_state == {"location": "Nazarick"}
     assert migrated is not None
     assert migrated.schema_version == 1
-    assert migrated.snapshot_checksum == SaveService.checksum(
-        migrated.snapshot_reference
-    )
+    assert migrated.snapshot_checksum == SaveService.checksum(migrated.snapshot_reference)
 
 
 @pytest.mark.asyncio

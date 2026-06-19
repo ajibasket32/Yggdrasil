@@ -84,9 +84,7 @@ class DefinitionRepository:
         return list(result.scalars().all())
 
     async def list_equipment_slots(self) -> list[EquipmentSlot]:
-        result = await self._session.execute(
-            select(EquipmentSlot).order_by(EquipmentSlot.code)
-        )
+        result = await self._session.execute(select(EquipmentSlot).order_by(EquipmentSlot.code))
         return list(result.scalars().all())
 
     async def get_equipment_slot(self, slot_id: UUID) -> EquipmentSlot | None:
@@ -221,15 +219,11 @@ class CharacterRepository:
 
     async def skill_ids(self, character_id: UUID) -> set[UUID]:
         result = await self._session.execute(
-            select(CharacterSkill.skill_id).where(
-                CharacterSkill.character_id == character_id
-            )
+            select(CharacterSkill.skill_id).where(CharacterSkill.character_id == character_id)
         )
         return set(result.scalars().all())
 
-    async def list_skills(
-        self, character_id: UUID
-    ) -> list[tuple[CharacterSkill, Skill]]:
+    async def list_skills(self, character_id: UUID) -> list[tuple[CharacterSkill, Skill]]:
         result = await self._session.execute(
             select(CharacterSkill, Skill)
             .join(Skill, Skill.id == CharacterSkill.skill_id)
@@ -336,18 +330,14 @@ class EquipmentRepository:
 
     async def is_equipped(self, inventory_item_id: UUID) -> bool:
         result = await self._session.execute(
-            select(EquippedItem.id).where(
-                EquippedItem.inventory_item_id == inventory_item_id
-            )
+            select(EquippedItem.id).where(EquippedItem.inventory_item_id == inventory_item_id)
         )
         return result.scalar_one_or_none() is not None
 
     async def get_by_inventory_item(
         self, inventory_item_id: UUID, *, for_update: bool = False
     ) -> EquippedItem | None:
-        statement = select(EquippedItem).where(
-            EquippedItem.inventory_item_id == inventory_item_id
-        )
+        statement = select(EquippedItem).where(EquippedItem.inventory_item_id == inventory_item_id)
         if for_update:
             statement = statement.with_for_update()
         result = await self._session.execute(statement)
@@ -426,9 +416,7 @@ class GameStateRepository:
         )
         return result.scalar_one_or_none() is not None
 
-    async def capture(
-        self, player_id: UUID, character_id: UUID
-    ) -> CanonicalSnapshot | None:
+    async def capture(self, player_id: UUID, character_id: UUID) -> CanonicalSnapshot | None:
         character = await CharacterRepository(self._session).get_owned(
             player_id, character_id, for_update=True
         )
@@ -440,9 +428,7 @@ class GameStateRepository:
         navigation = NavigationRepository(self._session)
         jobs = await characters.list_jobs(character_id)
         skills = await characters.list_skills(character_id)
-        inventory = await inventory_repository.get_for_character(
-            character_id, for_update=True
-        )
+        inventory = await inventory_repository.get_for_character(character_id, for_update=True)
         entries = await inventory_repository.list_entries(character_id, for_update=True)
         equipped = await equipment_repository.list_for_character(character_id)
         discoveries = await navigation.discovered_ids(character_id)
@@ -501,9 +487,7 @@ class GameStateRepository:
                         "quantity": entry.quantity,
                         "slot_index": entry.slot_index,
                         "unique_instance_id": (
-                            str(entry.unique_instance_id)
-                            if entry.unique_instance_id
-                            else None
+                            str(entry.unique_instance_id) if entry.unique_instance_id else None
                         ),
                     }
                     for entry, item in entries
@@ -522,9 +506,7 @@ class GameStateRepository:
                 for row, slot, entry, _ in equipped
             ]
         }
-        discovered_values: list[JsonValue] = [
-            str(value) for value in sorted(discoveries, key=str)
-        ]
+        discovered_values: list[JsonValue] = [str(value) for value in sorted(discoveries, key=str)]
         world_payload: dict[str, JsonValue] = {
             "current_location_id": str(character.current_location_id),
             "discovered_location_ids": discovered_values,

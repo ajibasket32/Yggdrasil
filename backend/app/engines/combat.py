@@ -139,14 +139,10 @@ class CombatEngine:
             if status.code in {"BURN", "POISON", "BLEED"}:
                 damage = min(hp, max(1, status.potency))
                 hp -= damage
-                logs.append(
-                    f"{combatant.name} suffers {damage} {status.code.lower()} damage."
-                )
+                logs.append(f"{combatant.name} suffers {damage} {status.code.lower()} damage.")
             if status.code in {"STUN", "SLEEP", "FREEZE"}:
                 can_act = False
-                logs.append(
-                    f"{combatant.name} cannot act due to {status.code.lower()}."
-                )
+                logs.append(f"{combatant.name} cannot act due to {status.code.lower()}.")
             if status.duration > 1:
                 next_statuses.append(replace(status, duration=status.duration - 1))
         return TurnStart(
@@ -211,11 +207,7 @@ class CombatEngine:
             updated = replace(
                 actor,
                 hp=actor.hp + restored,
-                mp=(
-                    actor.mp - action.resource_cost
-                    if action.skill_id is not None
-                    else actor.mp
-                ),
+                mp=(actor.mp - action.resource_cost if action.skill_id is not None else actor.mp),
             )
             return ActionResolution(
                 updated,
@@ -242,23 +234,15 @@ class CombatEngine:
         }
         if magical and actor.mp < action.resource_cost:
             raise CombatRuleError("Not enough MP")
-        if (
-            not magical
-            and action.resource_cost
-            and actor.stamina < action.resource_cost
-        ):
+        if not magical and action.resource_cost and actor.stamina < action.resource_cost:
             raise CombatRuleError("Not enough stamina")
 
         hit_chance = max(5, min(95, 75 + actor.accuracy - target.evasion))
-        hit = action.never_miss or (
-            SeededRolls.percent(seed, sequence, "hit") <= hit_chance
-        )
+        hit = action.never_miss or (SeededRolls.percent(seed, sequence, "hit") <= hit_chance)
         next_actor = replace(
             actor,
             mp=actor.mp - action.resource_cost if magical else actor.mp,
-            stamina=(
-                actor.stamina - action.resource_cost if not magical else actor.stamina
-            ),
+            stamina=(actor.stamina - action.resource_cost if not magical else actor.stamina),
         )
         if not hit:
             return ActionResolution(
@@ -275,9 +259,7 @@ class CombatEngine:
         attack = actor.magic_attack if magical else actor.physical_attack
         defense = target.magic_defense if magical else target.physical_defense
         base = max(1, attack * action.modifier_percent // 100 - defense)
-        critical = (
-            SeededRolls.percent(seed, sequence, "critical") <= actor.critical_chance
-        )
+        critical = SeededRolls.percent(seed, sequence, "critical") <= actor.critical_chance
         if critical:
             base = base * 3 // 2
         element = action.effect.upper()
@@ -308,12 +290,8 @@ class CombatEngine:
             statuses=target.statuses + statuses,
         )
         label = "critical " if critical else ""
-        action_name = (
-            f"uses {action.effect}" if action.action_type == "SKILL" else "attacks"
-        )
-        logs = [
-            f"{actor.name} {action_name} {target.name} and deals {damage} {label}damage."
-        ]
+        action_name = f"uses {action.effect}" if action.action_type == "SKILL" else "attacks"
+        logs = [f"{actor.name} {action_name} {target.name} and deals {damage} {label}damage."]
         if updated_target.defeated:
             logs.append(f"{target.name} is defeated!")
         return ActionResolution(

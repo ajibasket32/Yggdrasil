@@ -40,9 +40,7 @@ class CharacterFaction(EntityMixin, Base):
         ),
     )
 
-    player_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     character_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
         ForeignKey("characters.id", ondelete="CASCADE"),
@@ -74,13 +72,9 @@ class CharacterDungeonState(EntityMixin, Base):
     """Permanent per-character dungeon and boss state."""
 
     __tablename__ = "character_dungeon_states"
-    __table_args__ = (
-        UniqueConstraint("character_id", "dungeon_id", name="uq_character_dungeons"),
-    )
+    __table_args__ = (UniqueConstraint("character_id", "dungeon_id", name="uq_character_dungeons"),)
 
-    player_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     character_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
         ForeignKey("characters.id", ondelete="CASCADE"),
@@ -105,17 +99,13 @@ class NPC(EntityMixin, Base):
     race_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("races.id"), nullable=False
     )
-    faction_id: Mapped[UUID | None] = mapped_column(
-        Uuid(as_uuid=True), ForeignKey("factions.id")
-    )
+    faction_id: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), ForeignKey("factions.id"))
     home_location_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("locations.id"), nullable=False
     )
     occupation: Mapped[str] = mapped_column(String(80), nullable=False)
     role: Mapped[str] = mapped_column(String(40), nullable=False)
-    personality_profile: Mapped[dict[str, object]] = mapped_column(
-        JSONB, nullable=False
-    )
+    personality_profile: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
     schedule: Mapped[list[dict[str, object]]] = mapped_column(JSONB, nullable=False)
     knowledge: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
     is_alive: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
@@ -135,9 +125,7 @@ class Relationship(EntityMixin, Base):
         ),
     )
 
-    player_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     character_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
         ForeignKey("characters.id", ondelete="CASCADE"),
@@ -165,12 +153,8 @@ class Quest(EntityMixin, Base):
     location_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("locations.id"), nullable=False, index=True
     )
-    giver_npc_id: Mapped[UUID | None] = mapped_column(
-        Uuid(as_uuid=True), ForeignKey("npcs.id")
-    )
-    faction_id: Mapped[UUID | None] = mapped_column(
-        Uuid(as_uuid=True), ForeignKey("factions.id")
-    )
+    giver_npc_id: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), ForeignKey("npcs.id"))
+    faction_id: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), ForeignKey("factions.id"))
     minimum_level: Mapped[int] = mapped_column(SmallInteger, nullable=False, default=1)
     prerequisites: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
     rewards: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
@@ -210,14 +194,10 @@ class CharacterQuest(EntityMixin, Base):
             "status IN ('NOT_STARTED', 'ACTIVE', 'COMPLETED', 'FAILED', 'ARCHIVED')",
             name="ck_character_quests_status",
         ),
-        CheckConstraint(
-            "current_step >= 0 AND step_progress >= 0", name="ck_quest_progress"
-        ),
+        CheckConstraint("current_step >= 0 AND step_progress >= 0", name="ck_quest_progress"),
     )
 
-    player_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     character_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
         ForeignKey("characters.id", ondelete="CASCADE"),
@@ -227,17 +207,11 @@ class CharacterQuest(EntityMixin, Base):
     quest_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("quests.id"), nullable=False, index=True
     )
-    status: Mapped[str] = mapped_column(
-        String(20), nullable=False, default="NOT_STARTED"
-    )
+    status: Mapped[str] = mapped_column(String(20), nullable=False, default="NOT_STARTED")
     current_step: Mapped[int] = mapped_column(SmallInteger, nullable=False, default=0)
     step_progress: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    objectives_complete: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=False
-    )
-    rewards_claimed: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=False
-    )
+    objectives_complete: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    rewards_claimed: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     accepted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     archived_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
@@ -248,18 +222,14 @@ class JournalEntry(EntityMixin, Base):
 
     __tablename__ = "journal_entries"
 
-    player_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     character_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
         ForeignKey("characters.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
-    quest_id: Mapped[UUID | None] = mapped_column(
-        Uuid(as_uuid=True), ForeignKey("quests.id")
-    )
+    quest_id: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), ForeignKey("quests.id"))
     category: Mapped[str] = mapped_column(String(40), nullable=False)
     title: Mapped[str] = mapped_column(String(160), nullable=False)
     body: Mapped[str] = mapped_column(Text, nullable=False)
@@ -269,25 +239,15 @@ class WorldEvent(EntityMixin, Base):
     """Immutable significant world outcome."""
 
     __tablename__ = "world_events"
-    __table_args__ = (
-        UniqueConstraint("deduplication_key", name="uq_world_events_deduplication"),
-    )
+    __table_args__ = (UniqueConstraint("deduplication_key", name="uq_world_events_deduplication"),)
 
-    player_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     character_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("characters.id"), nullable=False, index=True
     )
     event_type: Mapped[str] = mapped_column(String(80), nullable=False, index=True)
-    location_id: Mapped[UUID | None] = mapped_column(
-        Uuid(as_uuid=True), ForeignKey("locations.id")
-    )
-    faction_id: Mapped[UUID | None] = mapped_column(
-        Uuid(as_uuid=True), ForeignKey("factions.id")
-    )
-    quest_id: Mapped[UUID | None] = mapped_column(
-        Uuid(as_uuid=True), ForeignKey("quests.id")
-    )
+    location_id: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), ForeignKey("locations.id"))
+    faction_id: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), ForeignKey("factions.id"))
+    quest_id: Mapped[UUID | None] = mapped_column(Uuid(as_uuid=True), ForeignKey("quests.id"))
     payload: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
     deduplication_key: Mapped[str] = mapped_column(String(180), nullable=False)

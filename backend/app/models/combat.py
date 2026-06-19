@@ -71,9 +71,7 @@ class CombatEncounter(EntityMixin, Base):
         CheckConstraint("action_sequence >= 0", name="ck_combat_encounters_sequence"),
     )
 
-    player_id: Mapped[UUID] = mapped_column(
-        Uuid(as_uuid=True), nullable=False, index=True
-    )
+    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
     character_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
         ForeignKey("characters.id", ondelete="CASCADE"),
@@ -89,12 +87,8 @@ class CombatEncounter(EntityMixin, Base):
     action_sequence: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     turn_order: Mapped[list[str]] = mapped_column(JSONB, nullable=False)
     rewards: Mapped[dict[str, object]] = mapped_column(JSONB, nullable=False)
-    rewards_applied: Mapped[bool] = mapped_column(
-        Boolean, nullable=False, default=False
-    )
-    completed_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
+    rewards_applied: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class CombatParticipant(EntityMixin, Base):
@@ -102,12 +96,8 @@ class CombatParticipant(EntityMixin, Base):
 
     __tablename__ = "combat_participants"
     __table_args__ = (
-        UniqueConstraint(
-            "encounter_id", "source_type", "source_id", name="uq_combat_participant"
-        ),
-        CheckConstraint(
-            "side IN ('PLAYER', 'ENEMY')", name="ck_combat_participant_side"
-        ),
+        UniqueConstraint("encounter_id", "source_type", "source_id", name="uq_combat_participant"),
+        CheckConstraint("side IN ('PLAYER', 'ENEMY')", name="ck_combat_participant_side"),
         CheckConstraint(
             "current_hp >= 0 AND current_mp >= 0 AND current_stamina >= 0",
             name="ck_combat_participant_resources",
@@ -140,9 +130,7 @@ class CombatLogEntry(EntityMixin, Base):
     """Immutable ordered combat record."""
 
     __tablename__ = "combat_log_entries"
-    __table_args__ = (
-        UniqueConstraint("encounter_id", "sequence", name="uq_combat_log_sequence"),
-    )
+    __table_args__ = (UniqueConstraint("encounter_id", "sequence", name="uq_combat_log_sequence"),)
 
     encounter_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
@@ -167,9 +155,7 @@ class GameOutboxEvent(EntityMixin, Base):
     """Immutable post-commit event ready for at-least-once publication."""
 
     __tablename__ = "outbox_events"
-    __table_args__ = (
-        UniqueConstraint("deduplication_key", name="uq_outbox_deduplication"),
-    )
+    __table_args__ = (UniqueConstraint("deduplication_key", name="uq_outbox_deduplication"),)
 
     event_type: Mapped[str] = mapped_column(String(80), nullable=False, index=True)
     aggregate_type: Mapped[str] = mapped_column(String(40), nullable=False)
@@ -180,8 +166,6 @@ class GameOutboxEvent(EntityMixin, Base):
     occurred_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, default=lambda: datetime.now(UTC)
     )
-    published_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
+    published_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     attempt_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     last_error: Mapped[str | None] = mapped_column(Text, nullable=True)

@@ -66,15 +66,11 @@ class NarrativeContext(BaseModel):
     quests: tuple[NarrativeQuest, ...] = Field(default_factory=tuple, max_length=10)
     memories: tuple[NarrativeMemory, ...] = Field(default_factory=tuple, max_length=20)
     recent_dialogue: tuple[str, ...] = Field(default_factory=tuple, max_length=10)
-    allowed_entity_ids: frozenset[UUID] = Field(
-        default_factory=frozenset, max_length=100
-    )
+    allowed_entity_ids: frozenset[UUID] = Field(default_factory=frozenset, max_length=100)
 
     def content_hash(self) -> str:
         """Return a stable cache/audit fingerprint for this canonical context."""
         payload = self.model_dump(mode="json")
-        payload["allowed_entity_ids"] = sorted(
-            str(value) for value in self.allowed_entity_ids
-        )
+        payload["allowed_entity_ids"] = sorted(str(value) for value in self.allowed_entity_ids)
         canonical = json.dumps(payload, separators=(",", ":"), sort_keys=True)
         return hashlib.sha256(canonical.encode("utf-8")).hexdigest()

@@ -31,9 +31,7 @@ class MemoryMaintenanceService:
         offset = 0
         while True:
             async with self._uow:
-                memories = await self._uow.memories.list_active(
-                    offset=offset, limit=500
-                )
+                memories = await self._uow.memories.list_active(offset=offset, limit=500)
                 jobs = [
                     MemoryIndexJob(
                         memory_id=memory.id,

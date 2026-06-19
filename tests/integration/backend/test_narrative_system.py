@@ -64,9 +64,7 @@ async def _prepared_world(
     async with session_factory() as session:
         gameplay = CharacterService(GameUnitOfWork(session))
         definitions = await gameplay.creation_definitions()
-        warrior = next(
-            value for value in definitions.starting_jobs if value.name == "Warrior"
-        )
+        warrior = next(value for value in definitions.starting_jobs if value.name == "Warrior")
         character = await gameplay.create_character(
             player_id,
             CreateCharacterRequest(
@@ -83,19 +81,13 @@ async def _prepared_world(
             for value in await gameplay.locations(player_id, character.id)
             if value.name == "Greenwood Verge"
         )
-        await gameplay.travel(
-            player_id, character.id, greenwood.id, f"travel-{player_id}"
-        )
+        await gameplay.travel(player_id, character.id, greenwood.id, f"travel-{player_id}")
     async with session_factory() as session:
         world = WorldService(WorldUnitOfWork(session))
         quest = (await world.quests(player_id, character.id))[0]
-        await world.accept_quest(
-            player_id, character.id, quest.id, f"accept-{player_id}"
-        )
+        await world.accept_quest(player_id, character.id, quest.id, f"accept-{player_id}")
         npc = (await world.npcs(player_id, character.id))[0]
-        await world.interact(
-            player_id, character.id, npc.id, "OFFER_HELP", f"help-{player_id}"
-        )
+        await world.interact(player_id, character.id, npc.id, "OFFER_HELP", f"help-{player_id}")
     return character, greenwood, quest, npc
 
 
@@ -129,12 +121,8 @@ async def test_dialogue_is_grounded_idempotent_and_read_only(
             NarrativeContextBuilder(NarrativeRepository(session), EmptyRetriever()),
             generator,
         )
-        first = await service.dialogue(
-            player_id, character.id, npc.id, "QUEST", "dialogue-1"
-        )
-        repeated = await service.dialogue(
-            player_id, character.id, npc.id, "QUEST", "dialogue-1"
-        )
+        first = await service.dialogue(player_id, character.id, npc.id, "QUEST", "dialogue-1")
+        repeated = await service.dialogue(player_id, character.id, npc.id, "QUEST", "dialogue-1")
 
     assert len(generator.requests) == 1
     instruction = generator.requests[0].instruction
@@ -165,12 +153,8 @@ async def test_non_dialogue_context_cache_avoids_duplicate_generation(
             NarrativeContextBuilder(NarrativeRepository(session), EmptyRetriever()),
             generator,
         )
-        first = await service.quest_framing(
-            player_id, character.id, quest.id, "framing-1"
-        )
-        second = await service.quest_framing(
-            player_id, character.id, quest.id, "framing-2"
-        )
+        first = await service.quest_framing(player_id, character.id, quest.id, "framing-1")
+        second = await service.quest_framing(player_id, character.id, quest.id, "framing-2")
 
     assert len(generator.requests) == 1
     assert not first.cached
@@ -188,9 +172,7 @@ async def test_qdrant_failure_uses_postgres_memory_and_local_fallback(
     async with session_factory() as session:
         service = NarrativeService(
             NarrativeUnitOfWork(session),
-            NarrativeContextBuilder(
-                NarrativeRepository(session), UnavailableRetriever()
-            ),
+            NarrativeContextBuilder(NarrativeRepository(session), UnavailableRetriever()),
             generator,
         )
         result = await service.location_description(

@@ -51,10 +51,7 @@ class MemoryRetriever:
         ranked: list[RetrievedMemory] = []
         for memory in memories:
             tags = frozenset(memory.tags)
-            if (
-                query.allowed_entity_ids
-                and memory.entity_id not in query.allowed_entity_ids
-            ):
+            if query.allowed_entity_ids and memory.entity_id not in query.allowed_entity_ids:
                 continue
             if not query.required_tags.issubset(tags):
                 continue

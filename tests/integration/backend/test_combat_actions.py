@@ -27,9 +27,7 @@ async def _ready_character(player_id: UUID, job_name: str = "Alchemist") -> typi
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))
         definitions = await service.creation_definitions()
-        job = next(
-            value for value in definitions.starting_jobs if value.name == job_name
-        )
+        job = next(value for value in definitions.starting_jobs if value.name == job_name)
         character = await service.create_character(
             player_id,
             CreateCharacterRequest(
@@ -44,9 +42,7 @@ async def _ready_character(player_id: UUID, job_name: str = "Alchemist") -> typi
     async with session_factory() as session:
         service = CharacterService(GameUnitOfWork(session))
         locations = await service.locations(player_id, character.id)
-        greenwood = next(
-            value for value in locations if value.name == "Greenwood Verge"
-        )
+        greenwood = next(value for value in locations if value.name == "Greenwood Verge")
         await service.travel(
             player_id,
             character.id,
@@ -56,9 +52,7 @@ async def _ready_character(player_id: UUID, job_name: str = "Alchemist") -> typi
     return character
 
 
-async def _start(
-    player_id: UUID, character_id: UUID, seed: int
-) -> tuple[typing.Any, typing.Any]:
+async def _start(player_id: UUID, character_id: UUID, seed: int) -> tuple[typing.Any, typing.Any]:
     async with session_factory() as session:
         service = CombatService(CombatUnitOfWork(session))
         definition = (await service.available_encounters(player_id, character_id))[0]
@@ -80,9 +74,7 @@ async def _act(
     key: str,
 ) -> typing.Any:
     async with session_factory() as session:
-        return await CombatService(CombatUnitOfWork(session)).act(
-            player_id, request, key
-        )
+        return await CombatService(CombatUnitOfWork(session)).act(player_id, request, key)
 
 
 @pytest.mark.asyncio
@@ -143,9 +135,7 @@ async def test_guard_wait_healing_skill_and_consumable_actions_persist(
             player_id, character.id
         )
     assert (
-        next(
-            value for value in remaining.items if value.name == "Field Potion"
-        ).quantity
+        next(value for value in remaining.items if value.name == "Field Potion").quantity
         == potion.quantity - 1
     )
 
@@ -157,9 +147,7 @@ async def test_offensive_and_barrier_skills_use_engine_owned_resources(
     mage_player = uuid4()
     mage = await _ready_character(mage_player, "Mage")
     _, mage_state = await _start(mage_player, mage.id, 202)
-    enemy_before = next(
-        value for value in mage_state.participants if value.side == "ENEMY"
-    )
+    enemy_before = next(value for value in mage_state.participants if value.side == "ENEMY")
     mage_state = await _act(
         mage_player,
         CombatActionRequest(
@@ -169,17 +157,13 @@ async def test_offensive_and_barrier_skills_use_engine_owned_resources(
         ),
         "mage-skill",
     )
-    enemy_after = next(
-        value for value in mage_state.participants if value.side == "ENEMY"
-    )
+    enemy_after = next(value for value in mage_state.participants if value.side == "ENEMY")
     assert enemy_after.current_hp < enemy_before.current_hp
 
     druid_player = uuid4()
     druid = await _ready_character(druid_player, "Druid")
     _, druid_state = await _start(druid_player, druid.id, 303)
-    druid_before = next(
-        value for value in druid_state.participants if value.side == "PLAYER"
-    )
+    druid_before = next(value for value in druid_state.participants if value.side == "PLAYER")
     druid_state = await _act(
         druid_player,
         CombatActionRequest(
@@ -189,9 +173,7 @@ async def test_offensive_and_barrier_skills_use_engine_owned_resources(
         ),
         "barrier-skill",
     )
-    druid_after = next(
-        value for value in druid_state.participants if value.side == "PLAYER"
-    )
+    druid_after = next(value for value in druid_state.participants if value.side == "PLAYER")
     assert druid_after.current_mp == druid_before.current_mp - druid.skills[0].mana_cost
     assert druid_after.guarding
 
@@ -203,18 +185,14 @@ async def test_escape_success_failure_and_retry_are_deterministic(
     success_seed = next(
         seed for seed in range(1000) if SeededRolls.percent(seed, 0, "escape") <= 10
     )
-    failure_seed = next(
-        seed for seed in range(1000) if SeededRolls.percent(seed, 0, "escape") > 90
-    )
+    failure_seed = next(seed for seed in range(1000) if SeededRolls.percent(seed, 0, "escape") > 90)
 
     success_player = uuid4()
     success_character = await _ready_character(success_player)
     _, success_state = await _start(success_player, success_character.id, success_seed)
     async with session_factory() as session:
         service = CombatService(CombatUnitOfWork(session))
-        escaped = await service.flee(
-            success_player, success_state.combat_id, "escape-success"
-        )
+        escaped = await service.flee(success_player, success_state.combat_id, "escape-success")
     async with session_factory() as session:
         replayed = await CombatService(CombatUnitOfWork(session)).flee(
             success_player, success_state.combat_id, "escape-success"
@@ -225,9 +203,7 @@ async def test_escape_success_failure_and_retry_are_deterministic(
     failure_player = uuid4()
     failure_character = await _ready_character(failure_player)
     _, failure_state = await _start(failure_player, failure_character.id, failure_seed)
-    before = next(
-        value for value in failure_state.participants if value.side == "PLAYER"
-    )
+    before = next(value for value in failure_state.participants if value.side == "PLAYER")
     async with session_factory() as session:
         failed = await CombatService(CombatUnitOfWork(session)).flee(
             failure_player, failure_state.combat_id, "escape-failure"
@@ -241,9 +217,7 @@ async def test_escape_success_failure_and_retry_are_deterministic(
 async def test_defeat_sets_recovery_hp_and_blocks_future_actions(
     clean_gameplay_database: None,
 ) -> None:
-    seed = next(
-        value for value in range(1000) if SeededRolls.percent(value, 1, "hit") <= 90
-    )
+    seed = next(value for value in range(1000) if SeededRolls.percent(value, 1, "hit") <= 90)
     player_id = uuid4()
     character = await _ready_character(player_id)
     _, state = await _start(player_id, character.id, seed)
@@ -437,16 +411,14 @@ async def test_save_create_and_load_are_blocked_during_active_combat(
     player_id = uuid4()
     character = await _ready_character(player_id)
     async with session_factory() as session:
-        save = await SaveService(
-            SaveUnitOfWork(session), GameStateRepository(session)
-        ).create_save(player_id, character.id, "Before combat", "save-before-combat")
+        save = await SaveService(SaveUnitOfWork(session), GameStateRepository(session)).create_save(
+            player_id, character.id, "Before combat", "save-before-combat"
+        )
     _, state = await _start(player_id, character.id, 606)
 
     with pytest.raises(SaveActiveCombatError, match="create"):
         async with session_factory() as session:
-            await SaveService(
-                SaveUnitOfWork(session), GameStateRepository(session)
-            ).create_save(
+            await SaveService(SaveUnitOfWork(session), GameStateRepository(session)).create_save(
                 player_id,
                 character.id,
                 "During combat",
@@ -454,12 +426,10 @@ async def test_save_create_and_load_are_blocked_during_active_combat(
             )
     with pytest.raises(SaveActiveCombatError, match="load"):
         async with session_factory() as session:
-            await SaveService(
-                SaveUnitOfWork(session), GameStateRepository(session)
-            ).load_save(player_id, save.save_id, "load-during-combat")
+            await SaveService(SaveUnitOfWork(session), GameStateRepository(session)).load_save(
+                player_id, save.save_id, "load-during-combat"
+            )
 
     async with session_factory() as session:
-        unchanged = await CombatService(CombatUnitOfWork(session)).get(
-            player_id, state.combat_id
-        )
+        unchanged = await CombatService(CombatUnitOfWork(session)).get(player_id, state.combat_id)
     assert unchanged.status == "ACTIVE"

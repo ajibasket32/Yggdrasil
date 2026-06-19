@@ -44,9 +44,7 @@ async def clean_rag_infrastructure() -> AsyncIterator[None]:
             )
         )
     redis_client = redis.from_url(settings.redis_url.get_secret_value())  # type: ignore[no-untyped-call]
-    async with httpx.AsyncClient(
-        timeout=settings.rag_qdrant_timeout_seconds
-    ) as http_client:
+    async with httpx.AsyncClient(timeout=settings.rag_qdrant_timeout_seconds) as http_client:
         qdrant = QdrantClient(
             http_client,
             settings.qdrant_url,
