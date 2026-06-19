@@ -17,22 +17,22 @@ down_revision: str | None = "0010_expand_content"
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
-# Existing IDs
-HUMAN_ID = "51000000-0000-0000-0000-000000000001"
-GREENWOOD_ID = "56000000-0000-0000-0000-000000000002"
-VALERIS_ID = "56000000-0000-0000-0000-000000000005"
-SILAS_ID = "74000000-0000-0000-0000-000000000002"
-HAGAR_ID = "74000000-0000-0000-0000-000000000006"
-KAEL_ID = "74000000-0000-0000-0000-000000000007"
+# Existing IDs (converted to UUID objects)
+HUMAN_ID = UUID("51000000-0000-0000-0000-000000000001")
+GREENWOOD_ID = UUID("56000000-0000-0000-0000-000000000002")
+VALERIS_ID = UUID("56000000-0000-0000-0000-000000000005")
+SILAS_ID = UUID("74000000-0000-0000-0000-000000000002")
+HAGAR_ID = UUID("74000000-0000-0000-0000-000000000006")
+KAEL_ID = UUID("74000000-0000-0000-0000-000000000007")
 
 # New IDs for v1.2
-ELENA_ID = "74000000-0000-0000-0000-000000000008"
-SHOP_SILAS_ID = "80000000-0000-0000-0000-000000000001"
-ITEM_GREATER_POTION_ID = "54000000-0000-0000-0000-000000000010"
-ITEM_STEEL_SWORD_ID = "54000000-0000-0000-0000-000000000011"
-ITEM_IRON_SHIELD_ID = "54000000-0000-0000-0000-000000000012"
-QUEST_BLACKSMITH_ID = "75000000-0000-0000-0000-000000000008"
-QUEST_SCOUT_ID = "75000000-0000-0000-0000-000000000009"
+ELENA_ID = UUID("74000000-0000-0000-0000-000000000008")
+SHOP_SILAS_ID = UUID("80000000-0000-0000-0000-000000000001")
+ITEM_GREATER_POTION_ID = UUID("54000000-0000-0000-0000-000000000010")
+ITEM_STEEL_SWORD_ID = UUID("54000000-0000-0000-0000-000000000011")
+ITEM_IRON_SHIELD_ID = UUID("54000000-0000-0000-0000-000000000012")
+QUEST_BLACKSMITH_ID = UUID("75000000-0000-0000-0000-000000000008")
+QUEST_SCOUT_ID = UUID("75000000-0000-0000-0000-000000000009")
 
 
 def _audit_columns() -> list[sa.Column[object]]:
@@ -85,7 +85,7 @@ def upgrade() -> None:
     )
 
     # 2. Add new items
-    items = sa.table(
+    items_table = sa.table(
         "items",
         sa.column("id", sa.Uuid()),
         sa.column("name", sa.String()),
@@ -104,7 +104,7 @@ def upgrade() -> None:
         sa.column("required_level", sa.Integer()),
     )
     op.bulk_insert(
-        items,
+        items_table,
         [
             {
                 "id": ITEM_GREATER_POTION_ID,
@@ -161,63 +161,81 @@ def upgrade() -> None:
     )
 
     # 3. Seed Shop for Silas
-    op.execute(
-        sa.text(
-            "INSERT INTO shops (id, owner_npc_id, name, description) "
-            "VALUES (:id, :owner, :name, :desc)"
-        ).bindparams(
-            id=SHOP_SILAS_ID,
-            owner=SILAS_ID,
-            name="Silas's Sundries",
-            desc="Silas offers various wares for the traveling adventurer.",
-        )
+    shops_table = sa.table(
+        "shops",
+        sa.column("id", sa.Uuid()),
+        sa.column("owner_npc_id", sa.Uuid()),
+        sa.column("name", sa.String()),
+        sa.column("description", sa.Text()),
     )
-    op.execute(
-        sa.text(
-            "INSERT INTO shop_items (shop_id, item_id, price) "
-            "VALUES (:shop, :item, :price)"
-        ).bindparams(
-            shop=SHOP_SILAS_ID,
-            item=ITEM_GREATER_POTION_ID,
-            price=100,
-        )
+    op.bulk_insert(
+        shops_table,
+        [
+            {
+                "id": SHOP_SILAS_ID,
+                "owner_npc_id": SILAS_ID,
+                "name": "Silas's Sundries",
+                "description": "Silas offers various wares for the traveling adventurer.",
+            }
+        ],
     )
-    op.execute(
-        sa.text(
-            "INSERT INTO shop_items (shop_id, item_id, price) "
-            "VALUES (:shop, :item, :price)"
-        ).bindparams(
-            shop=SHOP_SILAS_ID,
-            item=ITEM_STEEL_SWORD_ID,
-            price=450,
-        )
+
+    shop_items_table = sa.table(
+        "shop_items",
+        sa.column("shop_id", sa.Uuid()),
+        sa.column("item_id", sa.Uuid()),
+        sa.column("price", sa.Integer()),
+    )
+    op.bulk_insert(
+        shop_items_table,
+        [
+            {
+                "shop_id": SHOP_SILAS_ID,
+                "item_id": ITEM_GREATER_POTION_ID,
+                "price": 100,
+            },
+            {
+                "shop_id": SHOP_SILAS_ID,
+                "item_id": ITEM_STEEL_SWORD_ID,
+                "price": 450,
+            },
+        ],
     )
 
     # 4. Add Innkeeper Elena
-    op.execute(
-        sa.text(
-            "INSERT INTO npcs (id, name, race_id, home_location_id, occupation, role, personality_profile, schedule, knowledge, is_alive) "
-            "VALUES (:id, :name, :race, :loc, :occ, :role, :pers, :sched, :know, :alive)"
-        ).bindparams(
-            id=ELENA_ID,
-            name="Innkeeper Elena",
-            race=HUMAN_ID,
-            loc=GREENWOOD_ID,
-            occ="Innkeeper",
-            role="INNKEEPER",
-            pers=_json().result_processor(None, None)({"archetype": "hospitable_host"}),
-            sched=_json().result_processor(None, None)(
-                [{"start_hour": 0, "end_hour": 24, "location_id": GREENWOOD_ID}]
-            ),
-            know=_json().result_processor(None, None)(
-                {"topics": ["resting", "local_rumors"]}
-            ),
-            alive=True,
-        )
+    npcs_table = sa.table(
+        "npcs",
+        sa.column("id", sa.Uuid()),
+        sa.column("name", sa.String()),
+        sa.column("race_id", sa.Uuid()),
+        sa.column("home_location_id", sa.Uuid()),
+        sa.column("occupation", sa.String()),
+        sa.column("role", sa.String()),
+        sa.column("personality_profile", _json()),
+        sa.column("schedule", _json()),
+        sa.column("knowledge", _json()),
+        sa.column("is_alive", sa.Boolean()),
+    )
+    op.bulk_insert(
+        npcs_table,
+        [
+            {
+                "id": ELENA_ID,
+                "name": "Innkeeper Elena",
+                "race_id": HUMAN_ID,
+                "home_location_id": GREENWOOD_ID,
+                "occupation": "Innkeeper",
+                "role": "INNKEEPER",
+                "personality_profile": {"archetype": "hospitable_host"},
+                "schedule": [{"start_hour": 0, "end_hour": 24, "location_id": GREENWOOD_ID}],
+                "knowledge": {"topics": ["resting", "local_rumors"]},
+                "is_alive": True,
+            }
+        ],
     )
 
     # 5. Add v1.2 Quests
-    quests = sa.table(
+    quests_table = sa.table(
         "quests",
         sa.column("id", sa.Uuid()),
         sa.column("title", sa.String()),
@@ -231,7 +249,7 @@ def upgrade() -> None:
         sa.column("repeatable", sa.Boolean()),
     )
     op.bulk_insert(
-        quests,
+        quests_table,
         [
             {
                 "id": QUEST_BLACKSMITH_ID,
@@ -251,7 +269,7 @@ def upgrade() -> None:
                 "description": "Kael reports strange sightings near the Sylvan Deep.",
                 "location_id": GREENWOOD_ID,
                 "giver_npc_id": KAEL_ID,
-                "faction_id": "72000000-0000-0000-0000-000000000001",
+                "faction_id": UUID("72000000-0000-0000-0000-000000000001"),
                 "minimum_level": 3,
                 "prerequisites": ["75000000-0000-0000-0000-000000000006"],
                 "rewards": {"experience": 300, "gold": 150, "reputation": 60},
@@ -260,36 +278,18 @@ def upgrade() -> None:
         ],
     )
 
-    # Quest Steps
-    steps = sa.table(
-        "quest_steps",
-        sa.column("quest_id", sa.Uuid()),
-        sa.column("sequence", sa.SmallInteger()),
-        sa.column("objective_type", sa.String()),
-        sa.column("target_id", sa.Uuid()),
-        sa.column("description", sa.Text()),
-        sa.column("required_count", sa.Integer()),
+    # Quest Steps (Using a different approach to ensure UUIDs)
+    op.execute(
+        sa.text(
+            "INSERT INTO quest_steps (id, quest_id, sequence, objective_type, target_id, description, required_count) "
+            "VALUES (uuid_generate_v4(), :quest_id, 0, 'NPC_HELP', :target_id, 'Discuss the alloy with Hagar.', 1)"
+        ).bindparams(quest_id=QUEST_BLACKSMITH_ID, target_id=HAGAR_ID)
     )
-    op.bulk_insert(
-        steps,
-        [
-            {
-                "quest_id": QUEST_BLACKSMITH_ID,
-                "sequence": 0,
-                "objective_type": "NPC_HELP",
-                "target_id": HAGAR_ID,
-                "description": "Discuss the alloy with Hagar.",
-                "required_count": 1,
-            },
-            {
-                "quest_id": QUEST_SCOUT_ID,
-                "sequence": 0,
-                "objective_type": "NPC_HELP",
-                "target_id": KAEL_ID,
-                "description": "Receive the scouting orders from Kael.",
-                "required_count": 1,
-            },
-        ],
+    op.execute(
+        sa.text(
+            "INSERT INTO quest_steps (id, quest_id, sequence, objective_type, target_id, description, required_count) "
+            "VALUES (uuid_generate_v4(), :quest_id, 0, 'NPC_HELP', :target_id, 'Receive the scouting orders from Kael.', 1)"
+        ).bindparams(quest_id=QUEST_SCOUT_ID, target_id=KAEL_ID)
     )
 
     # 6. Add Triggers
@@ -305,20 +305,24 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     op.execute(
-        sa.text("DELETE FROM quest_steps WHERE quest_id IN (:q1, :q2)").bindparams(
-            q1=QUEST_BLACKSMITH_ID, q2=QUEST_SCOUT_ID
-        )
+        sa.text(
+            "DELETE FROM quest_steps WHERE quest_id IN (CAST(:q1 AS UUID), CAST(:q2 AS UUID))"
+        ).bindparams(q1=QUEST_BLACKSMITH_ID, q2=QUEST_SCOUT_ID)
     )
     op.execute(
-        sa.text("DELETE FROM quests WHERE id IN (:q1, :q2)").bindparams(
-            q1=QUEST_BLACKSMITH_ID, q2=QUEST_SCOUT_ID
-        )
+        sa.text(
+            "DELETE FROM quests WHERE id IN (CAST(:q1 AS UUID), CAST(:q2 AS UUID))"
+        ).bindparams(q1=QUEST_BLACKSMITH_ID, q2=QUEST_SCOUT_ID)
     )
-    op.execute(sa.text("DELETE FROM npcs WHERE id = :id").bindparams(id=ELENA_ID))
+    op.execute(
+        sa.text("DELETE FROM npcs WHERE id = CAST(:id AS UUID)").bindparams(id=ELENA_ID)
+    )
     op.drop_table("shop_items")
     op.drop_table("shops")
     op.execute(
-        sa.text("DELETE FROM items WHERE id IN (:i1, :i2, :i3)").bindparams(
+        sa.text(
+            "DELETE FROM items WHERE id IN (CAST(:i1 AS UUID), CAST(:i2 AS UUID), CAST(:i3 AS UUID))"
+        ).bindparams(
             i1=ITEM_GREATER_POTION_ID, i2=ITEM_STEEL_SWORD_ID, i3=ITEM_IRON_SHIELD_ID
         )
     )
