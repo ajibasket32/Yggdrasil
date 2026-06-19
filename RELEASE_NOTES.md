@@ -1,6 +1,6 @@
-# Release Notes - v1.1.0
+# Release Notes - v1.1.0-rc.1
 
-Version: 1.1.0
+Version: 1.1.0-rc.1
 Status: RC (Release Candidate)
 Last reviewed: 2026-06-18
 
@@ -15,20 +15,22 @@ Yggdrasil Chronicles v1.1.0 focuses on "JRPG Polish," transforming the technical
 - **Combat Visuals**: Animated damage/healing popups and status effect icons.
 - **New Content**:
     - NPCs: Blacksmith Hagar (Valeris), Scout Kael (Greenwood).
-    - Quests: "The Master Iron", "Sylvan Reconnaissance", "A Scout Tool" (Repeatable).
+    - Quests: "The Master's Iron", "Sylvan Reconnaissance", "A Scout's Tool" (Repeatable).
     - Location: Sylvan Branch route expansion.
     - Monsters: Giant Wasp, Ancient Sentry.
-    - Items: High-Grade Iron Ore, Sharpening Stone, Scout Map.
+    - Items: High-Grade Iron Ore, Sharpening Stone, Scout's Map.
 
 ## Validation Evidence
-- **GitHub Actions CI**: PASS (Pre-push local pass)
-- **Frontend Coverage**: 85.71% Branch Coverage.
-- **Backend Coverage**: >80%.
+- **Backend Tests**: PASS (56/56)
+- **Frontend Tests**: PASS (59/59)
+- **Frontend Coverage**: 80.21% Branch Coverage.
+- **Security Audit**: Zero high/critical vulnerabilities (Verified via `pip-audit` and `npm audit`)
+- **Visual Verification**: PASS (Screenshots captured)
 - **Critical Journey Validation**: PASS via fallback script.
 
 ---
 
-# Release Notes
+# Release Notes - v1.0.0
 
 Version: 1.0.0
 Status: GA (General Availability)

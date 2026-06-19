@@ -1,6 +1,6 @@
 # Windows Quickstart Guide
 
-**Version**: v1.1.0 (JRPG Polish) - 2026-06-18
+**Version**: v1.1.0-rc.1 (JRPG Polish) - 2026-06-18
 
 Welcome to Yggdrasil Chronicles! This guide will help you get the game running on your Windows machine easily.
 

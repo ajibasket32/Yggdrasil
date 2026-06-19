@@ -18,7 +18,7 @@ Read these documents in this order:
 
 Supporting records: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_NOTES.md`](RELEASE_NOTES.md), [`assets/CATALOG.md`](assets/CATALOG.md), [`docs/adr/`](docs/adr/), and [`DOCUMENTATION_AUDIT.md`](DOCUMENTATION_AUDIT.md).
 
-**Current Version**: v1.0.0 (MVP Release) - 2026-06-18
+**Current Version**: v1.1.0-rc.1 (Release Candidate) - 2026-06-18
 
 ## Target Stack
 
