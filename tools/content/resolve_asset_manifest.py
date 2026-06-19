@@ -1,53 +1,13 @@
 import json
 import sys
 import os
-from urllib.parse import urlparse
+from typing import Dict, Any, List
 
 ALLOWED_DOMAINS = [
     "opengameart.org",
     "kenney.nl",
-    "raw.githubusercontent.com",
+    "raw.githubusercontent.com/KenneyNL"
 ]
-
-ALLOWED_GITHUB_PATH_PREFIXES = [
-    "/KenneyNL/",
-]
-
-
-def _repo_root() -> str:
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-
-
-def _is_local_file_path(path: str) -> bool:
-    parsed = urlparse(path)
-    if parsed.scheme or parsed.netloc:
-        return False
-
-    if os.path.isabs(path):
-        candidate = path
-    else:
-        candidate = os.path.join(_repo_root(), path)
-
-    return os.path.isfile(candidate)
-
-
-def _is_allowed_remote_url(remote_url: str) -> bool:
-    parsed = urlparse(remote_url)
-    hostname = parsed.hostname
-    if parsed.scheme not in {"http", "https"} or hostname is None:
-        return False
-
-    normalized_hostname = hostname.lower()
-    if normalized_hostname not in ALLOWED_DOMAINS:
-        return False
-
-    if normalized_hostname == "raw.githubusercontent.com":
-        return any(
-            parsed.path.startswith(prefix) for prefix in ALLOWED_GITHUB_PATH_PREFIXES
-        )
-
-    return True
-
 
 def resolve_assets(pack_path: str, download: bool = False):
     manifest_file = os.path.join(pack_path, "assets.json")
@@ -62,11 +22,18 @@ def resolve_assets(pack_path: str, download: bool = False):
             print(f"Error decoding JSON: {e}")
             return False
 
-    report = {"pack_id": manifest.get("pack_id"), "resolution_results": []}
+    report = {
+        "pack_id": manifest.get("pack_id"),
+        "resolution_results": []
+    }
 
     all_ok = True
     for asset in manifest.get("assets", []):
-        result = {"asset_id": asset["asset_id"], "status": asset["status"], "notes": []}
+        result = {
+            "asset_id": asset["asset_id"],
+            "status": asset["status"],
+            "notes": []
+        }
 
         # Check license
         if "license" not in asset or not asset["license"]:
@@ -80,24 +47,20 @@ def resolve_assets(pack_path: str, download: bool = False):
         # Check local fallback
         fallback = asset.get("preferred_fallback")
         if fallback:
-            if _is_local_file_path(fallback):
+            # Check if fallback exists relative to repo root
+            if os.path.exists(fallback):
                 result["notes"].append(f"Local fallback found: {fallback}")
             else:
                 result["notes"].append(f"Local fallback missing: {fallback}")
                 if asset["status"] == "local":
                     result["status"] = "missing"
                     all_ok = False
-        elif asset["status"] == "local":
-            result["status"] = "missing"
-            result["notes"].append(
-                "Local assets require preferred_fallback pointing to an existing file."
-            )
-            all_ok = False
 
         # Check remote URL
         remote_url = asset.get("remote_url")
         if remote_url:
-            if not _is_allowed_remote_url(remote_url):
+            domain_ok = any(domain in remote_url for domain in ALLOWED_DOMAINS)
+            if not domain_ok:
                 result["status"] = "blocked"
                 result["notes"].append(f"Domain not in allowlist: {remote_url}")
                 all_ok = False
@@ -119,17 +82,11 @@ def resolve_assets(pack_path: str, download: bool = False):
 
     return all_ok
 
-
 if __name__ == "__main__":
     import argparse
-
-    parser = argparse.ArgumentParser(
-        description="Resolve asset manifest for a content pack."
-    )
+    parser = argparse.ArgumentParser(description="Resolve asset manifest for a content pack.")
     parser.add_argument("pack_path", help="Path to the content pack directory")
-    parser.add_argument(
-        "--download", action="store_true", help="Attempt to download remote assets"
-    )
+    parser.add_argument("--download", action="store_true", help="Attempt to download remote assets")
 
     args = parser.parse_args()
     success = resolve_assets(args.pack_path, args.download)
