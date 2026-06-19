@@ -1,0 +1,12 @@
+{
+  "pack_id": "example_sylvan_supply",
+  "resolution_results": [
+    {
+      "asset_id": "npc_elara_portrait",
+      "status": "local",
+      "notes": [
+        "Local fallback found: assets/ui/portraits/placeholder.png"
+      ]
+    }
+  ]
+}

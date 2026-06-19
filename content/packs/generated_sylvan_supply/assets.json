@@ -1,0 +1,12 @@
+{
+  "pack_id": "generated_sylvan_supply_42",
+  "assets": [
+    {
+      "asset_id": "npc_23b8c1e9-3924-56de-3eb1-3b9046685257_sprite",
+      "type": "sprite",
+      "license": "CC0",
+      "status": "local",
+      "preferred_fallback": "assets/ui/portraits/placeholder.png"
+    }
+  ]
+}

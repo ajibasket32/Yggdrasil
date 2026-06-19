@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Content Pack",
+  "type": "object",
+  "properties": {
+    "pack_id": { "type": "string" },
+    "version": { "type": "string" },
+    "generated_by": { "type": "string" },
+    "seed": { "type": "integer" },
+    "theme": { "type": "string" },
+    "npcs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "home_location_id": { "type": "string", "format": "uuid" },
+          "personality": { "type": "object" }
+        },
+        "required": ["id", "name", "role", "home_location_id"]
+      }
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "region": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "required": ["id", "name", "region"]
+      }
+    },
+    "quests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "giver_npc_id": { "type": "string", "format": "uuid" },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "objective_type": { "enum": ["FETCH", "SCOUT", "DEFEAT", "NPC_HELP"] },
+                "target_id": { "type": "string", "format": "uuid" },
+                "count": { "type": "integer", "minimum": 1 },
+                "description": { "type": "string" }
+              },
+              "required": ["objective_type", "target_id", "description"]
+            }
+          },
+          "rewards": {
+            "type": "object",
+            "properties": {
+              "experience": { "type": "integer" },
+              "gold": { "type": "integer" }
+            }
+          }
+        },
+        "required": ["id", "title", "giver_npc_id", "steps"]
+      }
+    },
+    "enemies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "archetype": { "type": "string" },
+          "stats": { "type": "object" }
+        },
+        "required": ["id", "name", "archetype"]
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "type": { "type": "string" },
+          "base_value": { "type": "integer" }
+        },
+        "required": ["id", "name", "type", "base_value"]
+      }
+    },
+    "shops": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "owner_npc_id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "item_id": { "type": "string", "format": "uuid" },
+                "price": { "type": "integer" }
+              },
+              "required": ["item_id", "price"]
+            }
+          }
+        },
+        "required": ["id", "owner_npc_id", "name", "items"]
+      }
+    },
+    "inns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "location_id": { "type": "string", "format": "uuid" },
+          "name": { "type": "string" },
+          "rest_cost": { "type": "integer" }
+        },
+        "required": ["id", "location_id", "name", "rest_cost"]
+      }
+    },
+    "dialogue_seeds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "npc_id": { "type": "string", "format": "uuid" },
+          "topic": { "type": "string" },
+          "text_template": { "type": "string" }
+        },
+        "required": ["id", "npc_id", "topic", "text_template"]
+      }
+    },
+    "validation_status": { "enum": ["pending", "validated", "error"] }
+  },
+  "required": ["pack_id", "version", "npcs", "locations", "quests", "items"]
+}

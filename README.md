@@ -33,6 +33,19 @@ If you are a Windows user looking for the easiest way to start the game, please 
 
 ## Development Start
 
+### Content Generation Pipeline (Post-Launch)
+
+The game includes a deterministic pipeline for generating new content packs:
+
+1. **Generate**: `python tools/content/generate_content_pack.py --seed 42 --theme sylvan_supply --out content/packs/generated_sylvan_supply`
+2. **Validate**: `python tools/content/validate_content_pack.py content/packs/generated_sylvan_supply`
+3. **Resolve Assets**: `python tools/content/resolve_asset_manifest.py content/packs/generated_sylvan_supply`
+4. **AI Repair (Optional)**: `python tools/content/content_ai_orchestrator.py --pack content/packs/generated_sylvan_supply --repair`
+
+AI is optional and used only as an assistant; the core gameplay remains deterministic.
+
+### Standard Start
+
 Start the complete foundation stack:
 
 ```bash

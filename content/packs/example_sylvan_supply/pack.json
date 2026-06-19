@@ -1,0 +1,53 @@
+{
+  "pack_id": "example_sylvan_supply",
+  "version": "1.0.0",
+  "generated_by": "manual",
+  "seed": 123,
+  "theme": "sylvan",
+  "locations": [
+    {
+      "id": "56000000-0000-0000-0000-000000000010",
+      "name": "Sylvan Grove",
+      "region": "Valeria",
+      "description": "A quiet grove with silver-leaved trees."
+    }
+  ],
+  "npcs": [
+    {
+      "id": "74000000-0000-0000-0000-000000000020",
+      "name": "Elara the Herbalist",
+      "role": "HERBALIST",
+      "home_location_id": "56000000-0000-0000-0000-000000000010",
+      "personality": { "archetype": "friendly" }
+    }
+  ],
+  "items": [
+    {
+      "id": "54000000-0000-0000-0000-000000000030",
+      "name": "Silverbloom Petal",
+      "type": "QUEST_ITEM",
+      "base_value": 0
+    }
+  ],
+  "quests": [
+    {
+      "id": "75000000-0000-0000-0000-000000000040",
+      "title": "Silverbloom Gathering",
+      "description": "Gather Silverbloom Petals for Elara.",
+      "giver_npc_id": "74000000-0000-0000-0000-000000000020",
+      "steps": [
+        {
+          "objective_type": "FETCH",
+          "target_id": "54000000-0000-0000-0000-000000000030",
+          "count": 5,
+          "description": "Gather 5 Silverbloom Petals."
+        }
+      ],
+      "rewards": {
+        "experience": 100,
+        "gold": 50
+      }
+    }
+  ],
+  "validation_status": "pending"
+}

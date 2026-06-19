@@ -25,25 +25,31 @@ EXPECTED_SEEDS = (
     SeedExpectation("locations", 6),
     SeedExpectation("factions", 5),
     SeedExpectation("dungeons", 5),
-    SeedExpectation("npcs", 7),
-    SeedExpectation("quests", 7),
-    SeedExpectation("quest_steps", 8),
+    SeedExpectation("npcs", 8),
+    SeedExpectation("quests", 9),
+    SeedExpectation("quest_steps", 12),
+    SeedExpectation("shops", 1),
 )
 
 EXPECTED_NAMED_ROWS = (
     ("races", "Human"),
     ("jobs", "Warrior"),
     ("items", "Field Potion"),
+    ("items", "Steel Sword"),
     ("locations", "Greenwood Verge"),
     ("locations", "Ancient Crossroads"),
     ("locations", "Sylvan Branch"),
     ("npcs", "Warden Elara"),
     ("npcs", "Blacksmith Hagar"),
     ("npcs", "Scout Kael"),
+    ("npcs", "Innkeeper Elena"),
     ("quests", "The Rootbound Watch"),
     ("quests", "Sylvan Reconnaissance"),
     ("quests", "The Master's Iron"),
     ("quests", "A Scout's Tool"),
+    ("quests", "The Blacksmith's Request"),
+    ("quests", "Scouting the Border"),
+    ("shops", "Silas's Sundries"),
 )
 
 

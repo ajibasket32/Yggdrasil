@@ -1,0 +1,12 @@
+{
+  "pack_id": "example_sylvan_supply",
+  "assets": [
+    {
+      "asset_id": "npc_elara_portrait",
+      "type": "portrait",
+      "license": "CC0",
+      "status": "local",
+      "preferred_fallback": "assets/ui/portraits/placeholder.png"
+    }
+  ]
+}
