@@ -10,11 +10,18 @@ vi.mock("../components/GameCanvas");
 describe("Shop and Inn Flow", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    (gameApi.definitions as any).mockResolvedValue({ races: [], starting_jobs: [], starting_location: {} });
+    (gameApi.definitions as any).mockResolvedValue({
+      races: [],
+      starting_jobs: [],
+      starting_location: {},
+    });
     (gameApi.characters as any).mockResolvedValue([sheet]);
     (gameApi.character as any).mockResolvedValue({ ...sheet, gold: 1000 });
     (gameApi.inventory as any).mockResolvedValue(inventory);
-    (gameApi.equipment as any).mockResolvedValue({ slots: [], total_equipment_bonuses: {} });
+    (gameApi.equipment as any).mockResolvedValue({
+      slots: [],
+      total_equipment_bonuses: {},
+    });
     (gameApi.locations as any).mockResolvedValue([]);
     (gameApi.encounters as any).mockResolvedValue([]);
     (gameApi.quests as any).mockResolvedValue([]);
@@ -23,19 +30,19 @@ describe("Shop and Inn Flow", () => {
     (gameApi.journal as any).mockResolvedValue([]);
 
     const merchant = {
-        ...npc,
-        id: "merchant-1",
-        name: "Merchant Silas",
-        role: "MERCHANT",
-        available_actions: ["GREET", "OFFER_HELP", "SHOP"],
-        shop_id: "shop-1"
+      ...npc,
+      id: "merchant-1",
+      name: "Merchant Silas",
+      role: "MERCHANT",
+      available_actions: ["GREET", "OFFER_HELP", "SHOP"],
+      shop_id: "shop-1",
     };
     const innkeeper = {
-        ...npc,
-        id: "innkeeper-1",
-        name: "Innkeeper Elena",
-        role: "INNKEEPER",
-        available_actions: ["GREET", "OFFER_HELP", "REST"]
+      ...npc,
+      id: "innkeeper-1",
+      name: "Innkeeper Elena",
+      role: "INNKEEPER",
+      available_actions: ["GREET", "OFFER_HELP", "REST"],
     };
     (gameApi.npcs as any).mockResolvedValue([merchant, innkeeper]);
   });
@@ -46,7 +53,16 @@ describe("Shop and Inn Flow", () => {
       name: "Silas's Sundries",
       description: "Test shop",
       owner_npc_id: "merchant-1",
-      items: [{ item_id: "item-1", name: "Steel Sword", price: 100, rarity: "COMMON", item_type: "WEAPON", description: "A sword" }]
+      items: [
+        {
+          item_id: "item-1",
+          name: "Steel Sword",
+          price: 100,
+          rarity: "COMMON",
+          item_type: "WEAPON",
+          description: "A sword",
+        },
+      ],
     };
     (gameApi.shop as any).mockResolvedValue(mockShop);
     (gameApi.purchase as any).mockResolvedValue({ gold_remaining: 900 });
@@ -75,7 +91,10 @@ describe("Shop and Inn Flow", () => {
   });
 
   it("performs an inn rest", async () => {
-    (gameApi.rest as any).mockResolvedValue({ hp_restored: 50, mp_restored: 20 });
+    (gameApi.rest as any).mockResolvedValue({
+      hp_restored: 50,
+      mp_restored: 20,
+    });
 
     render(<App />);
 
@@ -85,11 +104,15 @@ describe("Shop and Inn Flow", () => {
     // Rest
     fireEvent.click(await screen.findByText("Rest (50g)"));
 
-    expect(await screen.findByText(/Rested at the Inn. Restored 50 HP and 20 MP/)).toBeDefined();
+    expect(
+      await screen.findByText(/Rested at the Inn. Restored 50 HP and 20 MP/),
+    ).toBeDefined();
   });
 
   it("handles shop api errors", async () => {
-    (gameApi.shop as any).mockRejectedValue(new Error("Shop closed for inventory"));
+    (gameApi.shop as any).mockRejectedValue(
+      new Error("Shop closed for inventory"),
+    );
 
     render(<App />);
 
@@ -106,10 +129,21 @@ describe("Shop and Inn Flow", () => {
       name: "Silas's Sundries",
       description: "Test shop",
       owner_npc_id: "merchant-1",
-      items: [{ item_id: "item-1", name: "Steel Sword", price: 100, rarity: "COMMON", item_type: "WEAPON", description: "A sword" }]
+      items: [
+        {
+          item_id: "item-1",
+          name: "Steel Sword",
+          price: 100,
+          rarity: "COMMON",
+          item_type: "WEAPON",
+          description: "A sword",
+        },
+      ],
     };
     (gameApi.shop as any).mockResolvedValue(mockShop);
-    (gameApi.purchase as any).mockRejectedValue(new Error("Insufficient funds in bank"));
+    (gameApi.purchase as any).mockRejectedValue(
+      new Error("Insufficient funds in bank"),
+    );
 
     render(<App />);
 
@@ -122,6 +156,8 @@ describe("Shop and Inn Flow", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Buy" }));
 
-    expect(await screen.findByText("⚠ Insufficient funds in bank")).toBeDefined();
+    expect(
+      await screen.findByText("⚠ Insufficient funds in bank"),
+    ).toBeDefined();
   });
 });

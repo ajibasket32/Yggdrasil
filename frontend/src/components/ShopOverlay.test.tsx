@@ -37,7 +37,7 @@ describe("ShopOverlay", () => {
         busy={false}
         onPurchase={vi.fn()}
         onClose={vi.fn()}
-      />
+      />,
     );
 
     expect(screen.getByText("Test Shop")).toBeDefined();
@@ -57,7 +57,7 @@ describe("ShopOverlay", () => {
         busy={false}
         onPurchase={onPurchase}
         onClose={vi.fn()}
-      />
+      />,
     );
 
     const buyButtons = screen.getAllByRole("button", { name: "Buy" });
@@ -74,7 +74,7 @@ describe("ShopOverlay", () => {
         busy={false}
         onPurchase={vi.fn()}
         onClose={vi.fn()}
-      />
+      />,
     );
 
     const potionButtons = screen.getAllByRole("button", {
@@ -93,7 +93,7 @@ describe("ShopOverlay", () => {
         busy={false}
         onPurchase={vi.fn()}
         onClose={onClose}
-      />
+      />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Close" }));
@@ -109,7 +109,7 @@ describe("ShopOverlay", () => {
         onPurchase={vi.fn()}
         onClose={vi.fn()}
         lastPurchase="Potion"
-      />
+      />,
     );
     expect(screen.getByText("✓ Purchased Potion!")).toBeDefined();
 
@@ -121,7 +121,7 @@ describe("ShopOverlay", () => {
         onPurchase={vi.fn()}
         onClose={vi.fn()}
         error="Something went wrong"
-      />
+      />,
     );
     expect(screen.getByText("⚠ Something went wrong")).toBeDefined();
   });
