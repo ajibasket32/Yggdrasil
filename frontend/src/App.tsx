@@ -184,6 +184,7 @@ const App = () => {
         crypto.randomUUID(),
       );
       await inspectCharacter(created.id);
+      setMenuView("NONE");
     } catch (caught) {
       setError(
         caught instanceof Error ? caught.message : "Character creation failed",

@@ -11,6 +11,20 @@ $RequiredFiles = @(
 
 $Failed = $false
 
+function Get-DockerCommand {
+    $Docker = Get-Command "docker" -ErrorAction SilentlyContinue
+    if ($Docker) {
+        return $Docker.Source
+    }
+
+    $DefaultDockerPath = "C:\Program Files\Docker\Docker\resources\bin\docker.exe"
+    if (Test-Path -LiteralPath $DefaultDockerPath) {
+        return $DefaultDockerPath
+    }
+
+    return $null
+}
+
 function Pass($Message) {
     Write-Host "PASS: $Message" -ForegroundColor Green
 }
@@ -28,11 +42,12 @@ foreach ($File in $RequiredFiles) {
     }
 }
 
-if (-not (Get-Command "docker" -ErrorAction SilentlyContinue)) {
+$DockerCommand = Get-DockerCommand
+if ($null -eq $DockerCommand) {
     Fail "Docker was not found on PATH"
 } else {
     Pass "Docker command is available"
-    docker compose config *> $null
+    & $DockerCommand compose config *> $null
     if ($LASTEXITCODE -eq 0) {
         Pass "docker compose config"
     } else {

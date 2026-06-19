@@ -192,7 +192,7 @@ def upgrade() -> None:
             {
                 "shop_id": SHOP_SILAS_ID,
                 "item_id": ITEM_GREATER_POTION_ID,
-                "price": 100,
+                "price": 50,
             },
             {
                 "shop_id": SHOP_SILAS_ID,

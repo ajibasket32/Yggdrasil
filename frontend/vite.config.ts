@@ -26,6 +26,7 @@ export default defineConfig({
     },
     exclude: [
       "audit_gameplay.spec.ts",
+      "e2e/**",
       "verify_v1_1.spec.ts",
       "node_modules/**/*",
     ],

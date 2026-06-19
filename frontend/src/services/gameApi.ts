@@ -305,7 +305,11 @@ export const gameApi = {
     request<ShopPurchaseResult>(`/shops/${shopId}/purchase`, playerId, {
       method: "POST",
       headers: { "Idempotency-Key": idempotencyKey },
-      body: JSON.stringify({ character_id: characterId, item_id: itemId }),
+      body: JSON.stringify({
+        character_id: characterId,
+        shop_id: shopId,
+        item_id: itemId,
+      }),
     }),
   rest: (
     playerId: string,

@@ -55,11 +55,19 @@ async def test_complete_world_flow_is_deterministic_and_persistent(
 
     async with session_factory() as session:
         world = WorldService(WorldUnitOfWork(session))
-        quest = (await world.quests(player_id, character.id))[0]
+        quest = next(
+            value
+            for value in await world.quests(player_id, character.id)
+            if value.title == "The Rootbound Watch"
+        )
         accepted = await world.accept_quest(
             player_id, character.id, quest.id, "accept-world-quest"
         )
-        npc = (await world.npcs(player_id, character.id))[0]
+        npc = next(
+            value
+            for value in await world.npcs(player_id, character.id)
+            if value.name == "Warden Elara"
+        )
         interaction = await world.interact(
             player_id, character.id, npc.id, "OFFER_HELP", "help-warden"
         )

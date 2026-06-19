@@ -527,7 +527,11 @@ class WorldUnitOfWork:
         self._transaction: AsyncSessionTransaction | None = None
 
     async def __aenter__(self) -> "WorldUnitOfWork":
-        self._transaction = self._session.begin()
+        self._transaction = (
+            self._session.begin_nested()
+            if self._session.in_transaction()
+            else self._session.begin()
+        )
         await self._transaction.__aenter__()
         return self
 

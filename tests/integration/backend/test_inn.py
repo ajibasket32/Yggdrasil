@@ -31,10 +31,32 @@ async def _create_test_character(player_id: UUID) -> typing.Any:
     return character
 
 
+async def _travel_to_location(
+    player_id: UUID, character_id: UUID, location_id: UUID
+) -> None:
+    async with session_factory() as session:
+        service = CharacterService(GameUnitOfWork(session))
+        await service.travel(
+            player_id,
+            character_id,
+            location_id,
+            f"travel-{player_id}-{location_id}",
+        )
+
+
+async def _innkeeper_elena() -> typing.Any:
+    async with session_factory() as session:
+        elena = await WorldUnitOfWork(session).world.get_npc_by_name("Innkeeper Elena")
+        assert elena is not None
+        return elena
+
+
 @pytest.mark.asyncio
 async def test_inn_rest_success(clean_gameplay_database: None) -> None:
     player_id = uuid4()
     character = await _create_test_character(player_id)
+    elena = await _innkeeper_elena()
+    await _travel_to_location(player_id, character.id, elena.home_location_id)
 
     async with session_factory() as session:
         # Damage the character
@@ -50,9 +72,6 @@ async def test_inn_rest_success(clean_gameplay_database: None) -> None:
         game_uow = GameUnitOfWork(session)
         inn_service = InnService(world_uow, game_uow)
 
-        elena = await world_uow.world.get_npc_by_name("Innkeeper Elena")
-        assert elena is not None
-
         initial_gold = character.gold
         result = await inn_service.rest(player_id, character.id, elena.id, "rest-1")
 
@@ -66,6 +85,8 @@ async def test_inn_rest_success(clean_gameplay_database: None) -> None:
 async def test_inn_rest_insufficient_gold(clean_gameplay_database: None) -> None:
     player_id = uuid4()
     character = await _create_test_character(player_id)
+    elena = await _innkeeper_elena()
+    await _travel_to_location(player_id, character.id, elena.home_location_id)
 
     async with session_factory() as session:
         async with GameUnitOfWork(session) as uow:
@@ -78,9 +99,6 @@ async def test_inn_rest_insufficient_gold(clean_gameplay_database: None) -> None
         world_uow = WorldUnitOfWork(session)
         game_uow = GameUnitOfWork(session)
         inn_service = InnService(world_uow, game_uow)
-
-        elena = await world_uow.world.get_npc_by_name("Innkeeper Elena")
-        assert elena is not None
 
         with pytest.raises(WorldRuleViolation, match="Insufficient gold"):
             await inn_service.rest(player_id, character.id, elena.id, "rest-fail")
