@@ -50,6 +50,21 @@ describe("Combat Flow", () => {
     expect(screen.getByRole("button", { name: "Attack" })).toBeInTheDocument();
   });
 
+  it("shows an empty encounter state without starting combat", async () => {
+    installFetch(true, true, "VICTORY", { encountersAvailable: false });
+    render(<App />);
+
+    await continueExistingGame("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Encounters" }));
+
+    expect(
+      await screen.findByText("No combat encounters at this location."),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Begin combat" }),
+    ).not.toBeInTheDocument();
+  });
+
   it("escapes combat and returns to a refreshed archive", async () => {
     installFetch(true);
     render(<App />);

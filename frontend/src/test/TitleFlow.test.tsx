@@ -76,6 +76,19 @@ describe("Title Flow and Character Creation", () => {
     ).toBeInTheDocument();
   });
 
+  it("allows backing out of character creation before starting", async () => {
+    installFetch(false);
+    render(<App />);
+
+    await startNewGame();
+    fireEvent.click(screen.getByRole("button", { name: "Back" }));
+
+    expect(screen.getByText("Yggdrasil Chronicles")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "Create your character" }),
+    ).not.toBeInTheDocument();
+  });
+
   it("can trigger ending and return to game", async () => {
     installFetch(true);
     render(<App />);
@@ -94,6 +107,25 @@ describe("Title Flow and Character Creation", () => {
     fireEvent.click(screen.getByText("Return to Game"));
     expect(screen.queryByText("The End")).not.toBeInTheDocument();
     expect(screen.getByText("📍 Frontier Gate")).toBeInTheDocument();
+
+    confirmSpy.mockRestore();
+  });
+
+  it("keeps the chronicle active when ending is cancelled", async () => {
+    installFetch(true);
+    render(<App />);
+
+    await continueExistingGame("Aster Vale");
+
+    const confirmSpy = vi
+      .spyOn(window, "confirm")
+      .mockImplementation(() => false);
+
+    fireEvent.click(screen.getByText("Conclude"));
+
+    expect(confirmSpy).toHaveBeenCalled();
+    expect(screen.queryByText("The End")).not.toBeInTheDocument();
+    expect(screen.getByText(/Frontier Gate/)).toBeInTheDocument();
 
     confirmSpy.mockRestore();
   });

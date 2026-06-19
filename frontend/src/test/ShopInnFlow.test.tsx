@@ -109,6 +109,38 @@ describe("Shop and Inn Flow", () => {
     ).toBeDefined();
   });
 
+  it("keeps inn rest unavailable when the character cannot afford it", async () => {
+    (gameApi.character as any).mockResolvedValue({ ...sheet, gold: 25 });
+
+    render(<App />);
+
+    fireEvent.click(await screen.findByText(/Continue:/));
+    fireEvent.click(await screen.findByText("Quests"));
+
+    const restButton = await screen.findByRole("button", {
+      name: "Rest (Needs 50g)",
+    });
+    expect(restButton).toBeDisabled();
+    fireEvent.click(restButton);
+
+    expect(gameApi.rest).not.toHaveBeenCalled();
+  });
+
+  it("reports inn rest errors without hiding the world", async () => {
+    (gameApi.rest as any).mockRejectedValue(new Error("The rooms are full"));
+
+    render(<App />);
+
+    fireEvent.click(await screen.findByText(/Continue:/));
+    fireEvent.click(await screen.findByText("Quests"));
+    fireEvent.click(await screen.findByText("Rest (50g)"));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "The rooms are full",
+    );
+    expect(await screen.findByText("Aster Vale")).toBeInTheDocument();
+  });
+
   it("handles shop api errors", async () => {
     (gameApi.shop as any).mockRejectedValue(
       new Error("Shop closed for inventory"),

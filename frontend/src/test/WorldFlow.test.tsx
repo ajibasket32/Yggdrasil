@@ -4,6 +4,8 @@ import App from "../App";
 import { installFetch, sheet } from "./fixtures";
 import { continueExistingGame } from "./helpers";
 
+vi.mock("../components/GameCanvas");
+
 describe("World Flow and Exploration", () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -43,6 +45,50 @@ describe("World Flow and Exploration", () => {
 
     expect(await screen.findByRole("alert")).toHaveTextContent("Route closed");
     expect(screen.getByText("Aster Vale")).toBeInTheDocument();
+  });
+
+  it("handles travel events emitted by the game canvas", async () => {
+    const calls = installFetch(true);
+    render(<App />);
+
+    await continueExistingGame("Aster Vale");
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Canvas Travel Marker" }),
+    );
+
+    await waitFor(() => {
+      expect(calls).toContain("POST /api/v1/characters/character-1/travel");
+    });
+  });
+
+  it("handles NPC interaction events emitted by the game canvas", async () => {
+    const calls = installFetch(true, true, "VICTORY", {
+      worldAvailable: true,
+    });
+    render(<App />);
+
+    await continueExistingGame("Aster Vale");
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Canvas NPC Marker" }),
+    );
+
+    expect(
+      await screen.findByText("The roots remember who keeps watch."),
+    ).toBeInTheDocument();
+    expect(calls).toContain("POST /api/v1/npcs/npc-1/dialogue");
+  });
+
+  it("handles encounter events emitted by the game canvas", async () => {
+    installFetch(true);
+    render(<App />);
+
+    await continueExistingGame("Aster Vale");
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Canvas Encounter Marker" }),
+    );
+
+    expect(await screen.findByText(/Slime on the Verge/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Attack" })).toBeInTheDocument();
   });
 
   it("describes the current location and reports narrative failures", async () => {
