@@ -248,7 +248,7 @@ class WorldService:
         async with self._uow:
             character = await self._character(player_id, character_id)
             return [
-                self._npc_view(value, character.current_location_id)
+                await self._npc_view(value, character.current_location_id)
                 for value in await self._uow.world.list_npcs(
                     character.current_location_id
                 )
@@ -432,7 +432,7 @@ class WorldService:
             return WorldStateView(
                 world_tick=0,
                 npcs=[
-                    self._npc_view(value, character.current_location_id)
+                    await self._npc_view(value, character.current_location_id)
                     for value in await self._uow.world.list_npcs(
                         character.current_location_id
                     )
@@ -980,8 +980,18 @@ class WorldService:
         for field, value in values.items():
             setattr(relationship, field, value)
 
-    @staticmethod
-    def _npc_view(npc: NPC, current_location_id: UUID) -> NPCView:
+    async def _npc_view(self, npc: NPC, current_location_id: UUID) -> NPCView:
+        actions = []
+        if npc.home_location_id == current_location_id:
+            actions.append("GREET")
+            actions.append("OFFER_HELP")
+            if npc.role == "MERCHANT":
+                actions.append("SHOP")
+            elif npc.role == "INNKEEPER":
+                actions.append("REST")
+
+        shop = await self._uow.world.get_shop_by_owner(npc.id)
+
         return NPCView(
             id=npc.id,
             name=npc.name,
@@ -992,11 +1002,8 @@ class WorldService:
             personality_profile=npc.personality_profile,
             knowledge=npc.knowledge,
             is_alive=npc.is_alive,
-            available_actions=(
-                ["GREET", "OFFER_HELP"]
-                if npc.home_location_id == current_location_id
-                else []
-            ),
+            available_actions=actions,
+            shop_id=shop.id if shop else None,
         )
 
     @staticmethod

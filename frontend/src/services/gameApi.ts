@@ -17,6 +17,9 @@ import type {
   DialogueTopic,
   NpcInteraction,
   Quest,
+  Shop,
+  ShopPurchaseResult,
+  InnRestResult,
 } from "../types/gameplay";
 
 interface ApiEnvelope<T> {
@@ -289,5 +292,30 @@ export const gameApi = {
     request<unknown>(`/save/${saveId}`, playerId, {
       method: "DELETE",
       headers: { "Idempotency-Key": idempotencyKey },
+    }),
+  shop: (playerId: string, shopId: string) =>
+    request<Shop>(`/shops/${shopId}`, playerId),
+  purchase: (
+    playerId: string,
+    characterId: string,
+    shopId: string,
+    itemId: string,
+    idempotencyKey: string,
+  ) =>
+    request<ShopPurchaseResult>(`/shops/${shopId}/purchase`, playerId, {
+      method: "POST",
+      headers: { "Idempotency-Key": idempotencyKey },
+      body: JSON.stringify({ character_id: characterId, item_id: itemId }),
+    }),
+  rest: (
+    playerId: string,
+    characterId: string,
+    npcId: string,
+    idempotencyKey: string,
+  ) =>
+    request<InnRestResult>("/inns/rest", playerId, {
+      method: "POST",
+      headers: { "Idempotency-Key": idempotencyKey },
+      body: JSON.stringify({ character_id: characterId, npc_id: npcId }),
     }),
 };

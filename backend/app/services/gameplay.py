@@ -860,6 +860,11 @@ class CharacterService:
                         location_id=destination.id,
                     )
                 )
+                from app.repositories.world import WorldRepository
+
+                await WorldRepository(self._uow._session).progress_matching(
+                    player_id, character, "LOCATION_DISCOVERY", destination.id
+                )
             character.current_location_id = destination.id
             await self._record_result(
                 player_id,

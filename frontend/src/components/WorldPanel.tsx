@@ -28,6 +28,9 @@ interface WorldPanelProps {
   onCloseNarrative: () => void;
   onJoinFaction: (faction: Faction) => void;
   onDungeonAction: (dungeon: Dungeon, action: "enter" | "clear") => void;
+  onShopOpen?: (shopId: string) => void;
+  onInnRest?: (npcId: string) => void;
+  characterGold?: number;
 }
 
 const WorldPanel = ({
@@ -46,6 +49,9 @@ const WorldPanel = ({
   onCloseNarrative,
   onJoinFaction,
   onDungeonAction,
+  onShopOpen,
+  onInnRest,
+  characterGold = 0,
 }: WorldPanelProps) => (
   <div className="world-panel-container">
     <section className="kenney-panel">
@@ -221,16 +227,60 @@ const WorldPanel = ({
               <h4>{npc.name}</h4>
               <p>{npc.occupation}</p>
               <div className="action-row">
-                {npc.available_actions.map((action) => (
-                  <button
-                    type="button"
-                    disabled={busy}
-                    key={action}
-                    onClick={() => onNpcAction(npc, action)}
-                  >
-                    {action === "GREET" ? "Greet" : "Offer help"}
-                  </button>
-                ))}
+                {npc.available_actions.map((action) => {
+                  if (action === "GREET") {
+                    return (
+                      <button
+                        type="button"
+                        disabled={busy}
+                        key={action}
+                        onClick={() => onNpcAction(npc, action)}
+                      >
+                        Greet
+                      </button>
+                    );
+                  }
+                  if (action === "OFFER_HELP") {
+                    return (
+                      <button
+                        type="button"
+                        disabled={busy}
+                        key={action}
+                        onClick={() => onNpcAction(npc, action)}
+                      >
+                        Offer help
+                      </button>
+                    );
+                  }
+                  if (action === "SHOP" && npc.shop_id && onShopOpen) {
+                    return (
+                      <button
+                        type="button"
+                        disabled={busy}
+                        key={action}
+                        className="current"
+                        onClick={() => onShopOpen(npc.shop_id!)}
+                      >
+                        Browse Shop
+                      </button>
+                    );
+                  }
+                  if (action === "REST" && onInnRest) {
+                    const canAfford = characterGold >= 50;
+                    return (
+                      <button
+                        type="button"
+                        disabled={busy || !canAfford}
+                        key={action}
+                        className={canAfford ? "current" : "disabled"}
+                        onClick={() => onInnRest(npc.id)}
+                      >
+                        {canAfford ? "Rest (50g)" : "Rest (Needs 50g)"}
+                      </button>
+                    );
+                  }
+                  return null;
+                })}
                 <button
                   type="button"
                   disabled={busy}

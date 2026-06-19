@@ -231,6 +231,41 @@ export interface Npc {
   knowledge: Record<string, unknown>;
   is_alive: boolean;
   available_actions: ("GREET" | "OFFER_HELP")[];
+  shop_id?: string;
+}
+
+export interface ShopItem {
+  item_id: string;
+  name: string;
+  description: string;
+  price: number;
+  rarity: string;
+  item_type: string;
+}
+
+export interface Shop {
+  id: string;
+  name: string;
+  description: string;
+  owner_npc_id: string;
+  items: ShopItem[];
+}
+
+export interface ShopPurchaseResult {
+  character_id: string;
+  item_id: string;
+  price_paid: number;
+  gold_remaining: number;
+}
+
+export interface InnRestResult {
+  character_id: string;
+  hp_restored: number;
+  mp_restored: number;
+  price_paid: number;
+  gold_remaining: number;
+  current_hp: number;
+  current_mp: number;
 }
 
 export interface Relationship {

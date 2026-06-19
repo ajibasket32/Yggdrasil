@@ -46,6 +46,7 @@ class NPCView(BaseModel):
     knowledge: dict[str, object]
     is_alive: bool
     available_actions: list[str]
+    shop_id: UUID | None = None
 
 
 class NPCInteractionRequest(BaseModel):
@@ -123,6 +124,51 @@ class WorldEventView(BaseModel):
     quest_id: UUID | None
     payload: dict[str, object]
     created_at: datetime
+
+
+class ShopItemView(BaseModel):
+    item_id: UUID
+    name: str
+    description: str
+    price: int
+    rarity: str
+    item_type: str
+
+
+class ShopView(BaseModel):
+    id: UUID
+    name: str
+    description: str
+    owner_npc_id: UUID
+    items: list[ShopItemView]
+
+
+class ShopPurchaseRequest(BaseModel):
+    character_id: UUID
+    shop_id: UUID
+    item_id: UUID
+
+
+class ShopPurchaseResult(BaseModel):
+    character_id: UUID
+    item_id: UUID
+    price_paid: int
+    gold_remaining: int
+
+
+class InnRestRequest(BaseModel):
+    character_id: UUID
+    npc_id: UUID
+
+
+class InnRestResult(BaseModel):
+    character_id: UUID
+    hp_restored: int
+    mp_restored: int
+    price_paid: int
+    gold_remaining: int
+    current_hp: int
+    current_mp: int
 
 
 class WorldStateView(BaseModel):

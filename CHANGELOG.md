@@ -3,6 +3,16 @@
 All notable completed changes are recorded here. Planned work belongs in
 `TASKS.md`, not this file.
 
+## [1.2.0] - 2026-06-19
+
+### Added
+- Shop System: Merchant Silas added to Valeris with a deterministic item catalog and purchasing flow.
+- Inn System: Innkeeper Elena added to Greenwood with a rest mechanic to restore HP and MP for gold.
+- Quest Expansion: Expanded "The Blacksmith's Request" and "Scouting the Border" with new multi-step objectives.
+- Integration: Automatic quest progression linked to shop purchases and location discoveries.
+- UI/UX: New Shop Overlay and updated World Panel with shop/inn action buttons, gold awareness, and feedback banners.
+- Persistence: Expanded save/load compatibility to cover new shop-related state and inventory changes.
+
 ## [1.1.0] - 2026-06-18
 
 ### Added

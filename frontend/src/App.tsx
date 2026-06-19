@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
 import ErrorBoundary from "./components/ErrorBoundary";
 import CombatPanel from "./components/CombatPanel";
 import NarrativeBox from "./components/NarrativeBox";
 import WorldPanel from "./components/WorldPanel";
+import ShopOverlay from "./components/ShopOverlay";
 import GameCanvas from "./components/GameCanvas";
 import portraitAtlasUrl from "./assets/characters/RPG_assets.png";
 import { gameApi, getPlayerId } from "./services/gameApi";
@@ -25,6 +27,9 @@ import type {
   Npc,
   Quest,
   DialogueTopic,
+  Shop,
+  ShopItem,
+  InnRestResult,
 } from "./types/gameplay";
 
 const statLabels = {
@@ -76,6 +81,8 @@ const App = () => {
   const [narrative, setNarrative] = useState<Narrative | null>(null);
   const [busy, setBusy] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentShop, setCurrentShop] = useState<Shop | null>(null);
+  const [lastPurchase, setLastPurchase] = useState<string | null>(null);
 
   type MenuView =
     | "NONE"
@@ -448,6 +455,75 @@ const App = () => {
       setBusy(false);
     }
   };
+
+  const openShop = useCallback(
+    async (shopId: string) => {
+      setBusy(true);
+      setError(null);
+      try {
+        const shopData: Shop = await gameApi.shop(playerId, shopId);
+        setCurrentShop(shopData);
+      } catch (caught: any) {
+        setError(
+          caught instanceof Error ? caught.message : "Unable to open shop",
+        );
+      } finally {
+        setBusy(false);
+      }
+    },
+    [playerId],
+  );
+
+  const purchaseItem = useCallback(
+    async (item: ShopItem) => {
+      if (character === null || currentShop === null) return;
+      setBusy(true);
+      setError(null);
+      setLastPurchase(null);
+      try {
+        await gameApi.purchase(
+          playerId,
+          character.id,
+          currentShop.id,
+          item.item_id,
+          crypto.randomUUID(),
+        );
+        setLastPurchase(item.name);
+        await inspectCharacter(character.id);
+        setTimeout(() => setLastPurchase(null), 3000);
+      } catch (caught: any) {
+        setError(caught instanceof Error ? caught.message : "Purchase failed");
+      } finally {
+        setBusy(false);
+      }
+    },
+    [character, currentShop, inspectCharacter, playerId],
+  );
+
+  const innRest = useCallback(
+    async (npcId: string) => {
+      if (character === null) return;
+      setBusy(true);
+      setError(null);
+      try {
+        const restResult: InnRestResult = await gameApi.rest(
+          playerId,
+          character.id,
+          npcId,
+          crypto.randomUUID(),
+        );
+        setInteractionText(
+          `Rested at the Inn. Restored ${restResult.hp_restored} HP and ${restResult.mp_restored} MP.`,
+        );
+        await inspectCharacter(character.id);
+      } catch (caught: any) {
+        setError(caught instanceof Error ? caught.message : "Inn rest failed");
+      } finally {
+        setBusy(false);
+      }
+    },
+    [character, inspectCharacter, playerId],
+  );
 
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
 
@@ -893,6 +969,15 @@ const App = () => {
                         onDungeonAction={(dungeon, action) =>
                           void dungeonAction(dungeon, action)
                         }
+                        characterGold={character.gold}
+                        onShopOpen={(shopId) => {
+                          void openShop(shopId);
+                          setMenuView("NONE");
+                        }}
+                        onInnRest={(npcId) => {
+                          void innRest(npcId);
+                          setMenuView("NONE");
+                        }}
                       />
                     )}
 
@@ -1023,6 +1108,21 @@ const App = () => {
                 </div>
               )}
             </div>
+            {currentShop && (
+              <ShopOverlay
+                shop={currentShop}
+                characterGold={character.gold}
+                busy={busy}
+                onPurchase={(item) => void purchaseItem(item)}
+                onClose={() => {
+                  setCurrentShop(null);
+                  setError(null);
+                  setLastPurchase(null);
+                }}
+                lastPurchase={lastPurchase}
+                error={error}
+              />
+            )}
           </>
         ) : null}
       </ErrorBoundary>

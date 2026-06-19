@@ -4,13 +4,19 @@ from uuid import UUID
 
 from fastapi import APIRouter, Header, Request
 
-from app.api.dependencies import WorldServiceDependency
+from app.api.dependencies import (
+    InnServiceDependency,
+    MerchantServiceDependency,
+    WorldServiceDependency,
+)
 from app.schemas.save import ApiResponse, ResponseMeta
 from app.schemas.world import (
     DungeonMutationRequest,
     DungeonView,
     FactionMutationRequest,
     FactionView,
+    InnRestRequest,
+    InnRestResult,
     JournalEntryView,
     NPCInteractionRequest,
     NPCInteractionResult,
@@ -18,6 +24,9 @@ from app.schemas.world import (
     QuestMutationRequest,
     QuestView,
     RelationshipView,
+    ShopPurchaseRequest,
+    ShopPurchaseResult,
+    ShopView,
     WorldStateView,
 )
 
@@ -64,6 +73,23 @@ async def accept_quest(
     return ApiResponse(
         data=await service.accept_quest(
             player_id, payload.character_id, quest_id, idempotency_key
+        ),
+        meta=_meta(request),
+    )
+
+
+@router.post("/inns/rest", response_model=ApiResponse[InnRestResult])
+async def rest_at_inn(
+    payload: InnRestRequest,
+    request: Request,
+    player_id: PlayerId,
+    idempotency_key: IdempotencyKey,
+    service: InnServiceDependency,
+) -> ApiResponse[InnRestResult]:
+    """Restore character HP and MP by resting at an inn."""
+    return ApiResponse(
+        data=await service.rest(
+            player_id, payload.character_id, payload.npc_id, idempotency_key
         ),
         meta=_meta(request),
     )
@@ -297,4 +323,42 @@ async def get_world_state(
     """Return the bounded canonical v0.7 world state."""
     return ApiResponse(
         data=await service.state(player_id, character_id), meta=_meta(request)
+    )
+
+
+@router.get("/shops/{shop_id}", response_model=ApiResponse[ShopView])
+async def get_shop(
+    shop_id: UUID,
+    request: Request,
+    player_id: PlayerId,
+    service: MerchantServiceDependency,
+) -> ApiResponse[ShopView]:
+    """Return shop catalog and owner details."""
+    return ApiResponse(
+        data=await service.get_shop(shop_id),
+        meta=_meta(request),
+    )
+
+
+@router.post(
+    "/shops/{shop_id}/purchase", response_model=ApiResponse[ShopPurchaseResult]
+)
+async def purchase_item(
+    shop_id: UUID,
+    payload: ShopPurchaseRequest,
+    request: Request,
+    player_id: PlayerId,
+    idempotency_key: IdempotencyKey,
+    service: MerchantServiceDependency,
+) -> ApiResponse[ShopPurchaseResult]:
+    """Purchase one item from a shop using gold."""
+    return ApiResponse(
+        data=await service.purchase_item(
+            player_id,
+            payload.character_id,
+            shop_id,
+            payload.item_id,
+            idempotency_key,
+        ),
+        meta=_meta(request),
     )

@@ -1,7 +1,35 @@
-# Release Notes - v1.1.0-rc.1
+# Release Notes - v1.2.0-rc.1
 
-Version: 1.1.0-rc.1
+Version: 1.2.0-rc.1
 Status: RC (Release Candidate)
+Last reviewed: 2026-06-19
+
+## Release Summary
+Yggdrasil Chronicles v1.2.0, "Content Expansion," introduces core JRPG systems including a deterministic Shop system and Inn/Rest mechanic. The world continues to grow with expanded quest chains for Hagar and Kael, and deeper integration between world actions and character progression.
+
+## Key Features
+- **Shop System**: Merchant Silas is now open for business in Valeris. Players can purchase restorative items and improved equipment using gold.
+- **Inn System**: Innkeeper Elena provides rest services in Greenwood, allowing characters to fully restore HP and MP for a fee.
+- **Quest Expansion**: "The Blacksmith's Request" and "Scouting the Border" now feature multi-step objectives that require interacting with shops and exploring the forest.
+- **UI/UX Refinements**:
+    - Full-featured Shop Overlay with price tracking and purchase confirmation.
+    - Gold-aware action buttons in the World Panel.
+    - Status-based rest buttons that indicate affordability.
+- **System Integration**: Shop purchases and location discovery now automatically trigger relevant quest progression.
+
+## Validation Evidence
+- **Backend Tests**: PASS (56 core + 5 v1.2 integration tests)
+- **Frontend Tests**: PASS (68/68)
+- **Frontend Coverage**: 80.04% Branch Coverage.
+- **Security Audit**: Zero vulnerabilities (Verified via `pip-audit` and `npm audit`)
+- **Critical Journey Validation**: PASS via fallback script.
+
+---
+
+# Release Notes - v1.1.0
+
+Version: 1.1.0
+Status: GA (General Availability)
 Last reviewed: 2026-06-18
 
 ## Release Summary
@@ -27,6 +55,7 @@ Yggdrasil Chronicles v1.1.0 focuses on "JRPG Polish," transforming the technical
 - **Security Audit**: Zero high/critical vulnerabilities (Verified via `pip-audit` and `npm audit`)
 - **Visual Verification**: PASS (Screenshots captured)
 - **Critical Journey Validation**: PASS via fallback script.
+- **Strict Release Validation**: PASS (GitHub Actions)
 
 ---
 

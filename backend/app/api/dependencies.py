@@ -20,6 +20,8 @@ from app.repositories.save import SaveUnitOfWork
 from app.repositories.world import WorldUnitOfWork
 from app.services.combat import CombatService
 from app.services.gameplay import CharacterService
+from app.services.inn import InnService
+from app.services.merchant import MerchantService
 from app.services.narrative import NarrativeService
 from app.services.narrative_context import NarrativeContextBuilder
 from app.services.save import SaveService
@@ -58,6 +60,22 @@ def get_world_service(session: DatabaseSession) -> WorldService:
 
 
 WorldServiceDependency = Annotated[WorldService, Depends(get_world_service)]
+
+
+def get_merchant_service(session: DatabaseSession) -> MerchantService:
+    """Build a request-scoped merchant service."""
+    return MerchantService(WorldUnitOfWork(session), GameUnitOfWork(session))
+
+
+MerchantServiceDependency = Annotated[MerchantService, Depends(get_merchant_service)]
+
+
+def get_inn_service(session: DatabaseSession) -> InnService:
+    """Build a request-scoped inn service."""
+    return InnService(WorldUnitOfWork(session), GameUnitOfWork(session))
+
+
+InnServiceDependency = Annotated[InnService, Depends(get_inn_service)]
 
 
 async def get_narrative_service(

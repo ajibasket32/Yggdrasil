@@ -265,6 +265,38 @@ class JournalEntry(EntityMixin, Base):
     body: Mapped[str] = mapped_column(Text, nullable=False)
 
 
+class Shop(EntityMixin, Base):
+    """Canonical shop definition."""
+
+    __tablename__ = "shops"
+    __table_args__ = (UniqueConstraint("owner_npc_id", name="uq_shops_owner"),)
+
+    owner_npc_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("npcs.id"), nullable=False
+    )
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+
+
+class ShopItem(EntityMixin, Base):
+    """Item offered by a shop with its price."""
+
+    __tablename__ = "shop_items"
+    __table_args__ = (
+        UniqueConstraint("shop_id", "item_id", name="uq_shop_items_shop_item"),
+        CheckConstraint("price >= 0", name="ck_shop_items_price"),
+    )
+
+    shop_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("shops.id"), nullable=False, index=True
+    )
+    item_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("items.id"), nullable=False, index=True
+    )
+    price: Mapped[int] = mapped_column(Integer, nullable=False)
+    enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
+
+
 class WorldEvent(EntityMixin, Base):
     """Immutable significant world outcome."""
 
