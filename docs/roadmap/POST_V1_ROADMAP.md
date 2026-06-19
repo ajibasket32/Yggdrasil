@@ -2,7 +2,7 @@
 
 This roadmap outlines the evolution of Yggdrasil Chronicles from a technical MVP into a full-featured JRPG.
 
-## v1.1: JRPG Polish & Usability (Current)
+## v1.1: JRPG Polish & Usability (Completed)
 *Goal: Move beyond technical demo to a polished, playable experience.*
 - [x] **Title Screen Flow:** Authentic New Game / Continue Game selection.
 - [x] **JRPG HUD:** Visual resource bars and cleaner layout.
@@ -11,12 +11,14 @@ This roadmap outlines the evolution of Yggdrasil Chronicles from a technical MVP
 - [x] **Combat Feedback:** Damage popups, healing indicators, and status clarity.
 - [x] **Save/Load Polish:** Clear user feedback on success and failure.
 
-## v1.2: Content Expansion
-*Goal: Fill the world with meaningful exploration and lore.*
+## v1.2: Content Expansion & Systems Depth (Current)
+*Goal: Fill the world with meaningful exploration and JRPG systems.*
+- [ ] **Deterministic Shop System:** Merchant NPCs with item catalogs and gold-based purchasing.
+- [ ] **Inn/Rest Mechanic:** Location-based recovery for HP/MP.
 - [ ] **Major Cities:** At least 2 distinct urban centers with unique tilemaps.
-- [ ] **Deep Dungeons:** Complex map layouts with puzzles or environmental hazards.
+- [ ] **Region Expansion:** Sylvan Deep and other new playable areas.
 - [ ] **Lore Archives:** In-game library or NPC dialogue trees explaining the world's history.
-- [ ] **Class Specializations:** Skills that evolve based on player choice.
+- [ ] **Expanded Quest Chains:** Multi-step quests with significant rewards and world impact.
 
 ## v1.3: Combat Depth
 *Goal: Tactical complexity and strategic variety.*

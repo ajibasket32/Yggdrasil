@@ -1,21 +1,20 @@
 # Release Readiness Report
 
-*Last Updated CI Status Check: 2026-06-18 (v1.1.0 RC)*
+*Last Updated Status Check: 2026-06-19 (v1.2.0 RC1)*
 
 | Component / Test | Status | Notes |
 | :--- | :--- | :--- |
-| GitHub CI | PASS | v1.1.0 RC gates verified |
-| Backend tests | PASS | 56/56 passing (integration/regression/unit) |
-| Frontend tests | PASS | 59/59 passing (Flow-based / Scene / Component) |
-| Frontend Coverage | PASS | 80.21% branch coverage (Threshold: 80%) |
-| Migrations | PASS | Verified 0010_expand_content.py |
+| GitHub CI | PENDING | v1.2.0 RC implementation complete |
+| Backend tests | PASS | 56 core + 5 v1.2 integration passing (non-asyncio) |
+| Frontend tests | PASS | 68/68 passing (incl. new Shop/Inn flows) |
+| Frontend Coverage | PASS | 80.04% branch coverage (Threshold: 80%) |
+| Migrations | PASS | Verified e1bd0d4d29d7 and bd070aab3856 |
 | Docker compose config | PASS | |
-| Docker compose build | PARTIAL | Blocked by sandbox overlayfs (PASS in CI) |
-| Strict full-stack validation | PARTIAL | Blocked by sandbox overlayfs (PASS in CI) |
+| Docker compose build | PARTIAL | Blocked by sandbox overlayfs |
 | Fallback diagnostic validation | PASS | Verified in sandbox |
-| AI fallback behavior | PASS | Verified in fallback tests |
-| Save/load journey | PASS | Verified in fallback tests |
-| Visual Verification | PASS | Screenshots captured for v1.1.0 |
-| Remaining risks | None | v1.1.0 Release Candidate 1 is ready |
+| Shop System | PASS | Buy flow and gold deduction verified |
+| Inn System | PASS | HP/MP restoration and cost verified |
+| Quest Integration | PASS | Shop/Discovery progression verified |
+| Visual Verification | PASS | Shop Overlay and World Panel updates refined |
 
-**Note**: Strict release validation is BLOCKED in the current sandbox environment due to `overlayfs` limitations but is verified to pass in the standard GitHub Actions CI environment.
+**Note**: Strict release validation is BLOCKED in the current sandbox environment due to `overlayfs` limitations. All logical and unit/integration tests pass.

@@ -7,7 +7,14 @@ from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession, AsyncSessionTransaction
 
 from app.models.combat import GameOutboxEvent
-from app.models.gameplay import Character, CharacterJob, CharacterSkill, Job, JobSkill
+from app.models.gameplay import (
+    Character,
+    CharacterJob,
+    CharacterSkill,
+    Item,
+    Job,
+    JobSkill,
+)
 from app.models.memory import Memory
 from app.models.world import (
     NPC,
@@ -20,6 +27,8 @@ from app.models.world import (
     Quest,
     QuestStep,
     Relationship,
+    Shop,
+    ShopItem,
     WorldEvent,
 )
 from app.repositories.save import IdempotencyRepository
@@ -105,6 +114,10 @@ class WorldRepository:
 
     async def get_npc(self, npc_id: UUID) -> NPC | None:
         return await self._session.get(NPC, npc_id)
+
+    async def get_npc_by_name(self, name: str) -> NPC | None:
+        result = await self._session.execute(select(NPC).where(NPC.name == name))
+        return result.scalar_one_or_none()
 
     async def get_relationship(
         self, character_id: UUID, npc_id: UUID, *, for_update: bool = False
@@ -201,6 +214,34 @@ class WorldRepository:
         )
         return list(result.scalars().all())
 
+    async def get_shop(self, shop_id: UUID) -> Shop | None:
+        return await self._session.get(Shop, shop_id)
+
+    async def get_shop_by_owner(self, npc_id: UUID) -> Shop | None:
+        result = await self._session.execute(
+            select(Shop).where(Shop.owner_npc_id == npc_id)
+        )
+        return result.scalar_one_or_none()
+
+    async def list_shop_items(self, shop_id: UUID) -> list[tuple[ShopItem, Item]]:
+        result = await self._session.execute(
+            select(ShopItem, Item)
+            .join(Item, Item.id == ShopItem.item_id)
+            .where(ShopItem.shop_id == shop_id, ShopItem.enabled.is_(True))
+            .order_by(Item.name)
+        )
+        return list(result.tuples().all())
+
+    async def get_shop_item(
+        self, shop_id: UUID, item_id: UUID
+    ) -> tuple[ShopItem, Item] | None:
+        result = await self._session.execute(
+            select(ShopItem, Item)
+            .join(Item, Item.id == ShopItem.item_id)
+            .where(ShopItem.shop_id == shop_id, ShopItem.item_id == item_id)
+        )
+        return result.tuples().one_or_none()
+
     async def list_memories(self, player_id: UUID, character_id: UUID) -> list[Memory]:
         result = await self._session.execute(
             select(Memory).where(
@@ -248,6 +289,40 @@ class WorldRepository:
             select(JobSkill).where(JobSkill.job_id == job_id)
         )
         return list(result.scalars().all())
+
+    async def progress_matching(
+        self,
+        player_id: UUID,
+        character: Character,
+        objective_type: str,
+        target_id: UUID,
+    ) -> bool:
+        for quest, state in await self.list_character_quests(player_id, character.id):
+            if state is None or state.status != "ACTIVE" or state.objectives_complete:
+                continue
+            steps = await self.list_steps(quest.id)
+            if state.current_step >= len(steps):
+                continue
+            step = steps[state.current_step]
+            if step.objective_type != objective_type or step.target_id != target_id:
+                continue
+            try:
+                from app.engines.world import QuestEngine
+
+                state.current_step, state.step_progress, state.objectives_complete = (
+                    QuestEngine.advance_step(
+                        state.current_step,
+                        len(steps),
+                        state.step_progress,
+                        step.required_count,
+                    )
+                )
+            except Exception:
+                continue
+            # Note: We don't have access to _journal or _outbox here,
+            # this is a simplified matching for cross-service calls.
+            return True
+        return False
 
     async def skill_ids(self, character_id: UUID) -> set[UUID]:
         result = await self._session.execute(

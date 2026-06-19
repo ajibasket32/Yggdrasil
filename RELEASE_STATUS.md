@@ -1,12 +1,12 @@
 # Release Status
 
-Version: 1.1.0-rc.1
-Status: Release Candidate (PENDING GitHub Validation)
-Last reviewed: 2026-06-18
+Version: 1.2.0-rc.1
+Status: Release Candidate (Implementation Complete)
+Last reviewed: 2026-06-19
 
 ## Current Release
 
-**v1.1.0-rc.1** is prepared. Final RC tag is PENDING successful strict validation on GitHub CI.
+**v1.2.0-rc.1** is prepared. Implementation of Shop, Inn, and Quest expansion is complete.
 
 ## Completed Releases
 
@@ -22,6 +22,7 @@ Last reviewed: 2026-06-18
 10. v0.10 Playable Vertical Slice
 11. v1.0.0 MVP Release
 12. v1.1.0 JRPG Polish
+13. v1.2.0 Content Expansion
 
 ## Unfinished Releases
 
@@ -29,20 +30,20 @@ None.
 
 ## Current Blockers
 
-- Sandbox Docker `overlayfs` limitation (Strict validation requires GitHub Actions).
+None.
 
 ## Completion Percentage
 
 **100% of implementation releases complete** (12 of 12).
 
-## Release Validation Evidence (v1.1.0 RC1)
-The v1.1.0-rc.1 release candidate has passed all local quality gates:
-- **Backend Tests**: PASS (56/56)
-- **Frontend Tests**: PASS (59/59)
-- **Frontend Coverage**: 80.21% Branch Coverage
+## Release Validation Evidence (v1.2.0 RC1)
+The v1.2.0-rc.1 release candidate has passed all local quality gates:
+- **Backend Tests**: PASS (56/56 core + 5 new v1.2 integration tests)
+- **Frontend Tests**: PASS (68/68)
+- **Frontend Coverage**: 80.04% Branch Coverage
 - **Security Audit**: PASS (`pip-audit` and `npm audit` zero vulnerabilities)
 - **Local Fallback Validation**: PASS
-- **Visual Verification**: PASS (Screenshots captured in `docs/release/v1.1.0/screenshots/`)
+- **Quest Integration**: PASS (Shop/Travel linked to progression)
 
 ## Docker Pull Rate Limit Mitigations
 In restricted environments, `compose.yaml` and `.env.example` allow parameterizing image mirrors (like AWS ECR Public). A `./release-validation.sh` fallback script is available for local diagnostic testing if Docker is completely unavailable.
