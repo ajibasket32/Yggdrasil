@@ -58,6 +58,26 @@ describe("Quest and NPC Interaction", () => {
     });
   });
 
+  it("allows deterministic NPC feedback to be dismissed from the main HUD", async () => {
+    installFetch(true, true, "VICTORY", {
+      worldAvailable: true,
+    });
+    render(<App />);
+
+    await continueExistingGame("Aster Vale");
+    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Offer help" }));
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Aid recorded.",
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "×" }));
+    expect(await screen.findByText("Aid recorded.")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /Close/ }));
+    expect(screen.queryByText("Aid recorded.")).not.toBeInTheDocument();
+  });
+
   it("presents bounded narrative choices without a chat input", async () => {
     const calls = installFetch(true, true, "VICTORY", {
       worldAvailable: true,

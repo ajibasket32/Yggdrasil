@@ -84,6 +84,23 @@ describe("ShopOverlay", () => {
     expect((potionButtons[0] as HTMLButtonElement).disabled).toBe(true);
   });
 
+  it("disables close and purchase controls while a purchase is pending", () => {
+    render(
+      <ShopOverlay
+        shop={mockShop}
+        characterGold={150}
+        busy={true}
+        onPurchase={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Close" })).toBeDisabled();
+    for (const buyButton of screen.getAllByRole("button", { name: "Buy" })) {
+      expect(buyButton).toBeDisabled();
+    }
+  });
+
   it("calls onClose when close button is clicked", () => {
     const onClose = vi.fn();
     render(
