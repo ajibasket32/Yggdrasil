@@ -1,0 +1,14 @@
+{
+  "tool": "simulate_content_pack",
+  "checked_at": "2026-06-19T15:20:30.105772+00:00",
+  "pack_id": "generated_sylvan_supply_42",
+  "status": "PASS",
+  "mutated_game_state": false,
+  "checks": [
+    "quest_rewards_non_negative",
+    "shop_prices_non_negative",
+    "inn_costs_non_negative",
+    "dry_run_only"
+  ],
+  "errors": []
+}

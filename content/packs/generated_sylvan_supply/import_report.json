@@ -1,0 +1,17 @@
+{
+  "tool": "import_content_pack",
+  "checked_at": "2026-06-19T15:20:30.298605+00:00",
+  "pack_id": "generated_sylvan_supply_42",
+  "mode": "dry-run",
+  "status": "PASS",
+  "mutated_database": false,
+  "errors": [],
+  "would_import": {
+    "locations": 1,
+    "npcs": 1,
+    "items": 1,
+    "quests": 1,
+    "shops": 0,
+    "inns": 0
+  }
+}

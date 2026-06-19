@@ -16,6 +16,10 @@ Yggdrasil Chronicles v1.2.0, "Content Expansion," introduces core JRPG systems i
     - Gold-aware action buttons in the World Panel.
     - Status-based rest buttons that indicate affordability.
 - **System Integration**: Shop purchases and location discovery now automatically trigger relevant quest progression.
+- **Ready-to-use Startup**: Windows users can run `.\start-game.ps1`, verify with
+  `.\verify-ready.ps1`, and stop with `.\stop-game.ps1`.
+- **Safe Content Pipeline**: Developers can generate, validate, simulate, and
+  dry-run content import offline without cloud AI keys.
 
 ## Validation Evidence
 - **Backend Tests**: PASS (56 core + 5 v1.2 integration tests)
@@ -23,6 +27,7 @@ Yggdrasil Chronicles v1.2.0, "Content Expansion," introduces core JRPG systems i
 - **Frontend Coverage**: 80.04% Branch Coverage.
 - **Security Audit**: Zero vulnerabilities (Verified via `pip-audit` and `npm audit`)
 - **Critical Journey Validation**: PASS via fallback script.
+- **Content Import Dry-run**: PASS via `tools/content/import_content_pack.py`.
 
 ---
 

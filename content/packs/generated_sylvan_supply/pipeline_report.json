@@ -1,0 +1,33 @@
+{
+  "tool": "run_content_pipeline",
+  "checked_at": "2026-06-19T15:20:30.107778+00:00",
+  "seed": 42,
+  "theme": "sylvan_supply",
+  "out_dir": "content/packs/generated_sylvan_supply",
+  "status": "PASS",
+  "internet_required": false,
+  "cloud_ai_required": false,
+  "auto_imported": false,
+  "steps": [
+    {
+      "step": "generate",
+      "status": "PASS"
+    },
+    {
+      "step": "validate",
+      "status": "PASS"
+    },
+    {
+      "step": "resolve_assets",
+      "status": "PASS"
+    },
+    {
+      "step": "simulate",
+      "status": "PASS"
+    },
+    {
+      "step": "ai_repair_analyze",
+      "status": "PASS"
+    }
+  ]
+}

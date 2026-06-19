@@ -7,6 +7,9 @@ All notable completed changes are recorded here. Planned work belongs in
 
 ### Added
 - Content Pipeline: Implemented a deterministic, AI-light content generation pipeline foundation for post-launch expansion packs.
+- Ready-to-use Startup: Added beginner-friendly `start-game.ps1`, `verify-ready.ps1`, and `stop-game.ps1` scripts.
+- Content Workflow: Added one-command pipeline reporting and safe content import dry-run tooling.
+- E2E Coverage: Added a ready-to-use gameplay smoke test path for title, new game, quests, shop, inn, combat, save, and continue.
 - Content Tooling: Added `generate_content_pack.py`, `validate_content_pack.py`, `resolve_asset_manifest.py`, and `content_ai_orchestrator.py`.
 - Shop System: Merchant Silas added to Valeris with a deterministic item catalog and purchasing flow.
 - Inn System: Innkeeper Elena added to Greenwood with a rest mechanic to restore HP and MP for gold.

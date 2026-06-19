@@ -95,8 +95,17 @@ Every pack must pass:
 - **Runtime**: Only uses already-approved local assets. Runtime downloads are for dev/build steps only.
 
 ## 8. Workflow
-1. **Generate**: `generate_content_pack.py --seed <N> --theme <T>` creates a draft.
-2. **Validate**: `validate_content_pack.py` checks for errors.
-3. **Repair (Optional AI)**: `content_ai_orchestrator.py --repair` fixes errors if enabled.
-4. **Resolve Assets**: `resolve_asset_manifest.py` ensures all sprites/icons are available.
-5. **Finalize**: The pack is marked as `validated` and can be loaded by the game.
+1. **Generate and report**:
+   `python tools/content/run_content_pipeline.py --seed 42 --theme sylvan_supply --out content/packs/generated_sylvan_supply`
+2. **Review reports**:
+   `validation_report.json`, `asset_resolution_report.json`,
+   `simulation_report.json`, and `pipeline_report.json`.
+3. **Dry-run import**:
+   `python tools/content/import_content_pack.py content/packs/generated_sylvan_supply`
+4. **Optional AI repair analysis**:
+   `python tools/content/run_content_pipeline.py --seed 42 --theme sylvan_supply --out content/packs/generated_sylvan_supply --ai-repair`
+
+The default workflow requires no internet, no API key, no cloud AI call, and no
+database mutation. Generated content is not loaded into gameplay automatically;
+it must pass validation, asset resolution, simulation, and an explicit import
+review path first.

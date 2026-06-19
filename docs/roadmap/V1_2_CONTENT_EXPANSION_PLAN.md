@@ -36,3 +36,11 @@ Expand the world of Yggdrasil with meaningful new locations, NPCs, and quests wh
 - Inn rest recovery unit tests.
 - Quest progression for the new chain.
 - Save/load compatibility with the new shop/inn states.
+
+## Ready-to-use Hardening Addendum
+- Beginner Windows startup scripts are available as `start-game.ps1`,
+  `verify-ready.ps1`, and `stop-game.ps1`.
+- Generated content has a one-command offline pipeline and a dry-run import
+  boundary.
+- Generated content does not enter gameplay automatically and cannot bypass
+  validation, asset resolution, and simulation reports.

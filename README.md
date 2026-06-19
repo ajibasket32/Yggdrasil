@@ -18,7 +18,7 @@ Read these documents in this order:
 
 Supporting records: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_NOTES.md`](RELEASE_NOTES.md), [`assets/CATALOG.md`](assets/CATALOG.md), [`docs/adr/`](docs/adr/), and [`DOCUMENTATION_AUDIT.md`](DOCUMENTATION_AUDIT.md).
 
-**Current Version**: v1.1.0-rc.1 (Release Candidate) - 2026-06-18
+**Current Version**: v1.2.0-rc.1 (Ready-to-use hardening) - 2026-06-19
 
 ## Target Stack
 
@@ -31,18 +31,30 @@ Supporting records: [`CHANGELOG.md`](CHANGELOG.md), [`RELEASE_NOTES.md`](RELEASE
 
 If you are a Windows user looking for the easiest way to start the game, please see the [**Windows Quickstart Guide**](WINDOWS_QUICKSTART.md).
 
+Quick version:
+
+```powershell
+.\start-game.ps1
+```
+
+Then open `http://localhost:8080`.
+
 ## Development Start
 
 ### Content Generation Pipeline (Post-Launch)
 
 The game includes a deterministic pipeline for generating new content packs:
 
-1. **Generate**: `python tools/content/generate_content_pack.py --seed 42 --theme sylvan_supply --out content/packs/generated_sylvan_supply`
-2. **Validate**: `python tools/content/validate_content_pack.py content/packs/generated_sylvan_supply`
-3. **Resolve Assets**: `python tools/content/resolve_asset_manifest.py content/packs/generated_sylvan_supply`
-4. **AI Repair (Optional)**: `python tools/content/content_ai_orchestrator.py --pack content/packs/generated_sylvan_supply --repair`
+```bash
+python tools/content/run_content_pipeline.py --seed 42 --theme sylvan_supply --out content/packs/generated_sylvan_supply
+python tools/content/import_content_pack.py content/packs/generated_sylvan_supply
+```
 
-AI is optional and used only as an assistant; the core gameplay remains deterministic.
+The pipeline writes `validation_report.json`, `asset_resolution_report.json`,
+`simulation_report.json`, and `pipeline_report.json`. The import command is a
+dry-run by default and does not mutate the database. AI repair is optional and
+disabled for cloud calls unless explicitly configured; the core gameplay
+remains deterministic.
 
 ### Standard Start
 
@@ -64,6 +76,17 @@ Development endpoints:
 Before starting the stack, copy `.env.example` to `.env`. The committed
 `.env.example` contains development-only sample values. Never commit a real
 `.env` file or production credentials.
+
+Beginner scripts:
+
+```powershell
+.\start-game.ps1
+.\verify-ready.ps1
+.\stop-game.ps1
+```
+
+Existing compatibility scripts `start-yggdrasil.ps1`,
+`start-yggdrasil.cmd`, and `stop-yggdrasil.ps1` remain available.
 
 ## Local Test Start
 

@@ -1,11 +1,33 @@
 {
-  "pack_id": "unknown",
-  "hash": "808db2a9aa2d13fae25f5d1920964d9fac0322d4315940be4c37bd8d023b19e2",
+  "tool": "content_ai_orchestrator",
+  "checked_at": "2026-06-19T15:13:04.078547+00:00",
+  "pack_id": "generated_sylvan_supply_42",
+  "hash": "5a6f1e92b5ade76ef7ef4fc754bdba8e966bec6862cff59308c7f4700a62f08c",
+  "repair_requested": true,
+  "apply_requested": false,
+  "cloud_ai_used": false,
+  "mutation_applied": false,
+  "context": {
+    "pack_id": "generated_sylvan_supply_42",
+    "counts": {
+      "locations": 1,
+      "npcs": 1,
+      "items": 1,
+      "quests": 1,
+      "enemies": 0,
+      "shops": 0,
+      "inns": 0
+    }
+  },
   "suggestions": [
     "Ensure all UUIDs are valid and unique.",
     "Verify that giver_npc_id exists in the npcs array.",
     "Check that all objective target_ids reference existing items or locations.",
     "Ensure license metadata is present in assets.json."
   ],
-  "status": "deterministic_fallback"
+  "status": "deterministic_fallback",
+  "usage": {
+    "provider_calls": 0,
+    "tokens": 0
+  }
 }

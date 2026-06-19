@@ -1,5 +1,9 @@
 {
+  "tool": "resolve_asset_manifest",
+  "checked_at": "2026-06-19T15:20:30.105772+00:00",
   "pack_id": "generated_sylvan_supply_42",
+  "status": "PASS",
+  "download_requested": false,
   "resolution_results": [
     {
       "asset_id": "npc_23b8c1e9-3924-56de-3eb1-3b9046685257_sprite",

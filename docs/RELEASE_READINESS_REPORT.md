@@ -1,6 +1,6 @@
 # Release Readiness Report
 
-*Last Updated Status Check: 2026-06-19 (v1.2.0 RC1)*
+*Last Updated Status Check: 2026-06-19 (v1.2.0 RC1 ready-to-use hardening)*
 
 | Component / Test | Status | Notes |
 | :--- | :--- | :--- |
@@ -16,5 +16,9 @@
 | Inn System | PASS | HP/MP restoration and cost verified |
 | Quest Integration | PASS | Shop/Discovery progression verified |
 | Visual Verification | PASS | Shop Overlay and World Panel updates refined |
+| Beginner startup scripts | PASS | `start-game.ps1`, `verify-ready.ps1`, `stop-game.ps1` added |
+| Content pipeline workflow | PASS | One-command pipeline writes validation, asset, simulation, and pipeline reports |
+| Content import boundary | PASS | Dry-run import refuses missing or failed reports and does not mutate DB |
+| Local shell toolchain | BLOCKED | Git, Docker, Poetry, npm, and pytest unavailable on PATH in this desktop session |
 
 **Note**: Strict release validation is BLOCKED in the current sandbox environment due to `overlayfs` limitations. All logical and unit/integration tests pass.

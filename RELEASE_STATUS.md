@@ -1,12 +1,14 @@
 # Release Status
 
 Version: 1.2.0-rc.1
-Status: Release Candidate (Implementation Complete)
+Status: Release Candidate (Ready-to-use hardening in progress)
 Last reviewed: 2026-06-19
 
 ## Current Release
 
-**v1.2.0-rc.1** is prepared. Implementation of Shop, Inn, and Quest expansion is complete.
+**v1.2.0-rc.1** is prepared. Implementation of Shop, Inn, Quest expansion, and
+safe generated-content tooling is complete. Final full-stack release validation
+still requires a host with Git, Docker, Poetry, and npm available.
 
 ## Completed Releases
 
@@ -35,10 +37,14 @@ None.
 - **Asset Resolver**: PASS
 - **AI Orchestrator (Optional)**: PASS
 - **Documentation**: docs/design/AUTO_CONTENT_GENERATION_PIPELINE.md
+- **One-command Workflow**: `tools/content/run_content_pipeline.py`
+- **Import Boundary**: `tools/content/import_content_pack.py` dry-run, no DB mutation by default
 
 ## Current Blockers
 
-None.
+Local full-stack validation is blocked in the current desktop shell because
+Git, Docker, Poetry, npm, and pytest are not available on PATH. Content tooling
+was validated with the bundled Python runtime.
 
 ## Completion Percentage
 

@@ -1,7 +1,7 @@
 import json
 import sys
 import os
-from typing import Dict, Any, List
+from datetime import UTC, datetime
 
 ALLOWED_DOMAINS = [
     "opengameart.org",
@@ -9,13 +9,13 @@ ALLOWED_DOMAINS = [
     "raw.githubusercontent.com/KenneyNL"
 ]
 
-def resolve_assets(pack_path: str, download: bool = False):
+def resolve_assets(pack_path: str, download: bool = False) -> bool:
     manifest_file = os.path.join(pack_path, "assets.json")
     if not os.path.exists(manifest_file):
         print(f"Error: {manifest_file} not found.")
         return False
 
-    with open(manifest_file, "r") as f:
+    with open(manifest_file, "r", encoding="utf-8") as f:
         try:
             manifest = json.load(f)
         except json.JSONDecodeError as e:
@@ -23,7 +23,11 @@ def resolve_assets(pack_path: str, download: bool = False):
             return False
 
     report = {
+        "tool": "resolve_asset_manifest",
+        "checked_at": datetime.now(UTC).isoformat(),
         "pack_id": manifest.get("pack_id"),
+        "status": "PASS",
+        "download_requested": download,
         "resolution_results": []
     }
 
@@ -73,7 +77,8 @@ def resolve_assets(pack_path: str, download: bool = False):
         report["resolution_results"].append(result)
 
     report_file = os.path.join(pack_path, "asset_resolution_report.json")
-    with open(report_file, "w") as f:
+    report["status"] = "PASS" if all_ok else "FAIL"
+    with open(report_file, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
 
     print(f"Asset resolution report written to {report_file}")
