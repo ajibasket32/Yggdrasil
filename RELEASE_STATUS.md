@@ -1,15 +1,15 @@
 # Release Status
 
 Version: 1.2.0-rc.1
-Status: Release Candidate (local ready-to-use validation passed)
-Last reviewed: 2026-06-19
+Status: Release Candidate (post-merge validation passed)
+Last reviewed: 2026-06-20
 
 ## Current Release
 
-**v1.2.0-rc.1** is prepared. Implementation of Shop, Inn, Quest expansion, and
-safe generated-content tooling is complete. Local full-stack validation passed
-on 2026-06-19 using bundled runtime paths and Docker Desktop's default Windows
-install path.
+**v1.2.0-rc.1** is ready for prerelease tagging. Implementation of Shop, Inn,
+Quest expansion, and safe generated-content tooling is complete. Post-merge
+local full-stack validation and GitHub CI/strict validation passed for `main`
+commit `66e39c20294e53063d8f5c7be2a3ff3ebfc2b3fd`.
 
 ## Completed Releases
 
@@ -43,8 +43,7 @@ None.
 
 ## Current Blockers
 
-GitHub CI is pending until the validation branch is pushed and remote checks
-run. No local ready-to-use blocker is known as of 2026-06-19.
+None for RC1. Final `v1.2.0` GA has not been created.
 
 ## Completion Percentage
 
@@ -53,12 +52,15 @@ run. No local ready-to-use blocker is known as of 2026-06-19.
 ## Release Validation Evidence (v1.2.0 RC1)
 The v1.2.0-rc.1 release candidate has passed all local quality gates:
 - **Backend Tests**: PASS (124/124)
-- **Frontend Tests**: PASS (68/68)
-- **Frontend Coverage**: 80.04% Branch Coverage
+- **Frontend Tests**: PASS (80/80)
+- **Frontend Coverage**: 82.03% Branch Coverage
 - **Security Audit**: PASS (`pip-audit` and `npm audit` zero vulnerabilities)
 - **Docker Build/Startup**: PASS (`docker compose build`, `up -d`, health checks)
 - **E2E Ready-to-use Smoke**: PASS (new game, NPC, shop, inn, combat, save, continue)
 - **Quest Integration**: PASS (Shop/Travel linked to progression)
+- **RAG Recovery Stability**: PASS (10/10 focused repeated runs after service restart)
+- **GitHub CI**: PASS (backend, frontend, containers, secrets)
+- **Strict Release Validation**: PASS
 
 ## Docker Pull Rate Limit Mitigations
 In restricted environments, `compose.yaml` and `.env.example` allow parameterizing image mirrors (like AWS ECR Public). A `./release-validation.sh` fallback script is available for local diagnostic testing if Docker is completely unavailable.

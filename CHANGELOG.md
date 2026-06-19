@@ -3,7 +3,7 @@
 All notable completed changes are recorded here. Planned work belongs in
 `TASKS.md`, not this file.
 
-## [1.2.0] - 2026-06-19
+## [1.2.0-rc.1] - 2026-06-20
 
 ### Added
 - Content Pipeline: Implemented a deterministic, AI-light content generation pipeline foundation for post-launch expansion packs.

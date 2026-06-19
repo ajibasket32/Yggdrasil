@@ -2,7 +2,7 @@
 
 Version: 1.2.0-rc.1
 Status: RC (Release Candidate)
-Last reviewed: 2026-06-19
+Last reviewed: 2026-06-20
 
 ## Release Summary
 Yggdrasil Chronicles v1.2.0, "Content Expansion," introduces core JRPG systems including a deterministic Shop system and Inn/Rest mechanic. The world continues to grow with expanded quest chains for Hagar and Kael, and deeper integration between world actions and character progression.
@@ -23,12 +23,14 @@ Yggdrasil Chronicles v1.2.0, "Content Expansion," introduces core JRPG systems i
 
 ## Validation Evidence
 - **Backend Tests**: PASS (124/124)
-- **Frontend Tests**: PASS (68/68)
-- **Frontend Coverage**: 80.04% Branch Coverage.
+- **Frontend Tests**: PASS (80/80)
+- **Frontend Coverage**: 82.03% Branch Coverage.
 - **Security Audit**: Zero vulnerabilities (Verified via `pip-audit` and `npm audit`)
 - **Docker Build/Startup**: PASS (`docker compose build`, `up -d`, health checks).
 - **Critical Journey Validation**: PASS via Playwright ready-to-use smoke path.
 - **Content Import Dry-run**: PASS via `tools/content/import_content_pack.py`.
+- **RAG Recovery Stability**: PASS, 10/10 repeated focused runs after service restart.
+- **GitHub CI / Strict Validation**: PASS on `main` commit `66e39c20294e53063d8f5c7be2a3ff3ebfc2b3fd`.
 
 ---
 
