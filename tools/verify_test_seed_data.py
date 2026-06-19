@@ -39,8 +39,11 @@ EXPECTED_NAMED_ROWS = (
     ("locations", "Sylvan Branch"),
     ("npcs", "Warden Elara"),
     ("npcs", "Blacksmith Hagar"),
+    ("npcs", "Scout Kael"),
     ("quests", "The Rootbound Watch"),
     ("quests", "Sylvan Reconnaissance"),
+    ("quests", "The Master's Iron"),
+    ("quests", "A Scout's Tool"),
 )
 
 
@@ -67,20 +70,36 @@ async def _has_named_row(table_name: str, name: str) -> bool:
 async def verify() -> None:
     """Fail loudly if migrated test seed data is incomplete."""
     failures: list[str] = []
+    print("Starting seed verification...")
     for expectation in EXPECTED_SEEDS:
-        count = await _count_rows(expectation.table_name)
-        if count < expectation.minimum_count:
-            failures.append(
-                f"{expectation.table_name}: expected at least "
-                f"{expectation.minimum_count}, found {count}"
-            )
+        try:
+            count = await _count_rows(expectation.table_name)
+            if count < expectation.minimum_count:
+                failures.append(
+                    f"{expectation.table_name}: expected at least "
+                    f"{expectation.minimum_count}, found {count}"
+                )
+            else:
+                print(f"  OK: {expectation.table_name} has {count} rows.")
+        except Exception as e:
+            failures.append(f"{expectation.table_name}: error counting rows: {e}")
+
     for table_name, name in EXPECTED_NAMED_ROWS:
-        if not await _has_named_row(table_name, name):
-            failures.append(f'{table_name}: missing required row "{name}"')
+        try:
+            if not await _has_named_row(table_name, name):
+                failures.append(f'{table_name}: missing required row "{name}"')
+            else:
+                print(f'  OK: {table_name} has required row "{name}".')
+        except Exception as e:
+            failures.append(f'{table_name}: error checking row "{name}": {e}')
+
     await engine.dispose()
     if failures:
-        raise SystemExit("Seed verification failed:\n" + "\n".join(failures))
-    print("Seed verification passed.")
+        print("\nSeed verification FAILED:")
+        for failure in failures:
+            print(f"  - {failure}")
+        raise SystemExit(1)
+    print("\nSeed verification passed.")
 
 
 if __name__ == "__main__":
