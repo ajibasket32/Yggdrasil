@@ -1,0 +1,11 @@
+{
+  "pack_id": "unknown",
+  "hash": "808db2a9aa2d13fae25f5d1920964d9fac0322d4315940be4c37bd8d023b19e2",
+  "suggestions": [
+    "Ensure all UUIDs are valid and unique.",
+    "Verify that giver_npc_id exists in the npcs array.",
+    "Check that all objective target_ids reference existing items or locations.",
+    "Ensure license metadata is present in assets.json."
+  ],
+  "status": "deterministic_fallback"
+}

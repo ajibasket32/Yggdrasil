@@ -28,6 +28,14 @@ Last reviewed: 2026-06-19
 
 None.
 
+## Content Generation Pipeline (Post-Launch Foundation)
+- **Status**: IMPLEMENTED
+- **Deterministic Generator**: PASS
+- **Schema Validation**: PASS
+- **Asset Resolver**: PASS
+- **AI Orchestrator (Optional)**: PASS
+- **Documentation**: docs/design/AUTO_CONTENT_GENERATION_PIPELINE.md
+
 ## Current Blockers
 
 None.

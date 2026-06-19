@@ -20,6 +20,7 @@ starlette = ">=0.40.0"
 structlog = "25.3.0"
 uvicorn = { version = "0.34.2", extras = ["standard"] }
 aiosqlite = "^0.22.1"
+jsonschema = "^4.26.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "26.5.1"

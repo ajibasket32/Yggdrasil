@@ -1,0 +1,55 @@
+{
+  "pack_id": "generated_sylvan_supply_42",
+  "version": "1.0.0",
+  "generated_by": "seeded_generator",
+  "seed": 42,
+  "theme": "sylvan_supply",
+  "locations": [
+    {
+      "id": "bdd640fb-0667-1ad1-1c80-317fa3b1799d",
+      "name": "Sylvan_supply Outpost",
+      "region": "Valeria",
+      "description": "A small outpost themed around sylvan_supply."
+    }
+  ],
+  "npcs": [
+    {
+      "id": "23b8c1e9-3924-56de-3eb1-3b9046685257",
+      "name": "Guide Dara",
+      "role": "GUIDE",
+      "home_location_id": "bdd640fb-0667-1ad1-1c80-317fa3b1799d",
+      "personality": {
+        "archetype": "helpful"
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "bd9c66b3-ad3c-2d6d-1a3d-1fa7bc8960a9",
+      "name": "Sylvan_supply Token",
+      "type": "QUEST_ITEM",
+      "base_value": 0
+    }
+  ],
+  "quests": [
+    {
+      "id": "972a8469-1641-9f82-8b9d-2434e465e150",
+      "title": "The Sylvan_supply Trial",
+      "description": "Prove your worth in the sylvan_supply lands.",
+      "giver_npc_id": "23b8c1e9-3924-56de-3eb1-3b9046685257",
+      "steps": [
+        {
+          "objective_type": "FETCH",
+          "target_id": "bd9c66b3-ad3c-2d6d-1a3d-1fa7bc8960a9",
+          "count": 1,
+          "description": "Retrieve the Sylvan_supply Token."
+        }
+      ],
+      "rewards": {
+        "experience": 200,
+        "gold": 100
+      }
+    }
+  ],
+  "validation_status": "pending"
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Asset Manifest",
+  "type": "object",
+  "properties": {
+    "pack_id": { "type": "string" },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "asset_id": { "type": "string" },
+          "type": { "enum": ["sprite", "tileset", "portrait", "ui", "icon", "sound"] },
+          "preferred_fallback": { "type": "string" },
+          "remote_url": { "type": "string", "format": "uri" },
+          "source_name": { "type": "string" },
+          "license": { "type": "string" },
+          "status": { "enum": ["local", "downloaded", "missing", "blocked", "needs_review"] }
+        },
+        "required": ["asset_id", "type", "license", "status"]
+      }
+    }
+  },
+  "required": ["pack_id", "assets"]
+}
