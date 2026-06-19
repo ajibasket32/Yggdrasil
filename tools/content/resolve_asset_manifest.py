@@ -2,12 +2,12 @@ import json
 import sys
 import os
 from datetime import UTC, datetime
+from pathlib import Path
 
-ALLOWED_DOMAINS = [
-    "opengameart.org",
-    "kenney.nl",
-    "raw.githubusercontent.com/KenneyNL"
-]
+REPO_ROOT = Path(__file__).resolve().parents[2]
+
+ALLOWED_DOMAINS = ["opengameart.org", "kenney.nl", "raw.githubusercontent.com/KenneyNL"]
+
 
 def resolve_assets(pack_path: str, download: bool = False) -> bool:
     manifest_file = os.path.join(pack_path, "assets.json")
@@ -28,16 +28,12 @@ def resolve_assets(pack_path: str, download: bool = False) -> bool:
         "pack_id": manifest.get("pack_id"),
         "status": "PASS",
         "download_requested": download,
-        "resolution_results": []
+        "resolution_results": [],
     }
 
     all_ok = True
     for asset in manifest.get("assets", []):
-        result = {
-            "asset_id": asset["asset_id"],
-            "status": asset["status"],
-            "notes": []
-        }
+        result = {"asset_id": asset["asset_id"], "status": asset["status"], "notes": []}
 
         # Check license
         if "license" not in asset or not asset["license"]:
@@ -52,7 +48,8 @@ def resolve_assets(pack_path: str, download: bool = False) -> bool:
         fallback = asset.get("preferred_fallback")
         if fallback:
             # Check if fallback exists relative to repo root
-            if os.path.exists(fallback):
+            fallback_path = REPO_ROOT / fallback
+            if fallback_path.exists():
                 result["notes"].append(f"Local fallback found: {fallback}")
             else:
                 result["notes"].append(f"Local fallback missing: {fallback}")
@@ -87,11 +84,17 @@ def resolve_assets(pack_path: str, download: bool = False) -> bool:
 
     return all_ok
 
+
 if __name__ == "__main__":
     import argparse
-    parser = argparse.ArgumentParser(description="Resolve asset manifest for a content pack.")
+
+    parser = argparse.ArgumentParser(
+        description="Resolve asset manifest for a content pack."
+    )
     parser.add_argument("pack_path", help="Path to the content pack directory")
-    parser.add_argument("--download", action="store_true", help="Attempt to download remote assets")
+    parser.add_argument(
+        "--download", action="store_true", help="Attempt to download remote assets"
+    )
 
     args = parser.parse_args()
     success = resolve_assets(args.pack_path, args.download)

@@ -3,9 +3,15 @@
 from __future__ import annotations
 
 import asyncio
+import sys
 from dataclasses import dataclass
+from pathlib import Path
 
 from sqlalchemy import text
+
+BACKEND_DIR = Path(__file__).resolve().parents[1] / "backend"
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
 
 from app.core.database import engine
 

@@ -22,11 +22,12 @@ Yggdrasil Chronicles v1.2.0, "Content Expansion," introduces core JRPG systems i
   dry-run content import offline without cloud AI keys.
 
 ## Validation Evidence
-- **Backend Tests**: PASS (56 core + 5 v1.2 integration tests)
+- **Backend Tests**: PASS (124/124)
 - **Frontend Tests**: PASS (68/68)
 - **Frontend Coverage**: 80.04% Branch Coverage.
 - **Security Audit**: Zero vulnerabilities (Verified via `pip-audit` and `npm audit`)
-- **Critical Journey Validation**: PASS via fallback script.
+- **Docker Build/Startup**: PASS (`docker compose build`, `up -d`, health checks).
+- **Critical Journey Validation**: PASS via Playwright ready-to-use smoke path.
 - **Content Import Dry-run**: PASS via `tools/content/import_content_pack.py`.
 
 ---

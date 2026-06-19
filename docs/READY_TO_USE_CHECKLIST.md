@@ -9,14 +9,17 @@ Status labels: PASS, FAIL, BLOCKED, PARTIAL, SKIPPED.
 4. Run `.\start-game.ps1`.
 5. Open `http://localhost:8080`.
 
-Status: PARTIAL. Scripts are present; Docker startup could not be executed in
-this desktop shell because Docker is unavailable on PATH.
+Status: PASS. `start-game.ps1`, `verify-ready.ps1`, and `stop-game.ps1` were
+executed successfully on 2026-06-19. The scripts locate Docker Desktop from the
+default Windows install path when Docker is not on PATH.
 
 ## Docker Startup Check
 - PASS: `compose.yaml` exists.
 - PASS: `.env.example` exists and keeps AI provider order on cached fallback.
 - PASS: `start-game.ps1` creates `.env` from `.env.example`.
-- BLOCKED: `docker compose config` and `docker compose up --build` require Docker.
+- PASS: `docker compose config`.
+- PASS: `docker compose build`.
+- PASS: `docker compose up -d`.
 
 Commands:
 
@@ -29,7 +32,8 @@ docker compose logs -f
 
 ## Health Check
 - URL: `http://localhost:8000/health`
-- Status: BLOCKED locally until Docker is available.
+- Status: PASS. Backend health returned HTTP 200 and the game URL returned HTTP
+  200 after Docker startup.
 
 ## Gameplay Smoke Test Checklist
 - Title screen loads.
@@ -43,8 +47,8 @@ docker compose logs -f
 - Save works.
 - Continue loads saved character.
 
-Status: PARTIAL. `frontend/e2e/ready-to-use.spec.ts` covers this path, but it
-requires a running Docker stack and Playwright.
+Status: PASS. `frontend/e2e/ready-to-use.spec.ts` passed against the Docker
+stack on 2026-06-19.
 
 ## Content Pipeline Checklist
 - PASS: Generate pack.
@@ -77,7 +81,8 @@ python tools/content/import_content_pack.py content/packs/generated_sylvan_suppl
 - Logs: run `docker compose logs -f`.
 
 ## Known Limitations
-- Full local validation is blocked in this desktop shell because Git, Docker,
-  Poetry, npm, and pytest are unavailable on PATH.
+- Git, Docker, Poetry, Node/npm, and pytest are not all available on the
+  default PATH in this desktop shell, but local validation passed using the
+  bundled runtime paths and Docker Desktop's default install path.
 - `tools/content/import_content_pack.py --apply` is intentionally refused until
   a backend import service exists.

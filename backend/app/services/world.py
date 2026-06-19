@@ -327,7 +327,7 @@ class WorldService:
                 else f"{npc.name} offers a brief, practical greeting."
             )
             return NPCInteractionResult(
-                npc=self._npc_view(npc, character.current_location_id),
+                npc=await self._npc_view(npc, character.current_location_id),
                 relationship=RelationshipView.model_validate(relationship),
                 action_id=action_id,
                 result_text=text,

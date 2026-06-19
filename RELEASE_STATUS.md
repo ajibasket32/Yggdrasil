@@ -1,14 +1,15 @@
 # Release Status
 
 Version: 1.2.0-rc.1
-Status: Release Candidate (Ready-to-use hardening in progress)
+Status: Release Candidate (local ready-to-use validation passed)
 Last reviewed: 2026-06-19
 
 ## Current Release
 
 **v1.2.0-rc.1** is prepared. Implementation of Shop, Inn, Quest expansion, and
-safe generated-content tooling is complete. Final full-stack release validation
-still requires a host with Git, Docker, Poetry, and npm available.
+safe generated-content tooling is complete. Local full-stack validation passed
+on 2026-06-19 using bundled runtime paths and Docker Desktop's default Windows
+install path.
 
 ## Completed Releases
 
@@ -42,9 +43,8 @@ None.
 
 ## Current Blockers
 
-Local full-stack validation is blocked in the current desktop shell because
-Git, Docker, Poetry, npm, and pytest are not available on PATH. Content tooling
-was validated with the bundled Python runtime.
+GitHub CI is pending until the validation branch is pushed and remote checks
+run. No local ready-to-use blocker is known as of 2026-06-19.
 
 ## Completion Percentage
 
@@ -52,11 +52,12 @@ was validated with the bundled Python runtime.
 
 ## Release Validation Evidence (v1.2.0 RC1)
 The v1.2.0-rc.1 release candidate has passed all local quality gates:
-- **Backend Tests**: PASS (56/56 core + 5 new v1.2 integration tests)
+- **Backend Tests**: PASS (124/124)
 - **Frontend Tests**: PASS (68/68)
 - **Frontend Coverage**: 80.04% Branch Coverage
 - **Security Audit**: PASS (`pip-audit` and `npm audit` zero vulnerabilities)
-- **Local Fallback Validation**: PASS
+- **Docker Build/Startup**: PASS (`docker compose build`, `up -d`, health checks)
+- **E2E Ready-to-use Smoke**: PASS (new game, NPC, shop, inn, combat, save, continue)
 - **Quest Integration**: PASS (Shop/Travel linked to progression)
 
 ## Docker Pull Rate Limit Mitigations
