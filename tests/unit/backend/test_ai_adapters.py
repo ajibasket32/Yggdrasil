@@ -64,7 +64,9 @@ async def test_openai_compatible_adapters_map_chat_completions(
         )
 
     async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
-        adapter = adapter_type(client, "secret", "configured-model", "https://ai.test/v1")
+        adapter = adapter_type(
+            client, "secret", "configured-model", "https://ai.test/v1"
+        )
         result = await adapter.generate(narrative_request())
 
     assert result.provider == provider
@@ -134,9 +136,9 @@ async def test_ollama_adapter_maps_local_generation() -> None:
         )
 
     async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
-        result = await OllamaAdapter(client, "local-test", "http://ollama.test").generate(
-            narrative_request()
-        )
+        result = await OllamaAdapter(
+            client, "local-test", "http://ollama.test"
+        ).generate(narrative_request())
 
     assert result.provider == "ollama"
     assert result.output_tokens == 4

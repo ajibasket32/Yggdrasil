@@ -59,7 +59,9 @@ class MemoryCreate(BaseModel):
     @classmethod
     def normalize_tags(cls, value: object) -> object:
         if isinstance(value, list | tuple | set | frozenset):
-            return tuple(sorted({str(tag).strip().lower() for tag in value if str(tag).strip()}))
+            return tuple(
+                sorted({str(tag).strip().lower() for tag in value if str(tag).strip()})
+            )
         return value
 
 
@@ -94,7 +96,9 @@ class RetrievalQuery(BaseModel):
     player_id: UUID
     query_text: str = Field(min_length=1, max_length=2000)
     memory_types: tuple[MemoryType, ...] = Field(min_length=1, max_length=9)
-    allowed_entity_ids: frozenset[UUID] = Field(default_factory=frozenset, max_length=100)
+    allowed_entity_ids: frozenset[UUID] = Field(
+        default_factory=frozenset, max_length=100
+    )
     required_tags: frozenset[str] = Field(default_factory=frozenset, max_length=20)
     excluded_tags: frozenset[str] = Field(default_factory=frozenset, max_length=20)
     relationship_weights: dict[UUID, float] = Field(default_factory=dict)
@@ -106,7 +110,9 @@ class RetrievalQuery(BaseModel):
     @classmethod
     def normalize_filter_tags(cls, value: object) -> object:
         if isinstance(value, list | tuple | set | frozenset):
-            return frozenset(str(tag).strip().lower() for tag in value if str(tag).strip())
+            return frozenset(
+                str(tag).strip().lower() for tag in value if str(tag).strip()
+            )
         return value
 
 

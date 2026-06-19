@@ -65,7 +65,9 @@ class WorldRepository:
 
     async def list_steps(self, quest_id: UUID) -> list[QuestStep]:
         result = await self._session.execute(
-            select(QuestStep).where(QuestStep.quest_id == quest_id).order_by(QuestStep.sequence)
+            select(QuestStep)
+            .where(QuestStep.quest_id == quest_id)
+            .order_by(QuestStep.sequence)
         )
         return list(result.scalars().all())
 
@@ -84,7 +86,10 @@ class WorldRepository:
         self, player_id: UUID, character_id: UUID
     ) -> list[tuple[Quest, CharacterQuest | None]]:
         quests = await self.list_quests()
-        return [(quest, await self.get_character_quest(character_id, quest.id)) for quest in quests]
+        return [
+            (quest, await self.get_character_quest(character_id, quest.id))
+            for quest in quests
+        ]
 
     async def add(self, value: object) -> None:
         self._session.add(value)
@@ -92,7 +97,9 @@ class WorldRepository:
 
     async def list_npcs(self, location_id: UUID) -> list[NPC]:
         result = await self._session.execute(
-            select(NPC).where(NPC.home_location_id == location_id, NPC.is_alive.is_(True))
+            select(NPC).where(
+                NPC.home_location_id == location_id, NPC.is_alive.is_(True)
+            )
         )
         return list(result.scalars().all())
 
@@ -117,7 +124,11 @@ class WorldRepository:
         return list(result.scalars().all())
 
     async def list_factions(self) -> list[Faction]:
-        return list((await self._session.execute(select(Faction).order_by(Faction.name))).scalars())
+        return list(
+            (
+                await self._session.execute(select(Faction).order_by(Faction.name))
+            ).scalars()
+        )
 
     async def get_faction(self, faction_id: UUID) -> Faction | None:
         return await self._session.get(Faction, faction_id)
@@ -133,14 +144,22 @@ class WorldRepository:
             statement = statement.with_for_update()
         return (await self._session.execute(statement)).scalar_one_or_none()
 
-    async def list_character_factions(self, character_id: UUID) -> list[CharacterFaction]:
+    async def list_character_factions(
+        self, character_id: UUID
+    ) -> list[CharacterFaction]:
         result = await self._session.execute(
-            select(CharacterFaction).where(CharacterFaction.character_id == character_id)
+            select(CharacterFaction).where(
+                CharacterFaction.character_id == character_id
+            )
         )
         return list(result.scalars().all())
 
     async def list_dungeons(self) -> list[Dungeon]:
-        return list((await self._session.execute(select(Dungeon).order_by(Dungeon.name))).scalars())
+        return list(
+            (
+                await self._session.execute(select(Dungeon).order_by(Dungeon.name))
+            ).scalars()
+        )
 
     async def get_dungeon(self, dungeon_id: UUID) -> Dungeon | None:
         return await self._session.get(Dungeon, dungeon_id)
@@ -156,9 +175,13 @@ class WorldRepository:
             statement = statement.with_for_update()
         return (await self._session.execute(statement)).scalar_one_or_none()
 
-    async def list_dungeon_states(self, character_id: UUID) -> list[CharacterDungeonState]:
+    async def list_dungeon_states(
+        self, character_id: UUID
+    ) -> list[CharacterDungeonState]:
         result = await self._session.execute(
-            select(CharacterDungeonState).where(CharacterDungeonState.character_id == character_id)
+            select(CharacterDungeonState).where(
+                CharacterDungeonState.character_id == character_id
+            )
         )
         return list(result.scalars().all())
 
@@ -221,12 +244,16 @@ class WorldRepository:
         return result.tuples().one_or_none()
 
     async def job_skills(self, job_id: UUID) -> list[JobSkill]:
-        result = await self._session.execute(select(JobSkill).where(JobSkill.job_id == job_id))
+        result = await self._session.execute(
+            select(JobSkill).where(JobSkill.job_id == job_id)
+        )
         return list(result.scalars().all())
 
     async def skill_ids(self, character_id: UUID) -> set[UUID]:
         result = await self._session.execute(
-            select(CharacterSkill.skill_id).where(CharacterSkill.character_id == character_id)
+            select(CharacterSkill.skill_id).where(
+                CharacterSkill.character_id == character_id
+            )
         )
         return set(result.scalars().all())
 
@@ -238,21 +265,33 @@ class WorldRepository:
         journal = await self.list_journal(character_id)
         memories = await self.list_memories(player_id, character_id)
         return WorldSnapshot(
-            quest_state={"quests": [self._quest_payload(row) for _, row in quest_rows if row]},
+            quest_state={
+                "quests": [self._quest_payload(row) for _, row in quest_rows if row]
+            },
             npc_state={"npc_ids": [str(value.npc_id) for value in relationships]},
-            faction_state={"factions": [self._faction_payload(value) for value in factions]},
+            faction_state={
+                "factions": [self._faction_payload(value) for value in factions]
+            },
             relationships={
-                "relationships": [self._relationship_payload(value) for value in relationships]
+                "relationships": [
+                    self._relationship_payload(value) for value in relationships
+                ]
             },
             journal={"entry_ids": [str(value.id) for value in journal]},
             memories={"memory_ids": [str(value.id) for value in memories]},
-            dungeon_state={"dungeons": [self._dungeon_payload(value) for value in dungeons]},
+            dungeon_state={
+                "dungeons": [self._dungeon_payload(value) for value in dungeons]
+            },
         )
 
-    async def restore(self, player_id: UUID, character_id: UUID, snapshot: WorldSnapshot) -> None:
+    async def restore(
+        self, player_id: UUID, character_id: UUID, snapshot: WorldSnapshot
+    ) -> None:
         await self._restore_quests(player_id, character_id, snapshot.quest_state)
         await self._restore_factions(player_id, character_id, snapshot.faction_state)
-        await self._restore_relationships(player_id, character_id, snapshot.relationships)
+        await self._restore_relationships(
+            player_id, character_id, snapshot.relationships
+        )
         await self._restore_dungeons(player_id, character_id, snapshot.dungeon_state)
         await self._session.flush()
 
@@ -266,7 +305,9 @@ class WorldRepository:
             if not isinstance(item, dict):
                 raise ValueError("Saved quest must be an object")
             quest_id = UUID(str(item["quest_id"]))
-            current = await self.get_character_quest(character_id, quest_id, for_update=True)
+            current = await self.get_character_quest(
+                character_id, quest_id, for_update=True
+            )
             saved_status = str(item["status"])
             if current is not None and current.status in {
                 "COMPLETED",
@@ -295,7 +336,9 @@ class WorldRepository:
             if not isinstance(item, dict):
                 raise ValueError("Saved faction must be an object")
             faction_id = UUID(str(item["faction_id"]))
-            row = await self.get_character_faction(character_id, faction_id, for_update=True)
+            row = await self.get_character_faction(
+                character_id, faction_id, for_update=True
+            )
             if row is None:
                 row = CharacterFaction(
                     player_id=player_id,
@@ -319,7 +362,9 @@ class WorldRepository:
             npc_id = UUID(str(item["npc_id"]))
             row = await self.get_relationship(character_id, npc_id, for_update=True)
             if row is None:
-                row = Relationship(player_id=player_id, character_id=character_id, npc_id=npc_id)
+                row = Relationship(
+                    player_id=player_id, character_id=character_id, npc_id=npc_id
+                )
                 await self.add(row)
                 for field in (
                     "trust",
@@ -341,7 +386,9 @@ class WorldRepository:
             if not isinstance(item, dict):
                 raise ValueError("Saved dungeon must be an object")
             dungeon_id = UUID(str(item["dungeon_id"]))
-            row = await self.get_dungeon_state(character_id, dungeon_id, for_update=True)
+            row = await self.get_dungeon_state(
+                character_id, dungeon_id, for_update=True
+            )
             if row is None:
                 row = CharacterDungeonState(
                     player_id=player_id,

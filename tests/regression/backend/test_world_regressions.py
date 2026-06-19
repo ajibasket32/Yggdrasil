@@ -43,9 +43,9 @@ async def test_old_save_cannot_resurrect_cleared_dungeon(
     player_id = uuid4()
     character = await _ready_character(player_id)
     async with session_factory() as session:
-        save = await SaveService(SaveUnitOfWork(session), GameStateRepository(session)).create_save(
-            player_id, character.id, "Before clear", "save-before-clear"
-        )
+        save = await SaveService(
+            SaveUnitOfWork(session), GameStateRepository(session)
+        ).create_save(player_id, character.id, "Before clear", "save-before-clear")
     async with session_factory() as session:
         gameplay = CharacterService(GameUnitOfWork(session))
         crossroads = next(
@@ -59,9 +59,9 @@ async def test_old_save_cannot_resurrect_cleared_dungeon(
         dungeon = (await world.dungeons(player_id, character.id))[0]
         await world.clear_dungeon(player_id, character.id, dungeon.id, "clear-once")
     async with session_factory() as session:
-        await SaveService(SaveUnitOfWork(session), GameStateRepository(session)).load_save(
-            player_id, save.save_id, "load-before-clear"
-        )
+        await SaveService(
+            SaveUnitOfWork(session), GameStateRepository(session)
+        ).load_save(player_id, save.save_id, "load-before-clear")
     async with session_factory() as session:
         dungeon = next(
             value

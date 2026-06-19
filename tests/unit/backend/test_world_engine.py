@@ -37,7 +37,9 @@ def test_quest_progress_is_ordered_bounded_and_deterministic() -> None:
 
 def test_relationship_engine_applies_only_known_clamped_dimensions() -> None:
     current = {field: 0 for field in RelationshipEngine.FIELDS}
-    result = RelationshipEngine.apply(current, {"trust": 150, "hatred": -150, "respect": 4})
+    result = RelationshipEngine.apply(
+        current, {"trust": 150, "hatred": -150, "respect": 4}
+    )
 
     assert result["trust"] == 100
     assert result["hatred"] == -100

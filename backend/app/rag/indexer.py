@@ -60,7 +60,9 @@ class MemoryIndexer:
 
         async with self._uow:
             current_job = await self._uow.jobs.get(job_id, for_update=True)
-            current_memory = await self._uow.memories.get_by_id(memory.id, for_update=True)
+            current_memory = await self._uow.memories.get_by_id(
+                memory.id, for_update=True
+            )
             if current_job is None or current_memory is None:
                 return False
             current_job.status = "COMPLETED"
@@ -68,7 +70,9 @@ class MemoryIndexer:
             if operation == "UPSERT" and current_memory.deleted_at is None:
                 current_memory.index_status = "INDEXED"
             MEMORY_INDEX_JOBS_TOTAL.labels(operation.lower(), "completed").inc()
-        CELERY_TASK_DURATION_SECONDS.labels("memory_index").observe(perf_counter() - started_at)
+        CELERY_TASK_DURATION_SECONDS.labels("memory_index").observe(
+            perf_counter() - started_at
+        )
         return True
 
     async def _record_failure(self, job_id: UUID, error_code: str) -> None:
@@ -79,7 +83,9 @@ class MemoryIndexer:
             job.last_error_code = error_code
             if job.attempts >= job.max_attempts:
                 job.status = "FAILED"
-                memory = await self._uow.memories.get_by_id(job.memory_id, for_update=True)
+                memory = await self._uow.memories.get_by_id(
+                    job.memory_id, for_update=True
+                )
                 if memory is not None and memory.deleted_at is None:
                     memory.index_status = "FAILED"
                 MEMORY_INDEX_JOBS_TOTAL.labels(job.operation.lower(), "failed").inc()

@@ -39,7 +39,9 @@ async def test_cross_player_character_access_is_rejected(
 
     async with session_factory() as session:
         with pytest.raises(CharacterNotFoundError):
-            await CharacterService(GameUnitOfWork(session)).get_character(uuid4(), character.id)
+            await CharacterService(GameUnitOfWork(session)).get_character(
+                uuid4(), character.id
+            )
 
 
 @pytest.mark.asyncio
@@ -78,7 +80,9 @@ async def test_invalid_travel_does_not_change_location(
             if not location.reachable and location.id != character.current_location.id
         )
         with pytest.raises(GameplayRuleViolation):
-            await service.travel(player_id, character.id, unreachable_id, "invalid-travel")
+            await service.travel(
+                player_id, character.id, unreachable_id, "invalid-travel"
+            )
 
     async with session_factory() as session:
         current = await CharacterService(GameUnitOfWork(session)).get_character(

@@ -65,7 +65,8 @@ class MemoryService:
                     entity_id=candidate.entity_id,
                     entity_type=candidate.entity_type,
                     participants=[
-                        str(participant) for participant in sorted(candidate.participants, key=str)
+                        str(participant)
+                        for participant in sorted(candidate.participants, key=str)
                     ],
                     location_id=candidate.location_id,
                     tags=list(candidate.tags),
@@ -138,7 +139,9 @@ class MemoryService:
         try:
             await self._dispatcher.enqueue(job.id)
         except IndexDispatchError:
-            MEMORY_INDEX_JOBS_TOTAL.labels(job.operation.lower(), "dispatch_failed").inc()
+            MEMORY_INDEX_JOBS_TOTAL.labels(
+                job.operation.lower(), "dispatch_failed"
+            ).inc()
             self._logger.warning(
                 "Memory index job retained after dispatch failure",
                 event_name="rag.index.dispatch_failed",

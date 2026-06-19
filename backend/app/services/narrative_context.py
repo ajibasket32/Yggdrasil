@@ -80,12 +80,16 @@ class NarrativeContextBuilder:
                 raise NarrativeContextError("Quest was not found")
         elif entity_type == "location":
             if entity_id != character.current_location_id:
-                raise NarrativeContextError("Only the current location may be described")
+                raise NarrativeContextError(
+                    "Only the current location may be described"
+                )
         else:
             raise NarrativeContextError("Unsupported narrative entity")
         context = await self._build(player_id, character, topic_id)
         if entity_id not in context.allowed_entity_ids:
-            raise NarrativeContextError("Narrative entity is not available to this character")
+            raise NarrativeContextError(
+                "Narrative entity is not available to this character"
+            )
         return context
 
     async def _build(
@@ -102,13 +106,17 @@ class NarrativeContextBuilder:
         location = await self._repository.get_location(character.current_location_id)
         if location is None:
             raise NarrativeContextError("Character location was not found")
-        quest_rows = await self._repository.list_quest_context(character.id, location.id)
+        quest_rows = await self._repository.list_quest_context(
+            character.id, location.id
+        )
         quest_context = tuple(
             NarrativeQuest(
                 id=row.quest.id,
                 title=row.quest.title,
                 status=row.state.status if row.state else "NOT_STARTED",
-                current_objective=(row.current_step.description if row.current_step else None),
+                current_objective=(
+                    row.current_step.description if row.current_step else None
+                ),
             )
             for row in quest_rows
         )
@@ -123,9 +131,13 @@ class NarrativeContextBuilder:
             )
             if value
         )
-        memories = await self._memories(player_id, character.id, query_text, relationship, npc)
+        memories = await self._memories(
+            player_id, character.id, query_text, relationship, npc
+        )
         recent = (
-            await self._repository.recent_dialogue(player_id, character.id, npc.id) if npc else []
+            await self._repository.recent_dialogue(player_id, character.id, npc.id)
+            if npc
+            else []
         )
         allowed_ids = {
             character.id,
@@ -167,7 +179,9 @@ class NarrativeContextBuilder:
         relationship: Relationship | None,
         npc: NPC | None,
     ) -> list[Memory]:
-        weights = {npc.id: self._relationship_weight(relationship)} if npc is not None else {}
+        weights = (
+            {npc.id: self._relationship_weight(relationship)} if npc is not None else {}
+        )
         try:
             package = await self._retriever.retrieve(
                 RetrievalQuery(
@@ -191,10 +205,15 @@ class NarrativeContextBuilder:
                     player_id, character_id, limit=20
                 )
                 ranked_ids = {value.id for value in ranked}
-                return (ranked + [value for value in canonical if value.id not in ranked_ids])[:20]
+                return (
+                    ranked
+                    + [value for value in canonical if value.id not in ranked_ids]
+                )[:20]
         except QdrantError:
             pass
-        return await self._repository.list_context_memories(player_id, character_id, limit=20)
+        return await self._repository.list_context_memories(
+            player_id, character_id, limit=20
+        )
 
     async def _character(self, player_id: UUID, character_id: UUID) -> Character:
         character = await self._repository.get_character(player_id, character_id)

@@ -206,7 +206,9 @@ async def handle_world_error(request: Request, exception: Exception) -> JSONResp
     )
 
 
-async def handle_narrative_error(request: Request, exception: Exception) -> JSONResponse:
+async def handle_narrative_error(
+    request: Request, exception: Exception
+) -> JSONResponse:
     """Return stable errors without leaking provider or context details."""
     if not isinstance(exception, NarrativeError):
         raise exception

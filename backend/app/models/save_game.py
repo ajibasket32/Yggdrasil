@@ -14,14 +14,22 @@ class SaveGame(EntityMixin, Base):
 
     __tablename__ = "save_games"
 
-    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
-    character_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
+    player_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), nullable=False, index=True
+    )
+    character_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), nullable=False, index=True
+    )
     save_name: Mapped[str] = mapped_column(String(120), nullable=False)
     save_version: Mapped[int] = mapped_column(Integer, nullable=False)
     world_tick: Mapped[int] = mapped_column(BigInteger, nullable=False, default=0)
-    snapshot_reference: Mapped[dict[str, JsonValue]] = mapped_column(JSONB, nullable=False)
+    snapshot_reference: Mapped[dict[str, JsonValue]] = mapped_column(
+        JSONB, nullable=False
+    )
     snapshot_checksum: Mapped[str] = mapped_column(String(64), nullable=False)
     schema_version: Mapped[int] = mapped_column(Integer, nullable=False)
     engine_version: Mapped[str] = mapped_column(String(32), nullable=False)
     status: Mapped[str] = mapped_column(String(20), nullable=False)
-    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    deleted_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )

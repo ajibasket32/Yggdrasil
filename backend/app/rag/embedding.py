@@ -17,7 +17,8 @@ class DeterministicTextEmbedder:
         """Return a normalized signed feature-hash vector."""
         tokens = TOKEN_PATTERN.findall(text.lower())
         features = [(token, 2.0) for token in tokens] + [
-            (f"{left}:{right}", 1.0) for left, right in zip(tokens, tokens[1:], strict=False)
+            (f"{left}:{right}", 1.0)
+            for left, right in zip(tokens, tokens[1:], strict=False)
         ]
         vector = [0.0] * self.dimensions
         for feature, weight in features:

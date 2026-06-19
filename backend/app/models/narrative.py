@@ -37,7 +37,9 @@ class NarrativeRecord(EntityMixin, Base):
         ),
     )
 
-    player_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
+    player_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), nullable=False, index=True
+    )
     character_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True),
         ForeignKey("characters.id", ondelete="CASCADE"),
@@ -47,7 +49,9 @@ class NarrativeRecord(EntityMixin, Base):
     npc_id: Mapped[UUID | None] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("npcs.id"), nullable=True, index=True
     )
-    entity_id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), nullable=False, index=True)
+    entity_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), nullable=False, index=True
+    )
     entity_type: Mapped[str] = mapped_column(String(40), nullable=False)
     kind: Mapped[str] = mapped_column(String(40), nullable=False, index=True)
     topic_id: Mapped[str] = mapped_column(String(40), nullable=False)
@@ -60,6 +64,8 @@ class NarrativeRecord(EntityMixin, Base):
     text: Mapped[str] = mapped_column(Text, nullable=False)
     tone: Mapped[str] = mapped_column(String(40), nullable=False)
     tags: Mapped[list[str]] = mapped_column(JSONB, nullable=False, default=list)
-    referenced_entity_ids: Mapped[list[str]] = mapped_column(JSONB, nullable=False, default=list)
+    referenced_entity_ids: Mapped[list[str]] = mapped_column(
+        JSONB, nullable=False, default=list
+    )
     fallback_used: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     cached: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)

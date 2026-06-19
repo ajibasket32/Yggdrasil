@@ -75,7 +75,9 @@ class NarrativeValidator:
                 "Provider output referenced entities outside the request boundary"
             )
         if any(pattern.search(output.text) for pattern in FORBIDDEN_PATTERNS):
-            raise NarrativeValidationError("Provider output attempted to encode gameplay authority")
+            raise NarrativeValidationError(
+                "Provider output attempted to encode gameplay authority"
+            )
         if output.tone not in ALLOWED_TONES:
             raise NarrativeValidationError("Provider output used an unsupported tone")
         return output

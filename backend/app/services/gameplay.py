@@ -129,7 +129,9 @@ class CharacterService:
         operation = "character.create"
         fingerprint = self._fingerprint(request.model_dump(mode="json"))
         async with self._uow:
-            await self._uow.lock_key(f"idempotency:{player_id}:{operation}:{idempotency_key}")
+            await self._uow.lock_key(
+                f"idempotency:{player_id}:{operation}:{idempotency_key}"
+            )
             existing = await self._existing_result(
                 player_id, idempotency_key, operation, fingerprint
             )
@@ -141,14 +143,18 @@ class CharacterService:
 
             await self._uow.characters.lock_name(player_id, request.name)
             if await self._uow.characters.name_exists(player_id, request.name):
-                raise GameplayConflictError("Character name is already used by this player")
+                raise GameplayConflictError(
+                    "Character name is already used by this player"
+                )
             race = await self._uow.definitions.get_race(request.race_id)
             job = await self._uow.definitions.get_job(request.starting_job_id)
             location = await self._uow.definitions.get_starting_location()
             if race is None or not race.selectable:
                 raise DefinitionNotFoundError("Selectable race was not found")
             if job is None or not job.selectable_at_creation or job.tier != "BASIC":
-                raise GameplayRuleViolation("Starting job must be a selectable Basic job")
+                raise GameplayRuleViolation(
+                    "Starting job must be a selectable Basic job"
+                )
             if location is None:
                 raise DefinitionNotFoundError("Starting location is not configured")
 
@@ -211,7 +217,9 @@ class CharacterService:
             )
             starter_items = {
                 item.name: item
-                for item in await self._uow.definitions.get_named_items(self.STARTER_ITEM_NAMES)
+                for item in await self._uow.definitions.get_named_items(
+                    self.STARTER_ITEM_NAMES
+                )
             }
             if set(starter_items) != set(self.STARTER_ITEM_NAMES):
                 raise DefinitionNotFoundError("Starter item definitions are incomplete")
@@ -252,7 +260,9 @@ class CharacterService:
             characters = await self._uow.characters.list_owned(player_id)
             return [await self._summary(character) for character in characters]
 
-    async def get_character(self, player_id: UUID, character_id: UUID) -> CharacterSheet:
+    async def get_character(
+        self, player_id: UUID, character_id: UUID
+    ) -> CharacterSheet:
         async with self._uow:
             return await self._sheet(await self._owned(player_id, character_id))
 
@@ -264,7 +274,9 @@ class CharacterService:
         idempotency_key: str,
     ) -> CharacterSheet:
         operation = "character.award_experience"
-        fingerprint = self._fingerprint({"character_id": str(character_id), "amount": amount})
+        fingerprint = self._fingerprint(
+            {"character_id": str(character_id), "amount": amount}
+        )
         async with self._uow:
             existing = await self._guard_operation(
                 player_id, idempotency_key, operation, fingerprint
@@ -289,7 +301,9 @@ class CharacterService:
                 skill_points=character.skill_points,
                 stats=self._stats(character),
                 job_stat_modifiers=job.stat_modifiers,
-                skill_unlocks=[(unlock.skill_id, unlock.required_level) for unlock in unlocks],
+                skill_unlocks=[
+                    (unlock.skill_id, unlock.required_level) for unlock in unlocks
+                ],
                 already_unlocked=unlocked_ids,
                 amount=amount,
             )
@@ -332,7 +346,9 @@ class CharacterService:
         idempotency_key: str,
     ) -> CharacterSheet:
         operation = "character.unlock_job"
-        fingerprint = self._fingerprint({"character_id": str(character_id), "job_id": str(job_id)})
+        fingerprint = self._fingerprint(
+            {"character_id": str(character_id), "job_id": str(job_id)}
+        )
         async with self._uow:
             existing_record = await self._guard_operation(
                 player_id, idempotency_key, operation, fingerprint
@@ -343,7 +359,9 @@ class CharacterService:
             job = await self._uow.definitions.get_job(job_id)
             if job is None:
                 raise DefinitionNotFoundError("Job definition was not found")
-            existing = await self._uow.characters.get_character_job(character.id, job.id)
+            existing = await self._uow.characters.get_character_job(
+                character.id, job.id
+            )
             if existing is None:
                 try:
                     eligible = ProgressionEngine.prerequisites_met(
@@ -374,7 +392,8 @@ class CharacterService:
                         skill_level=1,
                     )
                     for job_skill in await self._uow.definitions.list_job_skills(job.id)
-                    if job_skill.required_level <= 1 and job_skill.skill_id not in unlocked
+                    if job_skill.required_level <= 1
+                    and job_skill.skill_id not in unlocked
                 ]
                 if skills_to_add:
                     await self._uow.characters.add_skills(skills_to_add)
@@ -397,7 +416,9 @@ class CharacterService:
         idempotency_key: str,
     ) -> CharacterSheet:
         operation = "character.change_job"
-        fingerprint = self._fingerprint({"character_id": str(character_id), "job_id": str(job_id)})
+        fingerprint = self._fingerprint(
+            {"character_id": str(character_id), "job_id": str(job_id)}
+        )
         async with self._uow:
             existing_record = await self._guard_operation(
                 player_id, idempotency_key, operation, fingerprint
@@ -405,7 +426,9 @@ class CharacterService:
             if existing_record is not None:
                 return await self._sheet(await self._owned(player_id, character_id))
             character = await self._owned(player_id, character_id, for_update=True)
-            owned_job = await self._uow.characters.get_character_job(character.id, job_id)
+            owned_job = await self._uow.characters.get_character_job(
+                character.id, job_id
+            )
             if owned_job is None:
                 raise GameplayRuleViolation("Character has not unlocked this job")
             character.active_job_id = job_id
@@ -456,7 +479,9 @@ class CharacterService:
             if await self._uow.equipment.is_equipped(entry.id):
                 raise GameplayRuleViolation("Equipped items must be unequipped first")
             try:
-                InventoryEngine.validate_drop(self._entry(entry), self._item_rule(item), quantity)
+                InventoryEngine.validate_drop(
+                    self._entry(entry), self._item_rule(item), quantity
+                )
             except InventoryRuleError as error:
                 raise GameplayRuleViolation(str(error)) from error
             if quantity == entry.quantity:
@@ -500,13 +525,19 @@ class CharacterService:
             result = await self._uow.inventory.get_entry(
                 character_id, inventory_item_id, for_update=True
             )
-            entries = await self._uow.inventory.list_entries(character_id, for_update=True)
+            entries = await self._uow.inventory.list_entries(
+                character_id, for_update=True
+            )
             if result is None:
                 raise GameplayNotFoundError("Inventory item was not found")
             entry, item = result
             occupied = {row.slot_index for row, _ in entries}
             free_slot = next(
-                (index for index in range(inventory.slot_count) if index not in occupied),
+                (
+                    index
+                    for index in range(inventory.slot_count)
+                    if index not in occupied
+                ),
                 None,
             )
             try:
@@ -606,7 +637,9 @@ class CharacterService:
             if existing_record is not None:
                 return await self._inventory_view(character_id)
             await self._owned(player_id, character_id, for_update=True)
-            inventory = await self._uow.inventory.get_for_character(character_id, for_update=True)
+            inventory = await self._uow.inventory.get_for_character(
+                character_id, for_update=True
+            )
             if inventory is None:
                 raise GameplayNotFoundError("Inventory was not found")
             rows = await self._uow.inventory.list_entries(character_id, for_update=True)
@@ -692,7 +725,9 @@ class CharacterService:
                 )
                 INVENTORY_OPERATIONS_TOTAL.labels("equip", "success").inc()
                 return await self._equipment_view(character.id)
-            occupied = await self._uow.equipment.get_slot(character.id, slot.id, for_update=True)
+            occupied = await self._uow.equipment.get_slot(
+                character.id, slot.id, for_update=True
+            )
             if occupied is not None:
                 await self._uow.equipment.delete(occupied)
             await self._uow.equipment.add(
@@ -730,7 +765,9 @@ class CharacterService:
             if existing_record is not None:
                 return await self._equipment_view(character_id)
             await self._owned(player_id, character_id, for_update=True)
-            equipped = await self._uow.equipment.get_slot(character_id, slot_id, for_update=True)
+            equipped = await self._uow.equipment.get_slot(
+                character_id, slot_id, for_update=True
+            )
             if equipped is not None:
                 await self._uow.equipment.delete(equipped)
             await self._record_result(
@@ -743,7 +780,9 @@ class CharacterService:
             INVENTORY_OPERATIONS_TOTAL.labels("unequip", "success").inc()
             return await self._equipment_view(character_id)
 
-    async def locations(self, player_id: UUID, character_id: UUID) -> list[LocationView]:
+    async def locations(
+        self, player_id: UUID, character_id: UUID
+    ) -> list[LocationView]:
         async with self._uow:
             character = await self._owned(player_id, character_id)
             return await self._location_views(character)
@@ -768,9 +807,13 @@ class CharacterService:
             )
             if existing_record is not None:
                 origin_id = UUID(str(existing_record.response_body["origin_id"]))
-                saved_destination_id = UUID(str(existing_record.response_body["destination_id"]))
+                saved_destination_id = UUID(
+                    str(existing_record.response_body["destination_id"])
+                )
                 origin = await self._uow.definitions.get_location(origin_id)
-                destination = await self._uow.definitions.get_location(saved_destination_id)
+                destination = await self._uow.definitions.get_location(
+                    saved_destination_id
+                )
                 if origin is None or destination is None:
                     raise DefinitionNotFoundError(
                         "Stored travel result references a missing location"
@@ -779,10 +822,14 @@ class CharacterService:
                     character_id=character_id,
                     origin=self._location_view(origin, True, True),
                     destination=self._location_view(destination, True, True),
-                    newly_discovered=bool(existing_record.response_body["newly_discovered"]),
+                    newly_discovered=bool(
+                        existing_record.response_body["newly_discovered"]
+                    ),
                 )
             character = await self._owned(player_id, character_id, for_update=True)
-            origin = await self._uow.definitions.get_location(character.current_location_id)
+            origin = await self._uow.definitions.get_location(
+                character.current_location_id
+            )
             destination = await self._uow.definitions.get_location(destination_id)
             if origin is None or destination is None:
                 raise DefinitionNotFoundError("Travel location was not found")
@@ -847,7 +894,9 @@ class CharacterService:
     async def _inventory_or_error(
         self, character_id: UUID, *, for_update: bool = False
     ) -> Inventory:
-        inventory = await self._uow.inventory.get_for_character(character_id, for_update=for_update)
+        inventory = await self._uow.inventory.get_for_character(
+            character_id, for_update=for_update
+        )
         if inventory is None:
             raise GameplayNotFoundError("Character inventory was not found")
         return inventory
@@ -855,7 +904,9 @@ class CharacterService:
     async def _summary(self, character: Character) -> CharacterSummary:
         race = await self._uow.definitions.get_race(character.race_id)
         job = await self._uow.definitions.get_job(character.active_job_id)
-        location = await self._uow.definitions.get_location(character.current_location_id)
+        location = await self._uow.definitions.get_location(
+            character.current_location_id
+        )
         if race is None or job is None or location is None:
             raise DefinitionNotFoundError("Character definition reference is missing")
         return CharacterSummary(
@@ -918,7 +969,9 @@ class CharacterService:
         rows = await self._uow.inventory.list_entries(character_id)
         equipped = {
             row.inventory_item_id
-            for row, _, _, _ in await self._uow.equipment.list_for_character(character_id)
+            for row, _, _, _ in await self._uow.equipment.list_for_character(
+                character_id
+            )
         }
         rules = {item.id: self._item_rule(item) for _, item in rows}
         entries = [self._entry(entry) for entry, _ in rows]
@@ -980,13 +1033,16 @@ class CharacterService:
     async def _location_views(self, character: Character) -> list[LocationView]:
         locations = await self._uow.definitions.list_locations()
         discovered = await self._uow.navigation.discovered_ids(character.id)
-        routes = await self._uow.definitions.list_routes_from(character.current_location_id)
+        routes = await self._uow.definitions.list_routes_from(
+            character.current_location_id
+        )
         reachable = {route.destination_location_id for route in routes}
         return [
             self._location_view(
                 location,
                 location.id in discovered,
-                location.id in reachable or location.id == character.current_location_id,
+                location.id in reachable
+                or location.id == character.current_location_id,
             )
             for location in locations
         ]
@@ -998,8 +1054,12 @@ class CharacterService:
         operation: str,
         fingerprint: str,
     ) -> IdempotencyRecord | None:
-        await self._uow.lock_key(f"idempotency:{player_id}:{operation}:{idempotency_key}")
-        return await self._existing_result(player_id, idempotency_key, operation, fingerprint)
+        await self._uow.lock_key(
+            f"idempotency:{player_id}:{operation}:{idempotency_key}"
+        )
+        return await self._existing_result(
+            player_id, idempotency_key, operation, fingerprint
+        )
 
     async def _existing_result(
         self,
@@ -1008,7 +1068,9 @@ class CharacterService:
         operation: str,
         fingerprint: str,
     ) -> IdempotencyRecord | None:
-        existing = await self._uow.idempotency.get(player_id, idempotency_key, operation)
+        existing = await self._uow.idempotency.get(
+            player_id, idempotency_key, operation
+        )
         if existing is None:
             return None
         if existing.request_fingerprint != fingerprint:
@@ -1080,7 +1142,9 @@ class CharacterService:
         )
 
     @staticmethod
-    def _location_view(location: Location, discovered: bool, reachable: bool) -> LocationView:
+    def _location_view(
+        location: Location, discovered: bool, reachable: bool
+    ) -> LocationView:
         return LocationView(
             id=location.id,
             name=location.name,
@@ -1093,5 +1157,7 @@ class CharacterService:
 
     @staticmethod
     def _fingerprint(payload: dict[str, JsonValue]) -> str:
-        serialized = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+        serialized = json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True
+        )
         return hashlib.sha256(serialized.encode("utf-8")).hexdigest()

@@ -16,7 +16,9 @@ from app.schemas.save import ApiResponse, ResponseMeta
 
 router = APIRouter(tags=["narrative"])
 PlayerId = Annotated[UUID, Header(alias="X-Player-ID")]
-IdempotencyKey = Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=200)]
+IdempotencyKey = Annotated[
+    str, Header(alias="Idempotency-Key", min_length=1, max_length=200)
+]
 
 
 def _meta(request: Request) -> ResponseMeta:
