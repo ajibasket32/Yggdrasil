@@ -227,7 +227,7 @@ def upgrade() -> None:
                 "occupation": "Innkeeper",
                 "role": "INNKEEPER",
                 "personality_profile": {"archetype": "hospitable_host"},
-                "schedule": [{"start_hour": 0, "end_hour": 24, "location_id": GREENWOOD_ID}],
+                "schedule": [{"start_hour": 0, "end_hour": 24, "location_id": str(GREENWOOD_ID)}],
                 "knowledge": {"topics": ["resting", "local_rumors"]},
                 "is_alive": True,
             }
