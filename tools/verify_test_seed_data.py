@@ -40,7 +40,7 @@ EXPECTED_NAMED_ROWS = (
     ("npcs", "Warden Elara"),
     ("npcs", "Blacksmith Hagar"),
     ("quests", "The Rootbound Watch"),
-    ("quests", "Sylvan Branch Patrol"),
+    ("quests", "Sylvan Reconnaissance"),
 )
 
 
