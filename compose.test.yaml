@@ -53,6 +53,8 @@ services:
     volumes:
       - ./backend:/app
       - ./backend:/backend:ro
+      - ./assets:/assets:ro
+      - ./content:/content:ro
       - ./database/migrations:/database/migrations:ro
       - ./database/seeds:/database/seeds:ro
       - ./tests:/tests
