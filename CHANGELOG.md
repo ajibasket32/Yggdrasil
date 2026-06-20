@@ -18,6 +18,12 @@ All notable completed changes are recorded here. Planned work belongs in
 - UI/UX: New Shop Overlay and updated World Panel with shop/inn action buttons, gold awareness, and feedback banners.
 - Persistence: Expanded save/load compatibility to cover new shop-related state and inventory changes.
 
+### Validation
+- PR #33 merged real Phaser 2D playability evidence into `main` at `2f1aa46a5c3b06963a8fd118e27104ece0e615a2`.
+- Backend tests passed 124/124; frontend tests passed 82/82 with 81.44% branch coverage.
+- Ready-to-use E2E and real Phaser 2D playability E2E passed; final audit classification is PASS -- Genuine playable 2D JRPG loop.
+- Core runtime health passed; optional cloud AI provider diagnostics may be degraded without credentials, while cached/offline gameplay fallback remains PASS.
+
 ## [1.1.0] - 2026-06-18
 
 ### Added

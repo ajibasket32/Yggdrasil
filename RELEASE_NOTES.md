@@ -1,7 +1,7 @@
-# Release Notes - v1.2.0-rc.1
+# Release Notes - v1.2.0
 
-Version: 1.2.0-rc.1
-Status: RC (Release Candidate)
+Version: 1.2.0
+Status: GA draft; final tag/release not yet created
 Last reviewed: 2026-06-20
 
 ## Release Summary
@@ -23,14 +23,18 @@ Yggdrasil Chronicles v1.2.0, "Content Expansion," introduces core JRPG systems i
 
 ## Validation Evidence
 - **Backend Tests**: PASS (124/124)
-- **Frontend Tests**: PASS (80/80)
-- **Frontend Coverage**: 82.03% Branch Coverage.
+- **Frontend Tests**: PASS (82/82)
+- **Frontend Coverage**: 81.44% Branch Coverage.
 - **Security Audit**: Zero vulnerabilities (Verified via `pip-audit` and `npm audit`)
 - **Docker Build/Startup**: PASS (`docker compose build`, `up -d`, health checks).
 - **Critical Journey Validation**: PASS via Playwright ready-to-use smoke path.
+- **Real Phaser 2D Playability**: PASS via Playwright keyboard movement, animation, NPC proximity, combat, victory return, save, and Continue path.
 - **Content Import Dry-run**: PASS via `tools/content/import_content_pack.py`.
 - **RAG Recovery Stability**: PASS, 10/10 repeated focused runs after service restart.
-- **GitHub CI / Strict Validation**: PASS on `main` commit `66e39c20294e53063d8f5c7be2a3ff3ebfc2b3fd`.
+- **GitHub CI / Full-Stack Release Validation**: PASS on PR #33 merged `main` commit `2f1aa46a5c3b06963a8fd118e27104ece0e615a2`.
+- **Core Runtime Health**: PASS.
+- **Optional Cloud AI Provider Availability**: DEGRADED/UNAVAILABLE when credentials are absent.
+- **Gameplay Fallback**: PASS via cached/offline narrative path; cloud AI remains optional and never gameplay authority.
 
 ---
 

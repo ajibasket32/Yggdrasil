@@ -6,10 +6,11 @@ Last reviewed: 2026-06-20
 
 ## Current Release
 
-**v1.2.0-rc.1** is ready for prerelease tagging. Implementation of Shop, Inn,
-Quest expansion, and safe generated-content tooling is complete. Post-merge
-local full-stack validation and GitHub CI/strict validation passed for `main`
-commit `66e39c20294e53063d8f5c7be2a3ff3ebfc2b3fd`.
+**v1.2.0-rc.1** is ready for GA evidence review. Implementation of Shop, Inn,
+Quest expansion, safe generated-content tooling, and real Phaser 2D playability
+fixes is complete. PR #33 merged into `main` at commit
+`2f1aa46a5c3b06963a8fd118e27104ece0e615a2`, with GitHub CI and strict
+full-stack release validation passing.
 
 ## Completed Releases
 
@@ -43,24 +44,28 @@ None.
 
 ## Current Blockers
 
-None for RC1. Final `v1.2.0` GA has not been created.
+None for RC1 evidence. Final `v1.2.0` GA has not been created.
 
 ## Completion Percentage
 
 **100% of implementation releases complete** (12 of 12).
 
 ## Release Validation Evidence (v1.2.0 RC1)
-The v1.2.0-rc.1 release candidate has passed all local quality gates:
+The v1.2.0-rc.1 release candidate has passed all local and PR #33 quality gates:
 - **Backend Tests**: PASS (124/124)
-- **Frontend Tests**: PASS (80/80)
-- **Frontend Coverage**: 82.03% Branch Coverage
+- **Frontend Tests**: PASS (82/82)
+- **Frontend Coverage**: 81.44% Branch Coverage
 - **Security Audit**: PASS (`pip-audit` and `npm audit` zero vulnerabilities)
 - **Docker Build/Startup**: PASS (`docker compose build`, `up -d`, health checks)
 - **E2E Ready-to-use Smoke**: PASS (new game, NPC, shop, inn, combat, save, continue)
+- **Real Phaser 2D Playability E2E**: PASS (keyboard movement, animation, NPC proximity, combat, victory return, save, Continue)
 - **Quest Integration**: PASS (Shop/Travel linked to progression)
 - **RAG Recovery Stability**: PASS (10/10 focused repeated runs after service restart)
 - **GitHub CI**: PASS (backend, frontend, containers, secrets)
-- **Strict Release Validation**: PASS
+- **Full-Stack Release Validation**: PASS
+- **Core Runtime Health**: PASS
+- **Optional Cloud AI Provider Availability**: DEGRADED/UNAVAILABLE without credentials
+- **Gameplay Fallback**: PASS via cached/offline narrative path; cloud AI remains optional and never gameplay authority
 
 ## Docker Pull Rate Limit Mitigations
 In restricted environments, `compose.yaml` and `.env.example` allow parameterizing image mirrors (like AWS ECR Public). A `./release-validation.sh` fallback script is available for local diagnostic testing if Docker is completely unavailable.
