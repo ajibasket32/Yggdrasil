@@ -98,6 +98,41 @@ def test_import_fails_when_validation_report_missing(tmp_path: Path) -> None:
     assert "Missing required report: validation_report.json" in report["errors"]
 
 
+def test_validate_pack_rejects_missing_map_coherence(tmp_path: Path) -> None:
+    pack_dir = tmp_path / "generated"
+    assert run_pipeline(42, "sylvan_supply", str(pack_dir), False)
+    pack = json.loads((pack_dir / "pack.json").read_text(encoding="utf-8"))
+    pack["locations"][0]["music_key"] = "remote_stream"
+    pack["validation_status"] = "validated"
+    (pack_dir / "pack.json").write_text(json.dumps(pack), encoding="utf-8")
+
+    assert not validate_pack(str(pack_dir))
+
+    report = json.loads(
+        (pack_dir / "validation_report.json").read_text(encoding="utf-8")
+    )
+    assert (
+        "Content pack cannot self-mark validation_status as validated"
+        in report["errors"]
+    )
+    assert any("unavailable music key" in error for error in report["errors"])
+
+
+def test_validate_pack_rejects_missing_landmarks(tmp_path: Path) -> None:
+    pack_dir = tmp_path / "generated"
+    assert run_pipeline(42, "sylvan_supply", str(pack_dir), False)
+    pack = json.loads((pack_dir / "pack.json").read_text(encoding="utf-8"))
+    pack["locations"][0]["landmarks"] = []
+    (pack_dir / "pack.json").write_text(json.dumps(pack), encoding="utf-8")
+
+    assert not validate_pack(str(pack_dir))
+
+    report = json.loads(
+        (pack_dir / "validation_report.json").read_text(encoding="utf-8")
+    )
+    assert any("landmarks" in error for error in report["errors"])
+
+
 def test_import_fails_when_simulation_failed(tmp_path: Path) -> None:
     pack_dir = tmp_path / "generated"
     assert run_pipeline(42, "sylvan_supply", str(pack_dir), False)

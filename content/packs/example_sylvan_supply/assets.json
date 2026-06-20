@@ -4,9 +4,18 @@
     {
       "asset_id": "npc_elara_portrait",
       "type": "portrait",
+      "source_name": "Yggdrasil placeholder portrait",
       "license": "CC0",
       "status": "local",
       "preferred_fallback": "assets/ui/portraits/placeholder.png"
+    },
+    {
+      "asset_id": "sylvan_branch",
+      "type": "sound",
+      "source_name": "Yggdrasil project-generated waveform",
+      "license": "CC0",
+      "status": "local",
+      "preferred_fallback": "frontend/src/assets/audio/sylvan_branch.wav"
     }
   ]
 }

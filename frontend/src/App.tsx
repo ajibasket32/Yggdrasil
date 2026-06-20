@@ -9,6 +9,7 @@ import ShopOverlay from "./components/ShopOverlay";
 import GameCanvas from "./components/GameCanvas";
 import portraitAtlasUrl from "./assets/characters/RPG_assets.png";
 import { gameApi, getPlayerId } from "./services/gameApi";
+import { bgm, bgmKeyForScene, type BgmKey } from "./systems/bgm";
 import type {
   CharacterDefinitions,
   CharacterSummary,
@@ -58,6 +59,9 @@ const combatSeed = (): number => {
   return Date.now() & 0x7fffffff;
 };
 
+const BGM_ENABLED_KEY = "yggdrasil-bgm-enabled";
+const BGM_VOLUME_KEY = "yggdrasil-bgm-volume";
+
 const App = () => {
   const playerId = useMemo(getPlayerId, []);
   const [definitions, setDefinitions] = useState<CharacterDefinitions | null>(
@@ -83,6 +87,13 @@ const App = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentShop, setCurrentShop] = useState<Shop | null>(null);
   const [lastPurchase, setLastPurchase] = useState<string | null>(null);
+  const [bgmEnabled, setBgmEnabled] = useState(
+    () => window.localStorage.getItem(BGM_ENABLED_KEY) !== "false",
+  );
+  const [bgmVolume, setBgmVolume] = useState(() => {
+    const saved = Number(window.localStorage.getItem(BGM_VOLUME_KEY) ?? "0.45");
+    return Number.isFinite(saved) ? saved : 0.45;
+  });
 
   type MenuView =
     | "NONE"
@@ -92,6 +103,44 @@ const App = () => {
     | "TRAVEL"
     | "ENDING";
   const [menuView, setMenuView] = useState<MenuView>("NONE");
+
+  const currentBgmKey: BgmKey =
+    combat !== null
+      ? "battle_theme"
+      : character !== null
+        ? bgmKeyForScene(character.current_location.name, false)
+        : "title_theme";
+
+  useEffect(() => {
+    window.localStorage.setItem(BGM_ENABLED_KEY, String(bgmEnabled));
+    window.localStorage.setItem(BGM_VOLUME_KEY, String(bgmVolume));
+    bgm.setVolume(bgmVolume);
+    bgm.setMuted(!bgmEnabled);
+    if (bgmEnabled) void bgm.play(currentBgmKey);
+  }, [bgmEnabled, bgmVolume, currentBgmKey]);
+
+  const toggleBgm = () => {
+    const nextEnabled = !bgmEnabled;
+    setBgmEnabled(nextEnabled);
+    if (nextEnabled) void bgm.play(currentBgmKey);
+  };
+
+  const audioControl = (className: string) => (
+    <div className={`audio-control ${className}`}>
+      <button type="button" onClick={toggleBgm}>
+        Audio {bgmEnabled ? "On" : "Off"}
+      </button>
+      <input
+        aria-label="BGM volume"
+        type="range"
+        min="0"
+        max="1"
+        step="0.05"
+        value={bgmVolume}
+        onChange={(event) => setBgmVolume(Number(event.target.value))}
+      />
+    </div>
+  );
 
   const inspectCharacter = useCallback(
     async (characterId: string) => {
@@ -612,6 +661,7 @@ const App = () => {
               >
                 Controls: WASD/Arrows to move, E to interact
               </div>
+              {audioControl("title-audio-control")}
             </div>
           </div>
         )}
@@ -630,6 +680,7 @@ const App = () => {
               locationName={character.current_location.name}
             />
             <div className="jrpg-ui-layer">
+              {audioControl("floating-audio-control")}
               <div className="bottom-panel">
                 <CombatPanel
                   combat={combat}
@@ -731,7 +782,11 @@ const App = () => {
               mode="EXPLORATION"
               locationName={character.current_location.name}
               npcs={npcs}
-              reachableLocations={locations.filter((l) => l.reachable)}
+              reachableLocations={locations.filter(
+                (location) =>
+                  location.reachable &&
+                  location.id !== character.current_location.id,
+              )}
               encounters={encounters}
               onTravel={(loc) => void travel(loc, character.id)}
               onInteract={(npc) => {
@@ -741,6 +796,7 @@ const App = () => {
               onEncounter={(enc) => void startCombat(enc)}
             />
             <div className="jrpg-ui-layer">
+              {audioControl("floating-audio-control")}
               <div className="hud-overlay jrpg-panel">
                 <div className="character-status-compact">
                   <div className="portrait-mini">
@@ -804,7 +860,7 @@ const App = () => {
                     color: "#89b4fa",
                   }}
                 >
-                  📍 {character.current_location.name}
+                  Location: {character.current_location.name}
                 </div>
               </div>
 

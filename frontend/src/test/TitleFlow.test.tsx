@@ -51,7 +51,7 @@ describe("Title Flow and Character Creation", () => {
     render(<App />);
 
     await continueExistingGame("Aster Vale");
-    expect(screen.getByText("📍 Frontier Gate")).toBeInTheDocument();
+    expect(screen.getByText("Location: Frontier Gate")).toBeInTheDocument();
   });
 
   it("keeps creation available when the server rejects it", async () => {
@@ -94,7 +94,7 @@ describe("Title Flow and Character Creation", () => {
     render(<App />);
 
     await continueExistingGame("Aster Vale");
-    expect(screen.getByText("📍 Frontier Gate")).toBeInTheDocument();
+    expect(screen.getByText("Location: Frontier Gate")).toBeInTheDocument();
 
     const confirmSpy = vi
       .spyOn(window, "confirm")
@@ -106,7 +106,7 @@ describe("Title Flow and Character Creation", () => {
 
     fireEvent.click(screen.getByText("Return to Game"));
     expect(screen.queryByText("The End")).not.toBeInTheDocument();
-    expect(screen.getByText("📍 Frontier Gate")).toBeInTheDocument();
+    expect(screen.getByText("Location: Frontier Gate")).toBeInTheDocument();
 
     confirmSpy.mockRestore();
   });
