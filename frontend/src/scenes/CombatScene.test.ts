@@ -9,6 +9,7 @@ describe("CombatScene", () => {
   beforeEach(() => {
     scene = new CombatScene();
     scene.load = { image: vi.fn(), spritesheet: vi.fn() };
+    scene.textures = { exists: vi.fn(() => false) };
     scene.add = {
       tileSprite: vi.fn(function (this: any) {
         return {
@@ -76,6 +77,15 @@ describe("CombatScene", () => {
     scene.preload();
     expect(scene.load.image).toHaveBeenCalled();
     expect(scene.load.spritesheet).toHaveBeenCalled();
+  });
+
+  it("does not reload existing textures", () => {
+    scene.textures.exists.mockReturnValue(true);
+
+    scene.preload();
+
+    expect(scene.load.image).not.toHaveBeenCalled();
+    expect(scene.load.spritesheet).not.toHaveBeenCalled();
   });
 
   it("creates scene and handles various combat states", () => {

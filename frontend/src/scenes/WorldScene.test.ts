@@ -8,6 +8,7 @@ describe("WorldScene", () => {
   beforeEach(() => {
     scene = new WorldScene();
     scene.load = { image: vi.fn(), spritesheet: vi.fn() };
+    scene.textures = { exists: vi.fn(() => false) };
     scene.add = {
       tileSprite: vi.fn(function (this: any) {
         return {
@@ -31,6 +32,9 @@ describe("WorldScene", () => {
           setCollideWorldBounds: vi.fn(function (this: any) {
             return this;
           }),
+          setTint: vi.fn(function (this: any) {
+            return this;
+          }),
           body: {
             velocity: {
               clone: vi.fn(() => ({
@@ -43,6 +47,9 @@ describe("WorldScene", () => {
             setVelocityY: vi.fn(),
           },
           setFlipX: vi.fn(),
+          play: vi.fn(),
+          anims: { stop: vi.fn(), currentAnim: null },
+          setFrame: vi.fn(),
           x: 0,
           y: 0,
         };
@@ -80,6 +87,9 @@ describe("WorldScene", () => {
             setCollideWorldBounds: vi.fn(function (this: any) {
               return this;
             }),
+            setTint: vi.fn(function (this: any) {
+              return this;
+            }),
             body: {
               velocity: {
                 clone: vi.fn(() => ({
@@ -92,6 +102,9 @@ describe("WorldScene", () => {
               setVelocityY: vi.fn(),
             },
             setFlipX: vi.fn(),
+            play: vi.fn(),
+            anims: { stop: vi.fn(), currentAnim: null },
+            setFrame: vi.fn(),
             x: 0,
             y: 0,
           };
@@ -126,6 +139,11 @@ describe("WorldScene", () => {
         setBounds: vi.fn(),
         startFollow: vi.fn(),
       },
+    };
+    scene.anims = {
+      exists: vi.fn(() => false),
+      create: vi.fn(),
+      generateFrameNumbers: vi.fn(() => [0, 1, 2, 3]),
     };
     scene.tweens = { add: vi.fn() };
     scene.game = { events: { emit: vi.fn() } };
@@ -163,6 +181,15 @@ describe("WorldScene", () => {
     scene.registry.get.mockReturnValue("Aster Vale");
     scene.registry._trigger("changedata-locationName");
     expect(scene.locationText.setText).toHaveBeenCalledWith("Aster Vale");
+  });
+
+  it("does not reload existing textures", () => {
+    scene.textures.exists.mockReturnValue(true);
+
+    scene.preload();
+
+    expect(scene.load.image).not.toHaveBeenCalled();
+    expect(scene.load.spritesheet).not.toHaveBeenCalled();
   });
 
   it("handles movement and updates", () => {

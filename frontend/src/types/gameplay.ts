@@ -230,7 +230,7 @@ export interface Npc {
   personality_profile: Record<string, unknown>;
   knowledge: Record<string, unknown>;
   is_alive: boolean;
-  available_actions: ("GREET" | "OFFER_HELP")[];
+  available_actions: ("GREET" | "OFFER_HELP" | "SHOP" | "REST")[];
   shop_id?: string;
 }
 

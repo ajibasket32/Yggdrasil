@@ -1,5 +1,12 @@
 import { Scene } from "phaser";
 import type { CombatState } from "../types/gameplay";
+import tilesUrl from "../assets/tilesets/world.png";
+import playerUrl from "../assets/characters/RPG_assets.png";
+import slimeUrl from "../assets/monsters/slime.png";
+import goblinUrl from "../assets/monsters/goblin.png";
+
+const PLAYER_IDLE_FRAME = 10;
+const COMBAT_PLAYER_TEXTURE = "combat-player";
 
 export default class CombatScene extends Scene {
   private playerSprite!: Phaser.GameObjects.Sprite;
@@ -18,14 +25,18 @@ export default class CombatScene extends Scene {
   }
 
   preload() {
-    this.load.image("slime", "assets/monsters/slime.png");
-    this.load.image("goblin", "assets/monsters/goblin.png");
-    this.load.image("boss", "assets/monsters/goblin.png");
-    this.load.image("battle-bg", "assets/tilesets/world.png");
-    this.load.spritesheet("player", "assets/characters/RPG_assets.png", {
-      frameWidth: 16,
-      frameHeight: 16,
-    });
+    if (!this.textures.exists("slime")) this.load.image("slime", slimeUrl);
+    if (!this.textures.exists("goblin")) this.load.image("goblin", goblinUrl);
+    if (!this.textures.exists("boss")) this.load.image("boss", goblinUrl);
+    if (!this.textures.exists("battle-bg")) {
+      this.load.image("battle-bg", tilesUrl);
+    }
+    if (!this.textures.exists(COMBAT_PLAYER_TEXTURE)) {
+      this.load.spritesheet(COMBAT_PLAYER_TEXTURE, playerUrl, {
+        frameWidth: 16,
+        frameHeight: 16,
+      });
+    }
   }
 
   create() {
@@ -50,8 +61,8 @@ export default class CombatScene extends Scene {
     this.playerSprite = this.add.sprite(
       centerX + 250,
       centerY + 50,
-      "player",
-      0,
+      COMBAT_PLAYER_TEXTURE,
+      PLAYER_IDLE_FRAME,
     );
     this.playerSprite.setScale(6);
     this.playerSprite.setFlipX(true);
@@ -169,6 +180,25 @@ export default class CombatScene extends Scene {
 
     this.lastEnemyHp = enemy.current_hp;
     this.lastPlayerHp = player.current_hp;
+    this.updateAuditState(combat, player, enemy);
+  }
+
+  private updateAuditState(
+    combat: CombatState,
+    player: CombatState["participants"][number],
+    enemy: CombatState["participants"][number],
+  ) {
+    if (!window.location.search.includes("audit=1")) return;
+    window.__YGGDRASIL_AUDIT__ = {
+      ...(window.__YGGDRASIL_AUDIT__ ?? {}),
+      combat: {
+        status: combat.status,
+        playerHp: player.current_hp,
+        enemyHp: enemy.current_hp,
+        enemyTexture: this.enemySprite.texture.key,
+        playerTexture: this.playerSprite.texture.key,
+      },
+    };
   }
 
   private drawHpBar(
