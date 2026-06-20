@@ -3,6 +3,7 @@
 Status: PASS -- Genuine playable 2D JRPG loop
 Audit branch: `audit/v1.2-2d-playability`
 RC target audited: `3240bbb58c76537cd7651b9c11884f3a2f60b4d9`
+Merged via PR #33 into `main`: `2f1aa46a5c3b06963a8fd118e27104ece0e615a2`
 Date: 2026-06-20
 
 ## Ponytail Availability
@@ -102,7 +103,7 @@ The old ready-to-use E2E was useful as a smoke test, but it did not independentl
 - `docker compose config`: PASS.
 - `docker compose build`: PASS.
 - `docker compose up -d`: PASS; main containers healthy.
-- `/health`: DEGRADED only for unavailable cloud AI provider checks; database, Redis, Qdrant, and worker were healthy, and cached narrative fallback supported gameplay.
+- `/health`: DEGRADED only for unavailable cloud AI provider checks; core runtime health passed for database, Redis, Qdrant, worker, frontend, and backend. Cached/offline narrative fallback supported gameplay because cloud AI is optional and not gameplay authority.
 
 ## Classification
 
@@ -121,4 +122,4 @@ The existing `v1.2.0-rc.1` tag was not modified.
 
 ## Recommended Next Prompt
 
-Review the `audit/v1.2-2d-playability` branch for v1.2.0-rc.1 and, if accepted, open a PR without creating the final `v1.2.0` tag.
+After the GA evidence PR is merged, run strict post-merge validation on the exact final `main` SHA, then create and publish final `v1.2.0` only if every gate passes.
