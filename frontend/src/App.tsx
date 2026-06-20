@@ -734,7 +734,10 @@ const App = () => {
               reachableLocations={locations.filter((l) => l.reachable)}
               encounters={encounters}
               onTravel={(loc) => void travel(loc, character.id)}
-              onInteract={(npc) => void dialogue(npc, "GREETING")}
+              onInteract={(npc) => {
+                setMenuView("WORLD_PANEL");
+                void dialogue(npc, "GREETING");
+              }}
               onEncounter={(enc) => void startCombat(enc)}
             />
             <div className="jrpg-ui-layer">
@@ -805,30 +808,31 @@ const App = () => {
                 </div>
               </div>
 
-              {(interactionText !== null || narrative !== null) && (
-                <div className="narrative-container">
-                  <div className="jrpg-panel" style={{ flexGrow: 1 }}>
-                    {interactionText && (
-                      <div className="narrative-text typing-effect">
-                        {interactionText}
-                      </div>
-                    )}
-                    {narrative && (
-                      <NarrativeBox
-                        narrative={narrative}
-                        onClose={() => setNarrative(null)}
-                      />
-                    )}
-                    {interactionText && !narrative && (
-                      <div style={{ textAlign: "right", marginTop: "1rem" }}>
-                        <button onClick={() => setInteractionText(null)}>
-                          Close ▼
-                        </button>
-                      </div>
-                    )}
+              {menuView === "NONE" &&
+                (interactionText !== null || narrative !== null) && (
+                  <div className="narrative-container">
+                    <div className="jrpg-panel" style={{ flexGrow: 1 }}>
+                      {interactionText && (
+                        <div className="narrative-text typing-effect">
+                          {interactionText}
+                        </div>
+                      )}
+                      {narrative && (
+                        <NarrativeBox
+                          narrative={narrative}
+                          onClose={() => setNarrative(null)}
+                        />
+                      )}
+                      {interactionText && !narrative && (
+                        <div style={{ textAlign: "right", marginTop: "1rem" }}>
+                          <button onClick={() => setInteractionText(null)}>
+                            Close ▼
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               <div
                 className="action-bar jrpg-panel"

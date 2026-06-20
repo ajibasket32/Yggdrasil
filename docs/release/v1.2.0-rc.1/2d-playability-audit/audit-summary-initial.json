@@ -1,0 +1,2320 @@
+{
+  "titleHasNewGame": true,
+  "titleHasNoExisting": true,
+  "canvasInitial": {
+    "exists": true,
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 720,
+      "top": 0,
+      "right": 1280,
+      "bottom": 720,
+      "left": 0
+    },
+    "hash": 0,
+    "nonTransparent": 0
+  },
+  "movementHashes": {
+    "beforeMove": {
+      "exists": true,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "top": 0,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      },
+      "hash": 0,
+      "nonTransparent": 0
+    },
+    "afterArrow": {
+      "exists": true,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "top": 0,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      },
+      "hash": 0,
+      "nonTransparent": 0
+    },
+    "afterWasd": {
+      "exists": true,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "top": 0,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      },
+      "hash": 0,
+      "nonTransparent": 0
+    },
+    "afterBoundary": {
+      "exists": true,
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 720,
+        "top": 0,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      },
+      "hash": 0,
+      "nonTransparent": 0
+    }
+  },
+  "arrowChangedCanvas": false,
+  "wasdChangedCanvas": false,
+  "npcInteractionVisible": false,
+  "shopBuyButtons": 1,
+  "goldBeforeIncludes": false,
+  "restButtonCount": 1,
+  "combatCanvas": {
+    "exists": true,
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 1280,
+      "height": 720,
+      "top": 0,
+      "right": 1280,
+      "bottom": 720,
+      "left": 0
+    },
+    "hash": 0,
+    "nonTransparent": 0
+  },
+  "victory": true,
+  "continueLoadedWorld": true,
+  "consoleErrors": [
+    {
+      "type": "error",
+      "text": "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&display=swap' violates the following Content Security Policy directive: \"style-src 'self'\". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&display=swap' violates the following Content Security Policy directive: \"style-src 'self'\". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/d3a151ac-371f-4536-af35-fe8fb3123beb' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/17da2429-d3ca-4ea3-a197-be2e59bff83d' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image tiles"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" spritesheet player"
+    },
+    {
+      "type": "error",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src 'self''. Either the 'unsafe-inline' keyword, a hash ('sha256-uk/L1wbbeGDF8aykMy4VSGRU0t28GYZAS01q3SP4bdo='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/52774d18-cef7-49dd-8cb0-1ddea6527997' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/3ca35582-01b3-43ce-940d-80e8752c5391' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/983c4c6f-a71c-4c7b-90ca-e5b3535b1ecc' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/1ad5cbb1-69f6-4002-8690-b49be62ecbb6' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/e1e46571-0297-47ce-b141-2b6c1cec6a8e' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/fa0812a2-e700-47e0-a8c2-a71db95e971f' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/1e80c3c2-ba7b-4063-9214-39ccb1c68527' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image tiles"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" spritesheet player"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image battle-bg"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" spritesheet player"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image slime"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image goblin"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image boss"
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/b22c1eb8-98ba-406d-a3bb-6dac58606576' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/93bf1af7-a70c-49b6-9079-4748da47f7fd' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image tiles"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" spritesheet player"
+    },
+    {
+      "type": "error",
+      "text": "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&display=swap' violates the following Content Security Policy directive: \"style-src 'self'\". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/282af690-7067-47a0-9313-0e87030e9aa4' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/2fbcd005-18ca-48e7-9b42-f39b983d2bf2' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image tiles"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" spritesheet player"
+    }
+  ],
+  "allLogs": [
+    {
+      "type": "error",
+      "text": "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&display=swap' violates the following Content Security Policy directive: \"style-src 'self'\". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked."
+    },
+    {
+      "type": "warning",
+      "text": "WebGL: CONTEXT_LOST_WEBGL: loseContext: context lost"
+    },
+    {
+      "type": "error",
+      "text": "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&display=swap' violates the following Content Security Policy directive: \"style-src 'self'\". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked."
+    },
+    {
+      "type": "log",
+      "text": "%c %c %c %c %c Phaser v3.87 (WebGL | Web Audio) %c https://phaser.io/v387 background: #ff0000 background: #ffff00 background: #00ff00 background: #00ffff color: #ffffff; background: #000000 background: transparent"
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x434c03fa9200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x434c03fa9200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x434c03fa9200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/d3a151ac-371f-4536-af35-fe8fb3123beb' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x434c03fa9200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/17da2429-d3ca-4ea3-a197-be2e59bff83d' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image tiles"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" spritesheet player"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "error",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src 'self''. Either the 'unsafe-inline' keyword, a hash ('sha256-uk/L1wbbeGDF8aykMy4VSGRU0t28GYZAS01q3SP4bdo='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked."
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "log",
+      "text": "%c %c %c %c %c Phaser v3.87 (WebGL | Web Audio) %c https://phaser.io/v387 background: #ff0000 background: #ffff00 background: #00ff00 background: #00ffff color: #ffffff; background: #000000 background: transparent"
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/52774d18-cef7-49dd-8cb0-1ddea6527997' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/3ca35582-01b3-43ce-940d-80e8752c5391' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/983c4c6f-a71c-4c7b-90ca-e5b3535b1ecc' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/1ad5cbb1-69f6-4002-8690-b49be62ecbb6' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/e1e46571-0297-47ce-b141-2b6c1cec6a8e' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/fa0812a2-e700-47e0-a8c2-a71db95e971f' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/1e80c3c2-ba7b-4063-9214-39ccb1c68527' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image tiles"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" spritesheet player"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image battle-bg"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" spritesheet player"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image slime"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image goblin"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image boss"
+    },
+    {
+      "type": "log",
+      "text": "%c %c %c %c %c Phaser v3.87 (WebGL | Web Audio) %c https://phaser.io/v387 background: #ff0000 background: #ffff00 background: #00ff00 background: #00ffff color: #ffffff; background: #000000 background: transparent"
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/b22c1eb8-98ba-406d-a3bb-6dac58606576' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/93bf1af7-a70c-49b6-9079-4748da47f7fd' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image tiles"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" spritesheet player"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "error",
+      "text": "Loading the stylesheet 'https://fonts.googleapis.com/css2?family=Press+Start+2P&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;800&display=swap' violates the following Content Security Policy directive: \"style-src 'self'\". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback. The action has been blocked."
+    },
+    {
+      "type": "log",
+      "text": "%c %c %c %c %c Phaser v3.87 (WebGL | Web Audio) %c https://phaser.io/v387 background: #ff0000 background: #ffff00 background: #00ff00 background: #00ffff color: #ffffff; background: #000000 background: transparent"
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/282af690-7067-47a0-9313-0e87030e9aa4' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Loading the image 'blob:http://localhost:8080/2fbcd005-18ca-48e7-9b42-f39b983d2bf2' violates the following Content Security Policy directive: \"img-src 'self' data:\". The action has been blocked."
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" image tiles"
+    },
+    {
+      "type": "error",
+      "text": "Failed to process file: %s \"%s\" spritesheet player"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 48"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 56"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    },
+    {
+      "type": "warning",
+      "text": "Texture \"%s\" has no frame \"%s\" __MISSING 32"
+    }
+  ]
+}

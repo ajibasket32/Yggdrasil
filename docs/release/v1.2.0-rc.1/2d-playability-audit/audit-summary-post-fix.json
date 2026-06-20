@@ -1,0 +1,41 @@
+{
+  "before": {
+    "playerX": 400,
+    "playerY": 400,
+    "moving": false,
+    "animation": null
+  },
+  "moving": {
+    "playerX": 416.6666666666666,
+    "playerY": 400,
+    "moving": true,
+    "animation": "player-walk"
+  },
+  "afterWasd": {
+    "playerX": 469.9999999999996,
+    "playerY": 400,
+    "moving": false,
+    "animation": "player-walk"
+  },
+  "boundary": {
+    "playerX": 66.66666666666708,
+    "playerY": 24,
+    "moving": false,
+    "animation": "player-walk"
+  },
+  "arrowMoved": true,
+  "wasdMoved": true,
+  "walkAnimation": "player-walk",
+  "boundaryClamped": true,
+  "combatState": {
+    "status": "VICTORY",
+    "playerHp": 188,
+    "enemyHp": 0,
+    "enemyTexture": "slime",
+    "playerTexture": "player"
+  },
+  "consoleErrors": [
+    "Texture key already in use: player"
+  ],
+  "warningCount": 5
+}

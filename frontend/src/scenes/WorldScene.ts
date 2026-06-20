@@ -1,5 +1,23 @@
 import { Scene } from "phaser";
 import type { Npc, Location, EncounterDefinition } from "../types/gameplay";
+import tilesUrl from "../assets/tilesets/world.png";
+import playerUrl from "../assets/characters/RPG_assets.png";
+
+const PLAYER_IDLE_FRAME = 10;
+
+declare global {
+  interface Window {
+    __YGGDRASIL_AUDIT__?: {
+      world?: {
+        playerX: number;
+        playerY: number;
+        moving: boolean;
+        animation: string | null;
+      };
+      combat?: unknown;
+    };
+  }
+}
 
 export default class WorldScene extends Scene {
   private player!: Phaser.Physics.Arcade.Sprite;
@@ -16,29 +34,41 @@ export default class WorldScene extends Scene {
   private markers: Phaser.GameObjects.Group | null = null;
   private mapWidth = 800;
   private mapHeight = 800;
+  private auditEnabled = false;
 
   constructor() {
     super("WorldScene");
   }
 
   preload() {
-    this.load.image("tiles", "assets/tilesets/world.png");
-    this.load.spritesheet("player", "assets/characters/RPG_assets.png", {
-      frameWidth: 16,
-      frameHeight: 16,
-    });
+    if (!this.textures.exists("tiles")) {
+      this.load.image("tiles", tilesUrl);
+    }
+    if (!this.textures.exists("player")) {
+      this.load.spritesheet("player", playerUrl, {
+        frameWidth: 16,
+        frameHeight: 16,
+      });
+    }
   }
 
   create() {
+    this.auditEnabled = window.location.search.includes("audit=1");
     this.physics.world.setBounds(0, 0, this.mapWidth, this.mapHeight);
 
     this.createBackground();
 
     const centerX = this.mapWidth / 2;
     const centerY = this.mapHeight / 2;
-    this.player = this.physics.add.sprite(centerX, centerY, "player", 0);
+    this.player = this.physics.add.sprite(
+      centerX,
+      centerY,
+      "player",
+      PLAYER_IDLE_FRAME,
+    );
     this.player.setScale(3);
     this.player.setCollideWorldBounds(true);
+    this.createAnimations();
 
     this.cursors = this.input.keyboard!.createCursorKeys();
     this.wasd = this.input.keyboard!.addKeys("W,A,S,D,E") as any;
@@ -85,6 +115,7 @@ export default class WorldScene extends Scene {
 
     this.updateLocation();
     this.refreshMarkers();
+    this.updateAuditState(false);
 
     this.cameras.main.flash(500);
   }
@@ -99,6 +130,20 @@ export default class WorldScene extends Scene {
     );
     bg.setOrigin(0, 0);
     bg.setTileScale(3);
+  }
+
+  private createAnimations() {
+    if (!this.anims.exists("player-walk")) {
+      this.anims.create({
+        key: "player-walk",
+        frames: this.anims.generateFrameNumbers("player", {
+          start: 8,
+          end: 11,
+        }),
+        frameRate: 8,
+        repeat: -1,
+      });
+    }
   }
 
   private updateLocation() {
@@ -119,15 +164,15 @@ export default class WorldScene extends Scene {
       (this.registry.get("reachableLocations") as Location[]) || [];
 
     npcs.forEach((npc, i) => {
-      this.addMarker(npc, "NPC", 200, 200 + i * 100, 48);
+      this.addMarker(npc, "NPC", 200, 200 + i * 100);
     });
 
     encounters.forEach((enc, i) => {
-      this.addMarker(enc, "ENCOUNTER", 600, 200 + i * 100, 56);
+      this.addMarker(enc, "ENCOUNTER", 600, 200 + i * 100);
     });
 
     travel.forEach((loc, i) => {
-      this.addMarker(loc, "TRAVEL", 400, 600 + i * 100, 32);
+      this.addMarker(loc, "TRAVEL", 400, 600 + i * 100);
     });
   }
 
@@ -136,10 +181,12 @@ export default class WorldScene extends Scene {
     type: "NPC" | "ENCOUNTER" | "TRAVEL",
     x: number,
     y: number,
-    frame: number,
   ) {
-    const sprite = this.add.sprite(x, y, "player", frame);
+    const markerTint =
+      type === "NPC" ? 0x86efac : type === "ENCOUNTER" ? 0xf87171 : 0xfef08a;
+    const sprite = this.add.sprite(x, y, "player", PLAYER_IDLE_FRAME);
     sprite.setScale(2.5);
+    sprite.setTint(markerTint);
     (sprite as any).markerData = data;
     (sprite as any).markerType = type;
     this.markers?.add(sprite);
@@ -179,8 +226,29 @@ export default class WorldScene extends Scene {
     }
 
     body.velocity.normalize().scale(speed);
+    const moving = body.velocity.x !== 0 || body.velocity.y !== 0;
+    if (moving) {
+      this.player.play("player-walk", true);
+    } else {
+      this.player.anims.stop();
+      this.player.setFrame(PLAYER_IDLE_FRAME);
+    }
 
     this.checkInteractions();
+    this.updateAuditState(moving);
+  }
+
+  private updateAuditState(moving: boolean) {
+    if (!this.auditEnabled) return;
+    window.__YGGDRASIL_AUDIT__ = {
+      ...(window.__YGGDRASIL_AUDIT__ ?? {}),
+      world: {
+        playerX: this.player.x,
+        playerY: this.player.y,
+        moving,
+        animation: this.player.anims.currentAnim?.key ?? null,
+      },
+    };
   }
 
   private checkInteractions() {
