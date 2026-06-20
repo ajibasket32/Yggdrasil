@@ -252,7 +252,8 @@ p {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  min-width: 280px;
+  width: min(340px, calc(100vw - 2rem));
+  padding: 0.9rem;
 }
 
 .character-status-compact {
@@ -329,18 +330,20 @@ p {
 /* Action Bar (Command Menu) */
 .action-bar {
   position: absolute;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: 1rem;
+  right: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  width: 200px;
+  gap: 0.45rem;
+  width: 180px;
+  padding: 0.75rem !important;
 }
 
 .action-bar button {
   text-align: left;
-  padding-left: 2rem;
-  font-size: 1.1rem;
+  min-height: 42px;
+  padding: 0.55rem 0.75rem 0.55rem 1.6rem;
+  font-size: 0.95rem;
 }
 
 .action-bar button::before {
@@ -502,6 +505,59 @@ p {
   height: 100% !important;
   object-fit: cover;
   image-rendering: pixelated;
+}
+
+.audio-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.audio-control button {
+  min-width: 112px;
+  min-height: 36px;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.audio-control input {
+  width: 110px;
+  accent-color: var(--jrpg-border-highlight);
+}
+
+.title-audio-control {
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.floating-audio-control {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.45rem;
+  background: rgba(10, 12, 16, 0.82);
+  border: 1px solid var(--jrpg-border);
+  border-radius: 6px;
+}
+
+@media (max-width: 760px) {
+  .hud-overlay {
+    top: 0.5rem;
+    left: 0.5rem;
+    width: min(300px, calc(100vw - 1rem));
+  }
+
+  .action-bar {
+    right: 0.5rem;
+    bottom: 0.5rem;
+    width: min(180px, calc(100vw - 1rem));
+  }
+
+  .floating-audio-control {
+    top: auto;
+    right: 0.5rem;
+    bottom: 14rem;
+  }
 }
 
 /* Utilities */

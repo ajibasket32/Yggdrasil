@@ -17,7 +17,7 @@
           "license": { "type": "string" },
           "status": { "enum": ["local", "downloaded", "missing", "blocked", "needs_review"] }
         },
-        "required": ["asset_id", "type", "license", "status"]
+        "required": ["asset_id", "type", "source_name", "license", "status"]
       }
     }
   },

@@ -10,12 +10,16 @@ describe("WorldScene", () => {
     scene.load = { image: vi.fn(), spritesheet: vi.fn() };
     scene.textures = { exists: vi.fn(() => false) };
     scene.add = {
-      tileSprite: vi.fn(function (this: any) {
+      rectangle: vi.fn(function (this: any) {
         return {
           setOrigin: vi.fn(function (this: any) {
             return this;
           }),
-          setTileScale: vi.fn(function (this: any) {
+        };
+      }),
+      circle: vi.fn(function (this: any) {
+        return {
+          setOrigin: vi.fn(function (this: any) {
             return this;
           }),
         };
@@ -50,6 +54,7 @@ describe("WorldScene", () => {
           play: vi.fn(),
           anims: { stop: vi.fn(), currentAnim: null },
           setFrame: vi.fn(),
+          setPosition: vi.fn(),
           x: 0,
           y: 0,
         };
@@ -79,6 +84,12 @@ describe("WorldScene", () => {
     scene.physics = {
       world: { setBounds: vi.fn() },
       add: {
+        existing: vi.fn(),
+        collider: vi.fn(),
+        staticGroup: vi.fn(() => ({
+          add: vi.fn(),
+          clear: vi.fn(),
+        })),
         sprite: vi.fn(function (this: any) {
           return {
             setScale: vi.fn(function (this: any) {
@@ -105,6 +116,7 @@ describe("WorldScene", () => {
             play: vi.fn(),
             anims: { stop: vi.fn(), currentAnim: null },
             setFrame: vi.fn(),
+            setPosition: vi.fn(),
             x: 0,
             y: 0,
           };
@@ -165,12 +177,12 @@ describe("WorldScene", () => {
 
   it("preloads and creates assets", () => {
     scene.preload();
-    expect(scene.load.image).toHaveBeenCalled();
     expect(scene.load.spritesheet).toHaveBeenCalled();
 
     scene.create();
     expect(scene.physics.world.setBounds).toHaveBeenCalled();
-    expect(scene.add.tileSprite).toHaveBeenCalled();
+    expect(scene.add.rectangle).toHaveBeenCalled();
+    expect(scene.physics.add.collider).toHaveBeenCalled();
     expect(scene.physics.add.sprite).toHaveBeenCalled();
 
     // Test branch where location is null
@@ -188,7 +200,6 @@ describe("WorldScene", () => {
 
     scene.preload();
 
-    expect(scene.load.image).not.toHaveBeenCalled();
     expect(scene.load.spritesheet).not.toHaveBeenCalled();
   });
 
@@ -211,6 +222,20 @@ describe("WorldScene", () => {
     scene.registry._trigger("changedata-encounters");
     scene.registry._trigger("changedata-reachableLocations");
     expect(scene.markers.add).toHaveBeenCalled();
+  });
+
+  it("switches authored maps when the location changes", () => {
+    let locationName = "Valeris Outskirts";
+    scene.registry.get.mockImplementation((key: string) =>
+      key === "locationName" ? locationName : [],
+    );
+    scene.create();
+    locationName = "Valeris City";
+
+    scene.registry._trigger("changedata-locationName");
+
+    expect(scene.physics.world.setBounds).toHaveBeenCalledWith(0, 0, 1200, 900);
+    expect(scene.player.setPosition).toHaveBeenCalledWith(610, 720);
   });
 
   it("handles interactions with markers", () => {

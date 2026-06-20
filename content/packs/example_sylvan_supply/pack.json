@@ -9,7 +9,18 @@
       "id": "56000000-0000-0000-0000-000000000010",
       "name": "Sylvan Grove",
       "region": "Valeria",
-      "description": "A quiet grove with silver-leaved trees."
+      "theme": "sylvan",
+      "description": "A quiet grove with silver-leaved trees.",
+      "region_type": "forest_route",
+      "map_template": "forest_route",
+      "landmarks": ["silver-leaved trees", "herbalist clearing"],
+      "palette": ["moss", "silver", "dirt"],
+      "music_key": "sylvan_branch",
+      "combat_background_key": "forest_path",
+      "asset_manifest": ["npc_elara_portrait", "sylvan_branch"],
+      "layout_seed": 123,
+      "layout_hash": "sylvan-grove-123",
+      "interaction_zones": ["herbalist_clearing"]
     }
   ],
   "npcs": [

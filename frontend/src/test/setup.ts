@@ -26,6 +26,16 @@ if (typeof window.crypto.getRandomValues !== "function") {
 
 import { vi } from "vitest";
 
+Object.defineProperty(HTMLMediaElement.prototype, "play", {
+  configurable: true,
+  value: vi.fn(async () => undefined),
+});
+
+Object.defineProperty(HTMLMediaElement.prototype, "pause", {
+  configurable: true,
+  value: vi.fn(),
+});
+
 (globalThis as any).Phaser = {
   Math: {
     Distance: {

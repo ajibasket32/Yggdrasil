@@ -3,6 +3,19 @@ import { expect, test, type Page } from "@playwright/test";
 const auditWorld = async (page: Page) =>
   page.evaluate(() => window.__YGGDRASIL_AUDIT__?.world);
 
+const auditBgm = async (page: Page) =>
+  page.evaluate(() => {
+    const audit = window.__YGGDRASIL_AUDIT__ as
+      | {
+          bgm?: {
+            currentKey: string | null;
+            status: string;
+          };
+        }
+      | undefined;
+    return audit?.bgm;
+  });
+
 const hold = async (page: Page, key: string, ms: number) => {
   await page.keyboard.down(key);
   await page.waitForTimeout(ms);
@@ -34,6 +47,12 @@ const travelTo = async (page: Page, locationName: string) => {
     .getByRole("button", { name: "Travel here" })
     .click();
   await expect(page.getByText(locationName).first()).toBeVisible();
+};
+
+const screenshotDir = "../docs/release/v1.3-map-audio-overhaul/screenshots";
+
+const capture = async (page: Page, name: string) => {
+  await page.screenshot({ path: `${screenshotDir}/${name}.png` });
 };
 
 const attackUntilVictory = async (page: Page) => {
@@ -78,11 +97,19 @@ test("real Phaser keyboard movement and playability path", async ({ page }) => {
   await page.goto("http://localhost:8080/?audit=1");
   await page.evaluate(() => window.localStorage.clear());
   await page.reload();
+  await capture(page, "01-title");
   await page.getByRole("button", { name: "New Game" }).click();
   await page.getByLabel("Character name").fill("Phaser Audit");
   await page.getByLabel("Starting job").selectOption({ label: "Warrior" });
   await page.getByRole("button", { name: "Create character" }).click();
   await page.waitForFunction(() => window.__YGGDRASIL_AUDIT__?.world);
+  await page.getByRole("button", { name: "Audio On" }).first().click();
+  await page.getByRole("button", { name: "Audio Off" }).first().click();
+  await expect
+    .poll(async () => (await auditBgm(page))?.currentKey)
+    .toBe("valeris_outskirts");
+  await expect.poll(async () => (await auditBgm(page))?.status).toBe("playing");
+  await capture(page, "02-valeris-outskirts-start");
 
   await page.mouse.click(640, 360);
   const before = await auditWorld(page);
@@ -101,23 +128,87 @@ test("real Phaser keyboard movement and playability path", async ({ page }) => {
   expect(afterWasd!.playerX).toBeGreaterThan(afterArrow!.playerX);
 
   await travelTo(page, "Valeris City");
-  await moveTo(page, 200, 200);
+  await expect
+    .poll(async () => (await auditWorld(page))?.mapId)
+    .toBe("valeris_city");
+  await expect
+    .poll(async () => (await auditWorld(page))?.musicKey)
+    .toBe("valeris_city");
+  await expect
+    .poll(async () => (await auditBgm(page))?.currentKey)
+    .toBe("valeris_city");
+  await capture(page, "03-valeris-city");
+  await moveTo(page, 610, 455);
   await page.keyboard.press("KeyE");
   await expect(
     page.getByRole("heading", { name: "People nearby" }),
   ).toBeVisible();
-  await page.locator("button.menu-close-btn").click();
+  await page.getByRole("button", { name: "Browse Shop" }).first().click();
+  await expect(
+    page.getByRole("heading", { name: /Sundries|Shop|Blacksmith|Market/i }),
+  ).toBeVisible();
+  await capture(page, "04-shop-zone");
+  await page.getByRole("button", { name: "Close" }).click();
+  const continueButton = page.getByRole("button", { name: /Continue/ });
+  if (await continueButton.isVisible().catch(() => false)) {
+    await continueButton.click();
+  }
 
   await travelTo(page, "Valeris Outskirts");
+  await expect
+    .poll(async () => (await auditWorld(page))?.mapId)
+    .toBe("valeris_outskirts");
+  await expect
+    .poll(async () => (await auditWorld(page))?.musicKey)
+    .toBe("valeris_outskirts");
+  await expect
+    .poll(async () => (await auditBgm(page))?.currentKey)
+    .toBe("valeris_outskirts");
+  await capture(page, "05-valeris-outskirts");
   await travelTo(page, "Greenwood Verge");
+  await expect
+    .poll(async () => (await auditWorld(page))?.mapId)
+    .toBe("greenwood_verge");
+  await capture(page, "06-greenwood-verge-inn");
+  await moveTo(page, 375, 650);
+  await page.keyboard.press("KeyE");
+  await expect(
+    page.getByRole("heading", { name: "People nearby" }),
+  ).toBeVisible();
+  await capture(page, "07-inn-zone");
+  await page.locator("button.menu-close-btn").click();
+  if (await continueButton.isVisible().catch(() => false)) {
+    await continueButton.click();
+  }
+  await travelTo(page, "Sylvan Branch");
+  await expect
+    .poll(async () => (await auditWorld(page))?.mapId)
+    .toBe("sylvan_branch");
+  await expect
+    .poll(async () => (await auditWorld(page))?.musicKey)
+    .toBe("sylvan_branch");
+  await expect
+    .poll(async () => (await auditBgm(page))?.currentKey)
+    .toBe("sylvan_branch");
+  await capture(page, "08-sylvan-branch");
   await page.getByRole("button", { name: "Encounters" }).click();
   await page.getByRole("button", { name: "Begin combat" }).first().click();
   await page.waitForFunction(() => window.__YGGDRASIL_AUDIT__?.combat);
   await expect(page.getByLabel("Combat encounter")).toBeVisible();
+  await expect
+    .poll(async () => (await auditBgm(page))?.currentKey)
+    .toBe("battle_theme");
+  await capture(page, "09-battle");
   await attackUntilVictory(page);
   await expect(page.getByText(/Victory!/)).toBeVisible();
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page.getByRole("button", { name: "Travel" })).toBeVisible();
+  await expect
+    .poll(async () => (await auditWorld(page))?.musicKey)
+    .toBe("sylvan_branch");
+  await expect
+    .poll(async () => (await auditBgm(page))?.currentKey)
+    .toBe("sylvan_branch");
 
   await page.getByRole("button", { name: "Save Chronicle" }).click();
   await expect(

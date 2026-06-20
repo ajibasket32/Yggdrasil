@@ -30,9 +30,61 @@
           "id": { "type": "string", "format": "uuid" },
           "name": { "type": "string" },
           "region": { "type": "string" },
-          "description": { "type": "string" }
+          "description": { "type": "string" },
+          "theme": { "type": "string" },
+          "region_type": {
+            "enum": [
+              "safe_hub",
+              "route",
+              "town_interior",
+              "shop_interior",
+              "inn_interior",
+              "quest_area",
+              "combat_region",
+              "dungeon_route",
+              "forest_route"
+            ]
+          },
+          "map_template": { "type": "string" },
+          "landmarks": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+          },
+          "palette": {
+            "type": "array",
+            "minItems": 2,
+            "items": { "type": "string" }
+          },
+          "music_key": { "type": "string" },
+          "combat_background_key": { "type": "string" },
+          "asset_manifest": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string" }
+          },
+          "layout_seed": { "type": "integer" },
+          "layout_hash": { "type": "string" },
+          "interaction_zones": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
         },
-        "required": ["id", "name", "region"]
+        "required": [
+          "id",
+          "name",
+          "region",
+          "theme",
+          "region_type",
+          "map_template",
+          "landmarks",
+          "palette",
+          "music_key",
+          "combat_background_key",
+          "asset_manifest",
+          "layout_seed",
+          "layout_hash"
+        ]
       }
     },
     "quests": {

@@ -1,9 +1,9 @@
+import hashlib
 import json
-import sys
 import os
 import random
 import uuid
-from typing import Dict, Any, List
+
 
 def generate_pack(seed: int, theme: str, out_dir: str):
     random.seed(seed)
@@ -20,6 +20,7 @@ def generate_pack(seed: int, theme: str, out_dir: str):
     npc_id = seeded_uuid("npc")
     item_id = seeded_uuid("item")
     quest_id = seeded_uuid("quest")
+    layout_hash = hashlib.sha256(f"{theme}:{seed}:route".encode()).hexdigest()[:16]
 
     pack = {
         "pack_id": pack_id,
@@ -32,7 +33,18 @@ def generate_pack(seed: int, theme: str, out_dir: str):
                 "id": location_id,
                 "name": f"{theme.capitalize()} Outpost",
                 "region": "Valeria",
-                "description": f"A small outpost themed around {theme}."
+                "theme": theme,
+                "description": f"A small outpost themed around {theme}.",
+                "region_type": "route",
+                "map_template": "forest_route",
+                "landmarks": [f"{theme} trail marker", "supply clearing"],
+                "palette": ["moss", "dirt", "pine"],
+                "music_key": "sylvan_branch",
+                "combat_background_key": "forest_path",
+                "asset_manifest": [f"npc_{npc_id}_sprite", "sylvan_branch"],
+                "layout_seed": seed,
+                "layout_hash": layout_hash,
+                "interaction_zones": ["supply_clearing"],
             }
         ],
         "npcs": [
@@ -41,7 +53,7 @@ def generate_pack(seed: int, theme: str, out_dir: str):
                 "name": f"Guide {random.choice(['Aria', 'Bryn', 'Cael', 'Dara'])}",
                 "role": "GUIDE",
                 "home_location_id": location_id,
-                "personality": { "archetype": "helpful" }
+                "personality": {"archetype": "helpful"},
             }
         ],
         "items": [
@@ -49,7 +61,7 @@ def generate_pack(seed: int, theme: str, out_dir: str):
                 "id": item_id,
                 "name": f"{theme.capitalize()} Token",
                 "type": "QUEST_ITEM",
-                "base_value": 0
+                "base_value": 0,
             }
         ],
         "quests": [
@@ -63,16 +75,13 @@ def generate_pack(seed: int, theme: str, out_dir: str):
                         "objective_type": "FETCH",
                         "target_id": item_id,
                         "count": 1,
-                        "description": f"Retrieve the {theme.capitalize()} Token."
+                        "description": f"Retrieve the {theme.capitalize()} Token.",
                     }
                 ],
-                "rewards": {
-                    "experience": 200,
-                    "gold": 100
-                }
+                "rewards": {"experience": 200, "gold": 100},
             }
         ],
-        "validation_status": "pending"
+        "validation_status": "pending",
     }
 
     pack_file = os.path.join(out_dir, "pack.json")
@@ -85,11 +94,20 @@ def generate_pack(seed: int, theme: str, out_dir: str):
             {
                 "asset_id": f"npc_{npc_id}_sprite",
                 "type": "sprite",
+                "source_name": "generated placeholder",
                 "license": "CC0",
                 "status": "local",
-                "preferred_fallback": "assets/ui/portraits/placeholder.png"
-            }
-        ]
+                "preferred_fallback": "assets/ui/portraits/placeholder.png",
+            },
+            {
+                "asset_id": "sylvan_branch",
+                "type": "sound",
+                "source_name": "Yggdrasil project-generated waveform",
+                "license": "CC0",
+                "status": "local",
+                "preferred_fallback": "frontend/src/assets/audio/sylvan_branch.wav",
+            },
+        ],
     }
 
     assets_file = os.path.join(out_dir, "assets.json")
@@ -99,8 +117,10 @@ def generate_pack(seed: int, theme: str, out_dir: str):
     print(f"Content pack generated at {out_dir}")
     return pack
 
+
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser(description="Generate a seeded content pack.")
     parser.add_argument("--seed", type=int, required=True, help="Seed for generation")
     parser.add_argument("--theme", type=str, required=True, help="Theme for the pack")

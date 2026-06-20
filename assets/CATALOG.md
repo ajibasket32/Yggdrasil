@@ -54,6 +54,11 @@ Any other source requires review before use.
 | redshrike-goblins | assets/monsters/8goblins.png | Monster | OpenGameArt | CC0 | Redshrike | No | Combat (Goblin) | Approved |
 | redshrike-sentries | assets/monsters/rpg_enemies.png | Monster | OpenGameArt | CC0 | Redshrike | No | Combat (Ancient Sentry) | Approved |
 | bencreating-tileset | assets/tilesets/16x16_jrpg_tileset.png | Tileset | OpenGameArt | CC0 | BenCreating | No | World Map | Approved |
+| ygg-v1-3-title-theme | frontend/src/assets/audio/title_theme.wav | Audio | Project-generated waveform | CC0 | Yggdrasil Contributors | No | Title BGM placeholder | Approved |
+| ygg-v1-3-valeris-city | frontend/src/assets/audio/valeris_city.wav | Audio | Project-generated waveform | CC0 | Yggdrasil Contributors | No | Valeris City BGM placeholder | Approved |
+| ygg-v1-3-valeris-outskirts | frontend/src/assets/audio/valeris_outskirts.wav | Audio | Project-generated waveform | CC0 | Yggdrasil Contributors | No | Valeris Outskirts BGM placeholder | Approved |
+| ygg-v1-3-sylvan-branch | frontend/src/assets/audio/sylvan_branch.wav | Audio | Project-generated waveform | CC0 | Yggdrasil Contributors | No | Forest BGM placeholder | Approved |
+| ygg-v1-3-battle-theme | frontend/src/assets/audio/battle_theme.wav | Audio | Project-generated waveform | CC0 | Yggdrasil Contributors | No | Battle BGM placeholder | Approved |
 | kenney-bg-elements | assets/backgrounds/kenney_backgroundElements.zip | Background | Kenney | CC0 | Kenney | No | Combat Backgrounds | Approved |
 | kenney-board-icons | assets/items/kenney_board-game-icons.zip | Icons | Kenney | CC0 | Kenney | No | Items & Skills | Approved |
 | redshrike-boss | assets/monsters/boss.png | Monster | OpenGameArt | CC0 | Redshrike | No | Combat (Boss) | Approved |
