@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import App from "../App";
 import { gameApi } from "../services/gameApi";
-import { sheet, inventory, npc } from "./fixtures";
+import { sheet, inventory, npc, narrative } from "./fixtures";
 
 vi.mock("../services/gameApi");
 vi.mock("../components/GameCanvas");
@@ -29,6 +29,14 @@ describe("Shop and Inn Flow", () => {
     (gameApi.dungeons as any).mockResolvedValue([]);
     (gameApi.journal as any).mockResolvedValue([]);
 
+    const hagar = {
+      ...npc,
+      id: "hagar-1",
+      name: "Blacksmith Hagar",
+      occupation: "Royal Blacksmith",
+      role: "QUEST_GIVER",
+      available_actions: ["GREET", "OFFER_HELP"],
+    };
     const merchant = {
       ...npc,
       id: "merchant-1",
@@ -44,7 +52,8 @@ describe("Shop and Inn Flow", () => {
       role: "INNKEEPER",
       available_actions: ["GREET", "OFFER_HELP", "REST"],
     };
-    (gameApi.npcs as any).mockResolvedValue([merchant, innkeeper]);
+    (gameApi.npcs as any).mockResolvedValue([hagar, merchant, innkeeper]);
+    (gameApi.dialogue as any).mockResolvedValue(narrative);
   });
 
   it("opens shop and completes a purchase", async () => {
@@ -191,5 +200,31 @@ describe("Shop and Inn Flow", () => {
     expect(
       await screen.findByText("⚠ Insufficient funds in bank"),
     ).toBeDefined();
+  });
+
+  it("scopes map interaction services to the active NPC", async () => {
+    render(<App />);
+
+    fireEvent.click(await screen.findByText(/Continue:/));
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "Canvas NPC Marker: Blacksmith Hagar",
+      }),
+    );
+
+    expect(await screen.findByText("Blacksmith Hagar")).toBeInTheDocument();
+    expect(screen.queryByText(/Rest \(/)).toBeNull();
+    expect(screen.queryByText("Browse Shop")).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "×" }));
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "Canvas NPC Marker: Innkeeper Elena",
+      }),
+    );
+
+    expect(await screen.findByText("Innkeeper Elena")).toBeInTheDocument();
+    expect(screen.getByText("Rest (50g)")).toBeInTheDocument();
+    expect(screen.queryByText("Browse Shop")).toBeNull();
   });
 });

@@ -33,6 +33,16 @@ const GameCanvas = ({
           Canvas NPC Marker
         </button>
       )}
+      {onInteract &&
+        npcs.map((value) => (
+          <button
+            key={value.id}
+            type="button"
+            onClick={() => onInteract(value)}
+          >
+            Canvas NPC Marker: {value.name}
+          </button>
+        ))}
       {encounter && onEncounter && (
         <button type="button" onClick={() => onEncounter(encounter)}>
           Canvas Encounter Marker

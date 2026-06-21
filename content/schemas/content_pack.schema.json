@@ -30,9 +30,41 @@
           "id": { "type": "string", "format": "uuid" },
           "name": { "type": "string" },
           "region": { "type": "string" },
-          "description": { "type": "string" }
+          "description": { "type": "string" },
+          "theme": { "type": "string" },
+          "biome": { "type": "string" },
+          "map_template": { "type": "string", "enum": ["outdoor", "interior"] },
+          "landmarks": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "layout_seed": { "type": "integer" },
+          "layout_hash": { "type": "string" },
+          "palette": { "type": "string" },
+          "tileset_ref": { "type": "string" },
+          "music_key": { "type": "string" },
+          "combat_background_key": { "type": "string" },
+          "asset_manifest_ref": { "type": "string" },
+          "purpose": { "type": "string" }
         },
-        "required": ["id", "name", "region"]
+        "required": [
+          "id",
+          "name",
+          "region",
+          "theme",
+          "biome",
+          "map_template",
+          "landmarks",
+          "layout_seed",
+          "layout_hash",
+          "palette",
+          "tileset_ref",
+          "music_key",
+          "combat_background_key",
+          "asset_manifest_ref",
+          "purpose"
+        ]
       }
     },
     "quests": {
@@ -49,7 +81,9 @@
             "items": {
               "type": "object",
               "properties": {
-                "objective_type": { "enum": ["FETCH", "SCOUT", "DEFEAT", "NPC_HELP"] },
+                "objective_type": {
+                  "enum": ["FETCH", "SCOUT", "DEFEAT", "NPC_HELP"]
+                },
                 "target_id": { "type": "string", "format": "uuid" },
                 "count": { "type": "integer", "minimum": 1 },
                 "description": { "type": "string" }

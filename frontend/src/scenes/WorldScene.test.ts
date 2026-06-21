@@ -18,10 +18,17 @@ describe("WorldScene", () => {
           setTileScale: vi.fn(function (this: any) {
             return this;
           }),
+          setTint: vi.fn(function (this: any) {
+            return this;
+          }),
+          setDepth: vi.fn(function (this: any) {
+            return this;
+          }),
         };
       }),
       graphics: vi.fn(() => ({
         fillGradientStyle: vi.fn(),
+        fillStyle: vi.fn(),
         fillRect: vi.fn(),
       })),
       sprite: vi.fn(function (this: any) {
@@ -33,6 +40,12 @@ describe("WorldScene", () => {
             return this;
           }),
           setTint: vi.fn(function (this: any) {
+            return this;
+          }),
+          setDepth: vi.fn(function (this: any) {
+            return this;
+          }),
+          setPosition: vi.fn(function (this: any) {
             return this;
           }),
           body: {
@@ -65,6 +78,9 @@ describe("WorldScene", () => {
           setVisible: vi.fn(function (this: any) {
             return this;
           }),
+          setDepth: vi.fn(function (this: any) {
+            return this;
+          }),
           setText: vi.fn(function (this: any) {
             return this;
           }),
@@ -88,6 +104,12 @@ describe("WorldScene", () => {
               return this;
             }),
             setTint: vi.fn(function (this: any) {
+              return this;
+            }),
+            setDepth: vi.fn(function (this: any) {
+              return this;
+            }),
+            setPosition: vi.fn(function (this: any) {
               return this;
             }),
             body: {
@@ -180,7 +202,7 @@ describe("WorldScene", () => {
     // Test branch where location is provided
     scene.registry.get.mockReturnValue("Aster Vale");
     scene.registry._trigger("changedata-locationName");
-    expect(scene.locationText.setText).toHaveBeenCalledWith("Aster Vale");
+    expect(scene.locationText.setText).toHaveBeenCalledWith("Valeris City");
   });
 
   it("does not reload existing textures", () => {
@@ -274,5 +296,58 @@ describe("WorldScene", () => {
       "phaser-encounter",
       expect.anything(),
     );
+  });
+
+  it("switches authored map profiles and marker placements", () => {
+    scene.create();
+    const values: Record<string, unknown> = {
+      presentationLocation: "BLACKSMITH",
+      locationName: "Valeris City",
+      npcs: [],
+      encounters: [],
+      reachableLocations: [],
+    };
+    scene.registry.get.mockImplementation((key: string) => values[key]);
+
+    scene.registry._trigger("changedata-presentationLocation");
+    expect(scene.locationText.setText).toHaveBeenCalledWith(
+      "Blacksmith Interior",
+    );
+
+    values.presentationLocation = "INN";
+    scene.registry._trigger("changedata-presentationLocation");
+    expect(scene.locationText.setText).toHaveBeenCalledWith("Inn Interior");
+
+    values.presentationLocation = null;
+    values.locationName = "Sylvan Branch";
+    scene.registry._trigger("changedata-locationName");
+    expect(scene.locationText.setText).toHaveBeenCalledWith("Sylvan Branch");
+
+    values.locationName = "Greenwood Verge";
+    scene.registry._trigger("changedata-locationName");
+    expect(scene.locationText.setText).toHaveBeenCalledWith("Greenwood Verge");
+
+    values.locationName = "Valeris Outskirts";
+    scene.registry._trigger("changedata-locationName");
+    expect(scene.locationText.setText).toHaveBeenCalledWith(
+      "Valeris Outskirts",
+    );
+
+    expect(scene.markerPosition("NPC", "Blacksmith Hagar", 0)).toEqual({
+      x: 450,
+      y: 345,
+    });
+    expect(scene.markerPosition("NPC", "Innkeeper Elena", 0)).toEqual({
+      x: 780,
+      y: 720,
+    });
+    expect(scene.markerPosition("NPC", "Scout Kael", 0)).toEqual({
+      x: 1010,
+      y: 520,
+    });
+    expect(scene.markerPosition("TRAVEL", "Sylvan Branch", 0)).toEqual({
+      x: 1420,
+      y: 610,
+    });
   });
 });

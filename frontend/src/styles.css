@@ -252,7 +252,9 @@ p {
   position: absolute;
   top: 1rem;
   left: 1rem;
-  min-width: 280px;
+  min-width: 260px;
+  max-width: 360px;
+  padding: 1rem;
 }
 
 .character-status-compact {
@@ -324,6 +326,24 @@ p {
   color: #fff;
   text-shadow: 1px 1px 0 #000;
   font-size: 0.55rem;
+}
+
+.audio-controls {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+}
+
+.audio-controls button {
+  padding: 0.35rem 0.55rem;
+  font-size: 0.75rem;
+}
+
+.audio-controls input {
+  min-width: 80px;
 }
 
 /* Action Bar (Command Menu) */

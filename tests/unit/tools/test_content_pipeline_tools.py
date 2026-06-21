@@ -87,6 +87,24 @@ def test_validate_pack_fails_invalid_pack(tmp_path: Path) -> None:
     assert report["status"] == "FAIL"
 
 
+def test_validate_pack_rejects_duplicate_location_layouts(tmp_path: Path) -> None:
+    pack_dir = tmp_path / "duplicate-layout"
+    assert run_pipeline(42, "sylvan_supply", str(pack_dir), False)
+    pack = json.loads((pack_dir / "pack.json").read_text(encoding="utf-8"))
+    duplicate = dict(pack["locations"][0])
+    duplicate["id"] = "56000000-0000-0000-0000-000000000099"
+    duplicate["name"] = "Copied Grove"
+    pack["locations"].append(duplicate)
+    (pack_dir / "pack.json").write_text(json.dumps(pack), encoding="utf-8")
+
+    assert not validate_pack(str(pack_dir))
+
+    report = json.loads(
+        (pack_dir / "validation_report.json").read_text(encoding="utf-8")
+    )
+    assert any("reuse layout_hash" in error for error in report["errors"])
+
+
 def test_import_fails_when_validation_report_missing(tmp_path: Path) -> None:
     pack_dir = tmp_path / "generated"
     assert run_pipeline(42, "sylvan_supply", str(pack_dir), False)
