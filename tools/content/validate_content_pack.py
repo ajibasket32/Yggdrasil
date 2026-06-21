@@ -8,6 +8,9 @@ try:
 except ImportError:
     validate = None
 
+MUSIC_KEYS = {"title", "city", "interior", "outskirts", "forest", "battle"}
+COMBAT_BACKGROUND_KEYS = {"city_gate", "forest"}
+
 
 def _write_report(pack_path: str, pack_id: str | None, errors: list[str]) -> None:
     report = {
@@ -72,6 +75,7 @@ def validate_pack(pack_path: str) -> bool:
     location_ids = {loc["id"] for loc in pack.get("locations", [])}
     item_ids = {item["id"] for item in pack.get("items", [])}
     enemy_ids = {enemy["id"] for enemy in pack.get("enemies", [])}
+    locations_by_id = {loc["id"]: loc for loc in pack.get("locations", [])}
 
     # Base game IDs for cross-pack/base-game references
     base_npc_ids = [
@@ -86,6 +90,28 @@ def validate_pack(pack_path: str) -> bool:
 
     all_npc_ids = npc_ids.union(set(base_npc_ids))
     all_location_ids = location_ids.union(set(base_location_ids))
+
+    layout_hashes: dict[str, str] = {}
+    for loc in pack.get("locations", []):
+        loc_id = loc["id"]
+        if not loc.get("purpose"):
+            errors.append(f"Location {loc['name']} ({loc_id}) is missing a clear purpose")
+        layout_hash = loc.get("layout_hash")
+        if layout_hash in layout_hashes:
+            errors.append(
+                f"Locations {layout_hashes[layout_hash]} and {loc_id} reuse layout_hash "
+                f"{layout_hash}"
+            )
+        layout_hashes[layout_hash] = loc_id
+        if loc.get("music_key") not in MUSIC_KEYS:
+            errors.append(f"Location {loc['name']} uses unknown music key {loc.get('music_key')}")
+        if loc.get("combat_background_key") not in COMBAT_BACKGROUND_KEYS:
+            errors.append(
+                f"Location {loc['name']} uses unknown combat background "
+                f"{loc.get('combat_background_key')}"
+            )
+        if not loc.get("asset_manifest_ref"):
+            errors.append(f"Location {loc['name']} is missing asset provenance")
 
     # 3. Referential Integrity Checks
     for npc in pack.get("npcs", []):
@@ -125,6 +151,11 @@ def validate_pack(pack_path: str) -> bool:
     for shop in pack.get("shops", []):
         if shop["owner_npc_id"] not in all_npc_ids:
             errors.append(f"Shop {shop['name']} references unknown owner {shop['owner_npc_id']}")
+        shop_location_id = shop.get("location_id")
+        if shop_location_id:
+            location = locations_by_id.get(shop_location_id)
+            if location and location.get("map_template") != "interior":
+                errors.append(f"Shop {shop['name']} must use an interior location template")
         for item_ref in shop.get("items", []):
             if item_ref["item_id"] not in item_ids:
                 errors.append(f"Shop {shop['name']} references unknown item {item_ref['item_id']}")
@@ -132,6 +163,9 @@ def validate_pack(pack_path: str) -> bool:
     for inn in pack.get("inns", []):
         if inn["location_id"] not in all_location_ids:
             errors.append(f"Inn {inn['name']} references unknown location {inn['location_id']}")
+        location = locations_by_id.get(inn["location_id"])
+        if location and location.get("map_template") != "interior":
+            errors.append(f"Inn {inn['name']} must use an interior location template")
 
     if errors:
         print(f"Validation failed for pack {pack['pack_id']}:")

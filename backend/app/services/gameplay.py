@@ -833,6 +833,26 @@ class CharacterService:
             destination = await self._uow.definitions.get_location(destination_id)
             if origin is None or destination is None:
                 raise DefinitionNotFoundError("Travel location was not found")
+            if origin.id == destination.id:
+                await self._record_result(
+                    player_id,
+                    idempotency_key,
+                    operation,
+                    fingerprint,
+                    character.id,
+                    {
+                        "origin_id": str(origin.id),
+                        "destination_id": str(destination.id),
+                        "newly_discovered": False,
+                    },
+                )
+                TRAVEL_OPERATIONS_TOTAL.labels("success").inc()
+                return TravelResult(
+                    character_id=character.id,
+                    origin=self._location_view(origin, True, True),
+                    destination=self._location_view(destination, True, True),
+                    newly_discovered=False,
+                )
             routes = await self._uow.definitions.list_routes_from(origin.id)
             try:
                 NavigationEngine.validate_travel(

@@ -126,6 +126,7 @@ vi.mock("phaser", () => ({
         setText: vi.fn().mockReturnThis(),
         setScrollFactor: vi.fn().mockReturnThis(),
         setVisible: vi.fn().mockReturnThis(),
+        setDepth: vi.fn().mockReturnThis(),
         destroy: vi.fn(),
       })),
       sprite: vi.fn(() => ({
@@ -133,6 +134,9 @@ vi.mock("phaser", () => ({
         setFlipX: vi.fn().mockReturnThis(),
         setTexture: vi.fn().mockReturnThis(),
         setCollideWorldBounds: vi.fn().mockReturnThis(),
+        setTint: vi.fn().mockReturnThis(),
+        setDepth: vi.fn().mockReturnThis(),
+        setPosition: vi.fn().mockReturnThis(),
         play: vi.fn().mockReturnThis(),
         stop: vi.fn().mockReturnThis(),
         texture: { key: "mock" },
@@ -161,6 +165,8 @@ vi.mock("phaser", () => ({
         setOrigin: vi.fn().mockReturnThis(),
         setTileScale: vi.fn().mockReturnThis(),
         setAlpha: vi.fn().mockReturnThis(),
+        setTint: vi.fn().mockReturnThis(),
+        setDepth: vi.fn().mockReturnThis(),
       })),
       group: vi.fn(() => ({
         clear: vi.fn().mockReturnThis(),

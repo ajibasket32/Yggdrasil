@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import ErrorBoundary from "./components/ErrorBoundary";
 import CombatPanel from "./components/CombatPanel";
@@ -7,7 +14,14 @@ import NarrativeBox from "./components/NarrativeBox";
 import WorldPanel from "./components/WorldPanel";
 import ShopOverlay from "./components/ShopOverlay";
 import GameCanvas from "./components/GameCanvas";
+import type { PresentationLocation } from "./scenes/WorldScene";
 import portraitAtlasUrl from "./assets/characters/RPG_assets.png";
+import titleBgmUrl from "./assets/audio/title.wav";
+import cityBgmUrl from "./assets/audio/city.wav";
+import interiorBgmUrl from "./assets/audio/interior.wav";
+import outskirtsBgmUrl from "./assets/audio/outskirts.wav";
+import forestBgmUrl from "./assets/audio/forest.wav";
+import battleBgmUrl from "./assets/audio/battle.wav";
 import { gameApi, getPlayerId } from "./services/gameApi";
 import type {
   CharacterDefinitions,
@@ -58,6 +72,40 @@ const combatSeed = (): number => {
   return Date.now() & 0x7fffffff;
 };
 
+const audioUrls = {
+  title: titleBgmUrl,
+  city: cityBgmUrl,
+  interior: interiorBgmUrl,
+  outskirts: outskirtsBgmUrl,
+  forest: forestBgmUrl,
+  battle: battleBgmUrl,
+} as const;
+
+type BgmKey = keyof typeof audioUrls;
+
+const bgmKeyForLocation = (
+  locationName: string | undefined,
+  presentationLocation: PresentationLocation,
+): BgmKey => {
+  if (presentationLocation !== null) return "interior";
+  const normalized = (locationName ?? "").toLowerCase();
+  if (normalized.includes("sylvan") || normalized.includes("greenwood")) {
+    return "forest";
+  }
+  if (normalized.includes("outskirts")) return "outskirts";
+  return "city";
+};
+
+const presentationForNpc = (npc: Npc): PresentationLocation => {
+  const name = npc.name.toLowerCase();
+  const occupation = npc.occupation.toLowerCase();
+  if (name.includes("hagar") || occupation.includes("blacksmith")) {
+    return "BLACKSMITH";
+  }
+  if (name.includes("elena") || npc.role === "INNKEEPER") return "INN";
+  return null;
+};
+
 const App = () => {
   const playerId = useMemo(getPlayerId, []);
   const [definitions, setDefinitions] = useState<CharacterDefinitions | null>(
@@ -83,6 +131,18 @@ const App = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentShop, setCurrentShop] = useState<Shop | null>(null);
   const [lastPurchase, setLastPurchase] = useState<string | null>(null);
+  const [activeNpc, setActiveNpc] = useState<Npc | null>(null);
+  const [presentationLocation, setPresentationLocation] =
+    useState<PresentationLocation>(null);
+  const [audioReady, setAudioReady] = useState(false);
+  const [muted, setMuted] = useState(
+    () => window.localStorage.getItem("yggdrasil-muted") === "true",
+  );
+  const [volume, setVolume] = useState(() => {
+    const stored = Number(window.localStorage.getItem("yggdrasil-volume"));
+    return Number.isFinite(stored) ? stored : 0.35;
+  });
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   type MenuView =
     | "NONE"
@@ -92,6 +152,12 @@ const App = () => {
     | "TRAVEL"
     | "ENDING";
   const [menuView, setMenuView] = useState<MenuView>("NONE");
+
+  const returnToExploration = useCallback(() => {
+    setMenuView("NONE");
+    setActiveNpc(null);
+    setPresentationLocation(null);
+  }, []);
 
   const inspectCharacter = useCallback(
     async (characterId: string) => {
@@ -162,6 +228,62 @@ const App = () => {
     void load();
   }, [inspectCharacter, playerId]);
 
+  useEffect(() => {
+    if (audioReady) return;
+    const enableAudio = () => setAudioReady(true);
+    window.addEventListener("pointerdown", enableAudio, { once: true });
+    window.addEventListener("keydown", enableAudio, { once: true });
+    return () => {
+      window.removeEventListener("pointerdown", enableAudio);
+      window.removeEventListener("keydown", enableAudio);
+    };
+  }, [audioReady]);
+
+  const bgmKey: BgmKey =
+    combat !== null
+      ? "battle"
+      : character === null
+        ? "title"
+        : bgmKeyForLocation(
+            character.current_location.name,
+            presentationLocation,
+          );
+
+  useEffect(() => {
+    window.localStorage.setItem("yggdrasil-muted", String(muted));
+    window.localStorage.setItem("yggdrasil-volume", String(volume));
+  }, [muted, volume]);
+
+  useEffect(() => {
+    if (!audioReady || muted) {
+      audioRef.current?.pause();
+      return;
+    }
+
+    const nextUrl = audioUrls[bgmKey];
+    if (audioRef.current?.src !== new URL(nextUrl, window.location.href).href) {
+      audioRef.current?.pause();
+      audioRef.current = new Audio(nextUrl);
+      audioRef.current.loop = true;
+    }
+    audioRef.current.volume = volume;
+    void audioRef.current.play().catch(() => undefined);
+  }, [audioReady, bgmKey, muted, volume]);
+
+  useEffect(() => {
+    if (!window.location.search.includes("audit=1")) return;
+    window.__YGGDRASIL_AUDIT__ = {
+      ...(window.__YGGDRASIL_AUDIT__ ?? {}),
+      audio: {
+        bgmKey,
+        muted,
+        volume,
+        ready: audioReady,
+        paused: audioRef.current?.paused ?? null,
+      },
+    };
+  }, [audioReady, bgmKey, muted, volume]);
+
   const createCharacter = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -184,7 +306,7 @@ const App = () => {
         crypto.randomUUID(),
       );
       await inspectCharacter(created.id);
-      setMenuView("NONE");
+      returnToExploration();
     } catch (caught) {
       setError(
         caught instanceof Error ? caught.message : "Character creation failed",
@@ -204,6 +326,8 @@ const App = () => {
         destination.id,
         crypto.randomUUID(),
       );
+      setActiveNpc(null);
+      setPresentationLocation(null);
       await inspectCharacter(characterId);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Travel failed");
@@ -287,6 +411,8 @@ const App = () => {
     if (character === null) return;
     window.localStorage.removeItem(combatStorageKey(character.id));
     setCombat(null);
+    setActiveNpc(null);
+    setPresentationLocation(null);
     setBusy(true);
     try {
       await inspectCharacter(character.id);
@@ -530,6 +656,8 @@ const App = () => {
 
   const saveGame = async () => {
     if (character === null) return;
+    setActiveNpc(null);
+    setPresentationLocation(null);
     setBusy(true);
     setError(null);
     setSaveSuccess(false);
@@ -628,6 +756,7 @@ const App = () => {
               mode="COMBAT"
               combatState={combat}
               locationName={character.current_location.name}
+              presentationLocation={presentationLocation}
             />
             <div className="jrpg-ui-layer">
               <div className="bottom-panel">
@@ -730,11 +859,14 @@ const App = () => {
             <GameCanvas
               mode="EXPLORATION"
               locationName={character.current_location.name}
+              presentationLocation={presentationLocation}
               npcs={npcs}
               reachableLocations={locations.filter((l) => l.reachable)}
               encounters={encounters}
               onTravel={(loc) => void travel(loc, character.id)}
               onInteract={(npc) => {
+                setActiveNpc(npc);
+                setPresentationLocation(presentationForNpc(npc));
                 setMenuView("WORLD_PANEL");
                 void dialogue(npc, "GREETING");
               }}
@@ -806,6 +938,24 @@ const App = () => {
                 >
                   📍 {character.current_location.name}
                 </div>
+                <div className="audio-controls" aria-label="Audio controls">
+                  <button
+                    type="button"
+                    onClick={() => setMuted((value) => !value)}
+                  >
+                    {muted ? "Unmute" : "Mute"}
+                  </button>
+                  <input
+                    aria-label="Music volume"
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.05"
+                    value={volume}
+                    onChange={(event) => setVolume(Number(event.target.value))}
+                  />
+                  <span>{bgmKey}</span>
+                </div>
               </div>
 
               {menuView === "NONE" &&
@@ -838,14 +988,42 @@ const App = () => {
                 className="action-bar jrpg-panel"
                 style={{ padding: "1rem" }}
               >
-                <button onClick={() => setMenuView("TRAVEL")}>Travel</button>
-                <button onClick={() => setMenuView("ENCOUNTERS")}>
+                <button
+                  onClick={() => {
+                    setActiveNpc(null);
+                    setPresentationLocation(null);
+                    setMenuView("TRAVEL");
+                  }}
+                >
+                  Travel
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveNpc(null);
+                    setPresentationLocation(null);
+                    setMenuView("ENCOUNTERS");
+                  }}
+                >
                   Encounters
                 </button>
-                <button onClick={() => setMenuView("WORLD_PANEL")}>
+                <button
+                  onClick={() => {
+                    setActiveNpc(null);
+                    setPresentationLocation(null);
+                    setMenuView("WORLD_PANEL");
+                  }}
+                >
                   Quests
                 </button>
-                <button onClick={() => setMenuView("CHARACTER")}>Status</button>
+                <button
+                  onClick={() => {
+                    setActiveNpc(null);
+                    setPresentationLocation(null);
+                    setMenuView("CHARACTER");
+                  }}
+                >
+                  Status
+                </button>
                 <button onClick={() => void saveGame()}>
                   {saveSuccess ? "✓ Saved" : "Save Chronicle"}
                 </button>
@@ -857,7 +1035,7 @@ const App = () => {
               {menuView !== "NONE" && (
                 <div
                   className="menu-modal-backdrop"
-                  onClick={() => menuView !== "ENDING" && setMenuView("NONE")}
+                  onClick={() => menuView !== "ENDING" && returnToExploration()}
                 >
                   <div
                     className="menu-modal-content"
@@ -866,7 +1044,7 @@ const App = () => {
                     {menuView !== "ENDING" && (
                       <button
                         className="menu-close-btn"
-                        onClick={() => setMenuView("NONE")}
+                        onClick={returnToExploration}
                       >
                         ×
                       </button>
@@ -948,7 +1126,7 @@ const App = () => {
                     {menuView === "WORLD_PANEL" && (
                       <WorldPanel
                         quests={quests}
-                        npcs={npcs}
+                        npcs={activeNpc === null ? npcs : [activeNpc]}
                         factions={factions}
                         dungeons={dungeons}
                         journal={journal}
@@ -958,10 +1136,14 @@ const App = () => {
                         onQuestAction={(quest, action) =>
                           void questAction(quest, action)
                         }
-                        onNpcAction={(npc, action) =>
-                          void npcAction(npc, action)
-                        }
+                        onNpcAction={(npc, action) => {
+                          setActiveNpc(npc);
+                          setPresentationLocation(presentationForNpc(npc));
+                          void npcAction(npc, action);
+                        }}
                         onDialogue={(npc, topic) => {
+                          setActiveNpc(npc);
+                          setPresentationLocation(presentationForNpc(npc));
                           void dialogue(npc, topic);
                           setMenuView("NONE");
                         }}

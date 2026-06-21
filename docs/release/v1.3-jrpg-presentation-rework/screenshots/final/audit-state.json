@@ -1,0 +1,70 @@
+[
+  {
+    "step": "valeris-city",
+    "audit": {
+      "world": {
+        "playerX": 780,
+        "playerY": 560,
+        "moving": false,
+        "animation": null,
+        "location": "Valeris City",
+        "musicKey": "city",
+        "combatBackgroundKey": "city_gate",
+        "nearbyPrompt": null
+      }
+    }
+  },
+  {
+    "step": "after-first-travel",
+    "audit": {
+      "world": {
+        "playerX": 780,
+        "playerY": 560,
+        "moving": false,
+        "animation": null,
+        "location": "Valeris City",
+        "musicKey": "city",
+        "combatBackgroundKey": "city_gate",
+        "nearbyPrompt": null
+      }
+    },
+    "travelText": "City Vale\nLv 1 Alchemist\nHP\n170/170\nMP\n95/95\n📍 Valeris City\nMute\ncity\nTravel\nEncounters\nQuests\nStatus\nSave Chronicle\nConclude\n×\nKnown world\nObserve surroundings\n\nDANGER 0\n\nValeris City\n\nThe magnificent capital of the Kingdom of Valeria.\n\nCurrent location\n\nDANGER 0\n\nValeris Outskirts\n\nThe modest beginning of the road to the capital of Valeria.\n\nTravel here"
+  },
+  {
+    "step": "after-second-travel",
+    "audit": {
+      "world": {
+        "playerX": 260,
+        "playerY": 520,
+        "moving": false,
+        "animation": null,
+        "location": "Valeris Outskirts",
+        "musicKey": "outskirts",
+        "combatBackgroundKey": "forest",
+        "nearbyPrompt": null
+      }
+    }
+  },
+  {
+    "step": "combat-or-current",
+    "audit": {
+      "world": {
+        "playerX": 300,
+        "playerY": 560,
+        "moving": false,
+        "animation": null,
+        "location": "Greenwood Verge",
+        "musicKey": "forest",
+        "combatBackgroundKey": "forest",
+        "nearbyPrompt": null
+      },
+      "combat": {
+        "status": "ACTIVE",
+        "playerHp": 170,
+        "enemyHp": 55,
+        "enemyTexture": "slime",
+        "playerTexture": "combat-player"
+      }
+    }
+  }
+]

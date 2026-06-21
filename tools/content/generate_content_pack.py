@@ -20,6 +20,7 @@ def generate_pack(seed: int, theme: str, out_dir: str):
     npc_id = seeded_uuid("npc")
     item_id = seeded_uuid("item")
     quest_id = seeded_uuid("quest")
+    layout_seed = seed * 1000 + 17
 
     pack = {
         "pack_id": pack_id,
@@ -32,7 +33,19 @@ def generate_pack(seed: int, theme: str, out_dir: str):
                 "id": location_id,
                 "name": f"{theme.capitalize()} Outpost",
                 "region": "Valeria",
-                "description": f"A small outpost themed around {theme}."
+                "description": f"A small outpost themed around {theme}.",
+                "theme": theme,
+                "biome": "forest" if "sylvan" in theme else "frontier",
+                "map_template": "outdoor",
+                "landmarks": [f"{theme.capitalize()} marker stone"],
+                "layout_seed": layout_seed,
+                "layout_hash": f"{theme}-{layout_seed}",
+                "palette": "green-gold",
+                "tileset_ref": "bencreating-tileset",
+                "music_key": "forest" if "sylvan" in theme else "outskirts",
+                "combat_background_key": "forest",
+                "asset_manifest_ref": "assets.json",
+                "purpose": "A small optional quest stop with a clear guide NPC."
             }
         ],
         "npcs": [

@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Game, AUTO, Scale } from "phaser";
 import WorldScene from "../scenes/WorldScene";
 import CombatScene from "../scenes/CombatScene";
+import type { PresentationLocation } from "../scenes/WorldScene";
 import type {
   CombatState,
   Npc,
@@ -16,6 +17,7 @@ interface GameCanvasProps {
   npcs?: Npc[];
   reachableLocations?: Location[];
   encounters?: EncounterDefinition[];
+  presentationLocation?: PresentationLocation;
   onTravel?: (location: Location) => void;
   onInteract?: (npc: Npc) => void;
   onEncounter?: (encounter: EncounterDefinition) => void;
@@ -28,6 +30,7 @@ const GameCanvas = ({
   npcs,
   reachableLocations,
   encounters,
+  presentationLocation,
   onTravel,
   onInteract,
   onEncounter,
@@ -105,6 +108,7 @@ const GameCanvas = ({
     if (encounters) {
       gameRef.current.registry.set("encounters", encounters);
     }
+    gameRef.current.registry.set("presentationLocation", presentationLocation);
 
     if (mode === "COMBAT") {
       if (gameRef.current.scene.isActive("WorldScene")) {
@@ -121,7 +125,15 @@ const GameCanvas = ({
         gameRef.current.scene.start("WorldScene");
       }
     }
-  }, [mode, locationName, combatState, npcs, reachableLocations, encounters]);
+  }, [
+    mode,
+    locationName,
+    combatState,
+    npcs,
+    reachableLocations,
+    encounters,
+    presentationLocation,
+  ]);
 
   return <div ref={containerRef} className="game-canvas-container" />;
 };
