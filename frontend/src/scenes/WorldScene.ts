@@ -1,11 +1,12 @@
 import { Scene } from "phaser";
 import type { Npc, Location, EncounterDefinition } from "../types/gameplay";
+import { GAMEPLAY_TUNING } from "../config/gameplayTuning";
 import tilesUrl from "../assets/tilesets/world.png";
 import playerUrl from "../assets/characters/RPG_assets.png";
 
 const PLAYER_IDLE_FRAME = 10;
-const PLAYER_SPEED = 200;
-const INTERACTION_RADIUS = 72;
+const PLAYER_SPEED = GAMEPLAY_TUNING.playerSpeed;
+const INTERACTION_RADIUS = GAMEPLAY_TUNING.interactionRadius;
 
 export type PresentationLocation = "BLACKSMITH" | "INN" | null;
 
@@ -45,6 +46,8 @@ declare global {
         musicKey: string;
         combatBackgroundKey: string;
         nearbyPrompt: string | null;
+        interactionState: string;
+        movementSpeed: number;
       };
       combat?: unknown;
       audio?: {
@@ -54,6 +57,7 @@ declare global {
         ready: boolean;
         paused: boolean | null;
       };
+      movePlayerTo?: (x: number, y: number) => void;
     };
   }
 }
@@ -172,6 +176,12 @@ export default class WorldScene extends Scene {
   private auditEnabled = false;
   private currentProfile: MapProfile = MAPS.city;
   private nearbyPrompt: string | null = null;
+  private interactionState:
+    | "exploring"
+    | "nearby_npc"
+    | "interacting"
+    | "service_overlay"
+    | "returning_to_exploration" = "exploring";
 
   constructor() {
     super("WorldScene");
@@ -258,9 +268,20 @@ export default class WorldScene extends Scene {
 
     this.updateLocation();
     this.refreshMarkers();
+    this.installAuditHelpers();
     this.updateAuditState(false);
+  }
 
-    this.cameras.main.flash(500);
+  private installAuditHelpers() {
+    if (!this.auditEnabled) return;
+    window.__YGGDRASIL_AUDIT__ = {
+      ...(window.__YGGDRASIL_AUDIT__ ?? {}),
+      movePlayerTo: (x: number, y: number) => {
+        this.player.setPosition(x, y);
+        this.checkInteractions();
+        this.updateAuditState(false);
+      },
+    };
   }
 
   private resolveProfile(): MapProfile {
@@ -323,7 +344,7 @@ export default class WorldScene extends Scene {
     this.mapLayer?.add(base);
 
     const graphics = this.add.graphics();
-    graphics.fillStyle(profile.colors.ground, 0.92);
+    graphics.fillStyle(profile.colors.ground, 1);
     graphics.fillRect(0, 0, this.mapWidth, this.mapHeight);
     this.mapLayer?.add(graphics);
 
@@ -355,6 +376,14 @@ export default class WorldScene extends Scene {
     this.rect(graphics, 710, 155, 180, 95, 0x9271a4);
     this.rect(graphics, 720, 690, 180, 210, shadow);
     this.rect(graphics, 760, 710, 100, 150, 0x72543c);
+    this.rect(graphics, 370, 400, 240, 28, 0x3b2a1c);
+    this.rect(graphics, 405, 420, 70, 40, 0x2b211a);
+    this.rect(graphics, 705, 250, 205, 25, 0x3b2a1c);
+    this.rect(graphics, 790, 245, 42, 45, 0x261b14);
+    this.rect(graphics, 615, 430, 350, 40, 0xa8844f);
+    this.rect(graphics, 1525, 455, 75, 160, 0x3e2d1f);
+    this.rect(graphics, 0, 455, 75, 160, 0x3e2d1f);
+    this.rect(graphics, 690, 520, 200, 70, 0xd1b16d);
     this.drawTrees(graphics, [
       [160, 190],
       [250, 260],
@@ -375,6 +404,10 @@ export default class WorldScene extends Scene {
     this.rect(graphics, 980, 390, 120, 170, 0x8a5c32);
     this.rect(graphics, 260, 510, 310, 70, 0x92704c);
     this.rect(graphics, 720, 555, 180, 70, 0x2b211a);
+    this.rect(graphics, 385, 365, 90, 35, 0xf97316);
+    this.rect(graphics, 645, 370, 260, 30, 0xb7793a);
+    this.rect(graphics, 650, 405, 70, 90, 0x1f2933);
+    this.rect(graphics, 965, 365, 150, 30, 0x2b211a);
   }
 
   private drawInn(graphics: Phaser.GameObjects.Graphics) {
@@ -389,6 +422,9 @@ export default class WorldScene extends Scene {
     this.rect(graphics, 600, 440, 240, 90, shadow);
     this.rect(graphics, 610, 565, 180, 60, 0x2b211a);
     this.rect(graphics, 1010, 510, 110, 110, 0xb4532b);
+    this.rect(graphics, 560, 205, 300, 35, 0x4b3527);
+    this.rect(graphics, 525, 395, 360, 40, 0xa47a4f);
+    this.rect(graphics, 995, 485, 140, 30, 0xf97316);
   }
 
   private drawOutskirts(graphics: Phaser.GameObjects.Graphics) {
@@ -400,6 +436,10 @@ export default class WorldScene extends Scene {
     this.rect(graphics, 120, 360, 190, 280, shadow);
     this.rect(graphics, 560, 260, 120, 90, 0x8a7a56);
     this.rect(graphics, 950, 680, 120, 90, 0x8a7a56);
+    this.rect(graphics, 0, 395, 210, 170, 0x4a2f1f);
+    this.rect(graphics, 210, 415, 120, 130, 0x6b4f2a);
+    this.rect(graphics, 330, 512, 940, 26, 0xc09a5a);
+    this.rect(graphics, 740, 705, 210, 32, 0x4a2f1f);
     this.drawTrees(graphics, [
       [1180, 230],
       [1320, 310],
@@ -417,6 +457,9 @@ export default class WorldScene extends Scene {
     if (water) this.rect(graphics, 1130, 120, 190, 760, water);
     this.rect(graphics, 650, 455, 130, 75, trim);
     this.rect(graphics, 1370, 590, 160, 130, trim);
+    this.rect(graphics, 55, 505, 220, 30, 0x4a2f1f);
+    this.rect(graphics, 410, 655, 360, 24, 0x4a2f1f);
+    this.rect(graphics, 900, 330, 180, 22, 0x4a2f1f);
     this.drawTrees(graphics, [
       [130, 180],
       [230, 320],
@@ -556,17 +599,7 @@ export default class WorldScene extends Scene {
     (sprite as any).markerType = type;
     this.markers?.add(sprite);
 
-    const label = this.add
-      .text(position.x, position.y - 42, data.name || (data as Location).name, {
-        fontFamily: "monospace",
-        fontSize: "13px",
-        color: "#ffffff",
-        stroke: "#000",
-        strokeThickness: 3,
-      })
-      .setOrigin(0.5)
-      .setDepth(position.y + 11);
-    this.markers?.add(label);
+    sprite.setAlpha(type === "TRAVEL" ? 0.75 : 1);
   }
 
   update() {
@@ -574,6 +607,13 @@ export default class WorldScene extends Scene {
     const body = this.player.body as Phaser.Physics.Arcade.Body;
 
     body.setVelocity(0);
+    if (this.registry.get("interactionLocked") === true) {
+      this.player.anims.stop();
+      this.player.setFrame(PLAYER_IDLE_FRAME);
+      this.interactionState = "service_overlay";
+      this.updateAuditState(false);
+      return;
+    }
 
     if (this.cursors.left.isDown || this.wasd.A.isDown) {
       body.setVelocityX(-PLAYER_SPEED);
@@ -616,13 +656,15 @@ export default class WorldScene extends Scene {
         musicKey: this.currentProfile.musicKey,
         combatBackgroundKey: this.currentProfile.combatBackgroundKey,
         nearbyPrompt: this.nearbyPrompt,
+        interactionState: this.interactionState,
+        movementSpeed: PLAYER_SPEED,
       },
     };
   }
 
   private checkInteractions() {
     let closestMarker: any = null;
-    let minDistance = INTERACTION_RADIUS;
+    let minDistance: number = INTERACTION_RADIUS;
 
     this.markers?.getChildren().forEach((child: any) => {
       if (child.texture && child.texture.key === "player") {
@@ -646,6 +688,7 @@ export default class WorldScene extends Scene {
         type === "NPC" ? "Talk" : type === "ENCOUNTER" ? "Fight" : "Travel";
       const hint = `E ${verb}: ${data.name}`;
       this.nearbyPrompt = hint;
+      this.interactionState = type === "NPC" ? "nearby_npc" : "exploring";
       this.interactionHint.setText(hint).setVisible(true);
 
       if (Phaser.Input.Keyboard.JustDown(this.wasd.E)) {
@@ -653,11 +696,13 @@ export default class WorldScene extends Scene {
       }
     } else {
       this.nearbyPrompt = null;
+      this.interactionState = "exploring";
       this.interactionHint.setVisible(false);
     }
   }
 
   private handleInteraction(type: MarkerType, data: any) {
+    this.interactionState = "interacting";
     if (type === "NPC") {
       this.game.events.emit("phaser-interact", data);
     } else if (type === "ENCOUNTER") {

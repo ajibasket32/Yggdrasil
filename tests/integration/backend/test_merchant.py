@@ -47,9 +47,9 @@ async def test_purchase_item_success(clean_gameplay_database: None) -> None:
         game_uow = GameUnitOfWork(session)
         merchant_service = MerchantService(world_uow, game_uow)
 
-        silas = await world_uow.world.get_npc_by_name("Merchant Silas")
-        assert silas is not None
-        shop = await world_uow.world.get_shop_by_owner(silas.id)
+        hagar = await world_uow.world.get_npc_by_name("Blacksmith Hagar")
+        assert hagar is not None
+        shop = await world_uow.world.get_shop_by_owner(hagar.id)
         assert shop is not None
         shop_view = await merchant_service.get_shop(shop.id)
         item_to_buy = shop_view.items[0]
@@ -86,9 +86,9 @@ async def test_purchase_insufficient_gold(clean_gameplay_database: None) -> None
         game_uow = GameUnitOfWork(session)
         merchant_service = MerchantService(world_uow, game_uow)
 
-        silas = await world_uow.world.get_npc_by_name("Merchant Silas")
-        assert silas is not None
-        shop = await world_uow.world.get_shop_by_owner(silas.id)
+        hagar = await world_uow.world.get_npc_by_name("Blacksmith Hagar")
+        assert hagar is not None
+        shop = await world_uow.world.get_shop_by_owner(hagar.id)
         assert shop is not None
         shop_view = await merchant_service.get_shop(shop.id)
         item_to_buy = shop_view.items[0]

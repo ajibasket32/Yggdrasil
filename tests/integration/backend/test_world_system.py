@@ -156,6 +156,33 @@ async def test_complete_world_flow_is_deterministic_and_persistent(
 
 
 @pytest.mark.asyncio
+async def test_shop_owner_exposes_shop_action(clean_gameplay_database: None) -> None:
+    player_id = uuid4()
+    character = await _character_at_greenwood(player_id)
+
+    async with session_factory() as session:
+        gameplay = CharacterService(GameUnitOfWork(session))
+        locations = await gameplay.locations(player_id, character.id)
+        valeris = next(value for value in locations if value.name == "Valeris City")
+        await gameplay.travel(
+            player_id, character.id, valeris.id, f"travel-valeris-{player_id}"
+        )
+
+    async with session_factory() as session:
+        npcs = await WorldService(WorldUnitOfWork(session)).npcs(
+            player_id, character.id
+        )
+
+    hagar = next(value for value in npcs if value.name == "Blacksmith Hagar")
+    elena = next(value for value in npcs if value.name == "Innkeeper Elena")
+    assert "SHOP" in hagar.available_actions
+    assert "REST" not in hagar.available_actions
+    assert hagar.shop_id is not None
+    assert "REST" in elena.available_actions
+    assert "SHOP" not in elena.available_actions
+
+
+@pytest.mark.asyncio
 async def test_quest_failure_archive_and_invalid_transition_are_enforced(
     clean_gameplay_database: None,
 ) -> None:

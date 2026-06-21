@@ -464,6 +464,7 @@ const App = () => {
         action,
         crypto.randomUUID(),
       );
+      setNarrative(null);
       setInteractionText(result.result_text);
       await inspectCharacter(character.id);
     } catch (caught) {
@@ -710,7 +711,7 @@ const App = () => {
               className="eyebrow"
               style={{ color: "#fff", marginBottom: "2rem" }}
             >
-              v1.1 JRPG Polish Release
+              v1.4 JRPG Experience Overhaul
             </p>
             <div className="title-menu">
               {existingCharacters.length > 0 ? (
@@ -860,6 +861,7 @@ const App = () => {
               mode="EXPLORATION"
               locationName={character.current_location.name}
               presentationLocation={presentationLocation}
+              interactionLocked={menuView !== "NONE" || currentShop !== null}
               npcs={npcs}
               reachableLocations={locations.filter((l) => l.reachable)}
               encounters={encounters}
@@ -970,7 +972,10 @@ const App = () => {
                       {narrative && (
                         <NarrativeBox
                           narrative={narrative}
-                          onClose={() => setNarrative(null)}
+                          onClose={() => {
+                            setNarrative(null);
+                            returnToExploration();
+                          }}
                         />
                       )}
                       {interactionText && !narrative && (
@@ -1013,7 +1018,7 @@ const App = () => {
                     setMenuView("WORLD_PANEL");
                   }}
                 >
-                  Quests
+                  Journal
                 </button>
                 <button
                   onClick={() => {
@@ -1126,7 +1131,7 @@ const App = () => {
                     {menuView === "WORLD_PANEL" && (
                       <WorldPanel
                         quests={quests}
-                        npcs={activeNpc === null ? npcs : [activeNpc]}
+                        npcs={activeNpc === null ? [] : [activeNpc]}
                         factions={factions}
                         dungeons={dungeons}
                         journal={journal}

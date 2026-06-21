@@ -31,7 +31,9 @@ describe("Title Flow and Character Creation", () => {
     installFetch(false);
     render(<App />);
     expect(await screen.findByText("Yggdrasil Chronicles")).toBeInTheDocument();
-    expect(screen.getByText("v1.1 JRPG Polish Release")).toBeInTheDocument();
+    expect(
+      screen.getByText("v1.4 JRPG Experience Overhaul"),
+    ).toBeInTheDocument();
   });
 
   it("creates and presents an authoritative character sheet", async () => {

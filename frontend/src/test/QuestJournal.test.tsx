@@ -4,6 +4,8 @@ import App from "../App";
 import { installFetch, narrative } from "./fixtures";
 import { continueExistingGame } from "./helpers";
 
+vi.mock("../components/GameCanvas");
+
 describe("Quest and NPC Interaction", () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -24,7 +26,7 @@ describe("Quest and NPC Interaction", () => {
     render(<App />);
 
     await continueExistingGame("Aster Vale");
-    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
+    fireEvent.click(screen.getByRole("button", { name: "Journal" }));
 
     // Accept quest
     fireEvent.click(
@@ -35,6 +37,8 @@ describe("Quest and NPC Interaction", () => {
     });
 
     // NPC Interaction
+    fireEvent.click(screen.getByRole("button", { name: "×" }));
+    fireEvent.click(await screen.findByText("Canvas NPC Marker"));
     fireEvent.click(await screen.findByRole("button", { name: "Offer help" }));
     await waitFor(() => {
       expect(calls).toContain("POST /api/v1/npcs/npc-1/interact");
@@ -65,7 +69,7 @@ describe("Quest and NPC Interaction", () => {
     render(<App />);
 
     await continueExistingGame("Aster Vale");
-    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
+    fireEvent.click(await screen.findByText("Canvas NPC Marker"));
     fireEvent.click(await screen.findByRole("button", { name: "Offer help" }));
     expect(await screen.findByRole("status")).toHaveTextContent(
       "Aid recorded.",
@@ -85,7 +89,7 @@ describe("Quest and NPC Interaction", () => {
     render(<App />);
 
     await continueExistingGame("Aster Vale");
-    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
+    fireEvent.click(await screen.findByText("Canvas NPC Marker"));
     fireEvent.click(await screen.findByRole("button", { name: "Speak" }));
 
     expect(await screen.findByText(narrative.text)).toBeInTheDocument();
@@ -95,7 +99,7 @@ describe("Quest and NPC Interaction", () => {
     fireEvent.click(screen.getByRole("button", { name: "Continue ▼" }));
     expect(screen.queryByText(narrative.text)).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Quests" }));
+    fireEvent.click(screen.getByRole("button", { name: "Journal" }));
     fireEvent.click(await screen.findByRole("button", { name: "Hear story" }));
     expect(
       await screen.findByText("A watch must be kept beneath the old boughs."),

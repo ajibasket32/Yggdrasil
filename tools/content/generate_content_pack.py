@@ -33,6 +33,7 @@ def generate_pack(seed: int, theme: str, out_dir: str):
                 "id": location_id,
                 "name": f"{theme.capitalize()} Outpost",
                 "region": "Valeria",
+                "region_type": "frontier",
                 "description": f"A small outpost themed around {theme}.",
                 "theme": theme,
                 "biome": "forest" if "sylvan" in theme else "frontier",
@@ -45,7 +46,10 @@ def generate_pack(seed: int, theme: str, out_dir: str):
                 "music_key": "forest" if "sylvan" in theme else "outskirts",
                 "combat_background_key": "forest",
                 "asset_manifest_ref": "assets.json",
-                "purpose": "A small optional quest stop with a clear guide NPC."
+                "purpose": "A small optional quest stop with a clear guide NPC.",
+                "entry_points": ["west-road"],
+                "exit_points": ["east-trail"],
+                "npc_zones": ["guide-post"]
             }
         ],
         "npcs": [

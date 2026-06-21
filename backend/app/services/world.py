@@ -982,15 +982,14 @@ class WorldService:
 
     async def _npc_view(self, npc: NPC, current_location_id: UUID) -> NPCView:
         actions = []
+        shop = await self._uow.world.get_shop_by_owner(npc.id)
         if npc.home_location_id == current_location_id:
             actions.append("GREET")
             actions.append("OFFER_HELP")
-            if npc.role == "MERCHANT":
+            if shop is not None:
                 actions.append("SHOP")
-            elif npc.role == "INNKEEPER":
+            if npc.role == "INNKEEPER":
                 actions.append("REST")
-
-        shop = await self._uow.world.get_shop_by_owner(npc.id)
 
         return NPCView(
             id=npc.id,

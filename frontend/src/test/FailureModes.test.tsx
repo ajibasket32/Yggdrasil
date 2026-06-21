@@ -4,6 +4,8 @@ import App from "../App";
 import { installFetch, response } from "./fixtures";
 import { continueExistingGame } from "./helpers";
 
+vi.mock("../components/GameCanvas");
+
 describe("Frontend Failure Modes and Edge Cases", () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -59,14 +61,15 @@ describe("Frontend Failure Modes and Edge Cases", () => {
 
     // The next call to interact should fail
     // Note: interact is called via gameApi.interact
-    fetchMock.mockImplementationOnce((url) => {
+    const originalMock = fetchMock.getMockImplementation();
+    fetchMock.mockImplementation((url, init) => {
       if (url.toString().includes("/interact")) {
         return response("NPC is busy", false);
       }
-      return response({});
+      return originalMock!(url, init);
     });
 
-    fireEvent.click(screen.getByText("Quests"));
+    fireEvent.click(await screen.findByText("Canvas NPC Marker"));
     const greetBtn = await screen.findByText("Greet");
     fireEvent.click(greetBtn);
 
@@ -95,7 +98,7 @@ describe("Frontend Failure Modes and Edge Cases", () => {
 
     await continueExistingGame("Aster Vale");
 
-    fireEvent.click(screen.getByText("Quests"));
+    fireEvent.click(screen.getByText("Journal"));
     expect(
       await screen.findByText("No dungeon is visible here."),
     ).toBeInTheDocument();

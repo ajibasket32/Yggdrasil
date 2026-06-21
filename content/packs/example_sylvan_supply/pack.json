@@ -9,6 +9,7 @@
       "id": "56000000-0000-0000-0000-000000000010",
       "name": "Sylvan Grove",
       "region": "Valeria",
+      "region_type": "frontier",
       "description": "A quiet grove with silver-leaved trees.",
       "theme": "sylvan",
       "biome": "forest",
@@ -21,7 +22,10 @@
       "music_key": "forest",
       "combat_background_key": "forest",
       "asset_manifest_ref": "assets.json",
-      "purpose": "A quiet gathering stop for Elara's herbalist quest."
+      "purpose": "A quiet gathering stop for Elara's herbalist quest.",
+      "entry_points": ["west-road"],
+      "exit_points": ["east-trail"],
+      "npc_zones": ["elder-tree"]
     }
   ],
   "npcs": [

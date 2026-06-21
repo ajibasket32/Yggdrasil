@@ -80,20 +80,12 @@ test("v1.3 presentation journey stays scoped and visible", async ({ page }) => {
       ready: true,
     });
 
-  await page.getByRole("button", { name: "Quests" }).click();
+  await page.getByRole("button", { name: "Journal" }).click();
   const hagar = page.locator("article.grid-card").filter({
     hasText: "Blacksmith Hagar",
   });
-  await expect(hagar).toBeVisible();
-  await expect(hagar.getByText(/Rest \(/)).toHaveCount(0);
-  await expect(hagar.getByText("Browse Shop")).toHaveCount(0);
-  await hagar.getByText("Speak").click();
-  await expect
-    .poll(() => auditWorld(page))
-    .toMatchObject({
-      location: "Blacksmith Interior",
-      musicKey: "interior",
-    });
+  await expect(hagar).toHaveCount(0);
+  await closeMenuIfOpen(page);
 
   await closeMenuIfOpen(page);
   await travelTo(page, "Valeris Outskirts");
@@ -109,22 +101,12 @@ test("v1.3 presentation journey stays scoped and visible", async ({ page }) => {
       musicKey: "forest",
     });
 
-  await page.getByRole("button", { name: "Quests" }).click();
+  await page.getByRole("button", { name: "Journal" }).click();
   const elena = page.locator("article.grid-card").filter({
     hasText: "Innkeeper Elena",
   });
-  await expect(elena).toBeVisible();
-  await expect(
-    elena.getByRole("button", { name: /Rest \(50g\)/ }),
-  ).toBeVisible();
-  await expect(elena.getByText("Browse Shop")).toHaveCount(0);
-  await elena.getByText("Speak").click();
-  await expect
-    .poll(() => auditWorld(page))
-    .toMatchObject({
-      location: "Inn Interior",
-      musicKey: "interior",
-    });
+  await expect(elena).toHaveCount(0);
+  await closeMenuIfOpen(page);
 
   await travelTo(page, "Sylvan Branch");
   await expect

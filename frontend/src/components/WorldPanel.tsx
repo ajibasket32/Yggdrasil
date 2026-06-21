@@ -214,7 +214,7 @@ const WorldPanel = ({
     </section>
 
     <section
-      className="kenney-panel split-panel"
+      className={`kenney-panel split-panel ${npcs.length > 0 ? "npc-panel-active" : ""}`}
       style={{ marginTop: "1.5rem" }}
     >
       <div>

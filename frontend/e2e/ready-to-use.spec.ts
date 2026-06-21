@@ -72,34 +72,19 @@ test("ready-to-use gameplay smoke path", async ({ page }) => {
   });
   await page.screenshot({ path: "artifacts/ready-03-world.png" });
 
-  await page.getByRole("button", { name: "Quests" }).click();
+  await page.getByRole("button", { name: "Journal" }).click();
   await expect(
     page.getByRole("heading", { name: "Quest Journal" }),
   ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Browse Shop" })).toHaveCount(
+    0,
+  );
+  await expect(page.getByRole("button", { name: /Rest/ })).toHaveCount(0);
   await page.screenshot({ path: "artifacts/ready-04-quest-journal.png" });
-
-  await page.getByRole("button", { name: "Greet" }).first().click();
-  await expect(page.getByRole("status")).toBeVisible();
-  await page.screenshot({ path: "artifacts/ready-05-npc-greet.png" });
   await closeMenuIfOpen(page);
-
-  await travelTo(page, "Valeris City");
-  await page.getByRole("button", { name: "Quests" }).click();
-  await page.getByRole("button", { name: "Browse Shop" }).click();
-  await expect(page.getByText("Your Gold:")).toBeVisible();
-  await page.screenshot({ path: "artifacts/ready-06-shop.png" });
-  await page.getByRole("button", { name: "Buy" }).first().click();
-  await expect(page.getByRole("status")).toContainText("Purchased");
-  await page.getByRole("button", { name: "Close", exact: true }).click();
 
   await travelTo(page, "Valeris Outskirts");
   await travelTo(page, "Greenwood Verge");
-  await page.getByRole("button", { name: "Quests" }).click();
-  await page.getByRole("button", { name: /Rest \(50g\)/ }).click();
-  await expect(page.getByText("Rested at the Inn")).toBeVisible();
-  await page.screenshot({ path: "artifacts/ready-07-inn-rest.png" });
-
-  await closeMenuIfOpen(page);
 
   await page.getByRole("button", { name: "Encounters" }).click();
   await page.screenshot({ path: "artifacts/ready-08-encounters.png" });

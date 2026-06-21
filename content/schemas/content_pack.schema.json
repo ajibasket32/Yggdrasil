@@ -30,6 +30,7 @@
           "id": { "type": "string", "format": "uuid" },
           "name": { "type": "string" },
           "region": { "type": "string" },
+          "region_type": { "type": "string" },
           "description": { "type": "string" },
           "theme": { "type": "string" },
           "biome": { "type": "string" },
@@ -46,12 +47,27 @@
           "music_key": { "type": "string" },
           "combat_background_key": { "type": "string" },
           "asset_manifest_ref": { "type": "string" },
-          "purpose": { "type": "string" }
+          "purpose": { "type": "string" },
+          "entry_points": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "exit_points": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 1
+          },
+          "npc_zones": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
         },
         "required": [
           "id",
           "name",
           "region",
+          "region_type",
           "theme",
           "biome",
           "map_template",
@@ -63,7 +79,10 @@
           "music_key",
           "combat_background_key",
           "asset_manifest_ref",
-          "purpose"
+          "purpose",
+          "entry_points",
+          "exit_points",
+          "npc_zones"
         ]
       }
     },
@@ -86,7 +105,8 @@
                 },
                 "target_id": { "type": "string", "format": "uuid" },
                 "count": { "type": "integer", "minimum": 1 },
-                "description": { "type": "string" }
+                "description": { "type": "string" },
+                "map_zone_id": { "type": "string" }
               },
               "required": ["objective_type", "target_id", "description"]
             }

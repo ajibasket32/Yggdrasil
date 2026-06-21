@@ -18,6 +18,7 @@ interface GameCanvasProps {
   reachableLocations?: Location[];
   encounters?: EncounterDefinition[];
   presentationLocation?: PresentationLocation;
+  interactionLocked?: boolean;
   onTravel?: (location: Location) => void;
   onInteract?: (npc: Npc) => void;
   onEncounter?: (encounter: EncounterDefinition) => void;
@@ -31,6 +32,7 @@ const GameCanvas = ({
   reachableLocations,
   encounters,
   presentationLocation,
+  interactionLocked = false,
   onTravel,
   onInteract,
   onEncounter,
@@ -109,6 +111,7 @@ const GameCanvas = ({
       gameRef.current.registry.set("encounters", encounters);
     }
     gameRef.current.registry.set("presentationLocation", presentationLocation);
+    gameRef.current.registry.set("interactionLocked", interactionLocked);
 
     if (mode === "COMBAT") {
       if (gameRef.current.scene.isActive("WorldScene")) {
@@ -133,6 +136,7 @@ const GameCanvas = ({
     reachableLocations,
     encounters,
     presentationLocation,
+    interactionLocked,
   ]);
 
   return <div ref={containerRef} className="game-canvas-container" />;

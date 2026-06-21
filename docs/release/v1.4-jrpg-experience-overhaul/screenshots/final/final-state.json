@@ -1,0 +1,319 @@
+{
+  "playerId": "ce419ed7-d382-4932-9348-70590a2f739d",
+  "states": {
+    "01-title": {
+      "world": null,
+      "combat": null,
+      "audio": {
+        "bgmKey": "title",
+        "muted": false,
+        "volume": 0,
+        "ready": false,
+        "paused": null
+      },
+      "text": "Yggdrasil Chronicles\n\nV1.4 JRPG EXPERIENCE OVERHAUL\n\nNo existing chronicles found.\nNew Game\nControls: WASD/Arrows to move, E to interact"
+    },
+    "02-valeris-city": {
+      "world": {
+        "playerX": 780,
+        "playerY": 560,
+        "moving": false,
+        "animation": null,
+        "location": "Valeris City",
+        "musicKey": "city",
+        "combatBackgroundKey": "city_gate",
+        "nearbyPrompt": null,
+        "interactionState": "exploring",
+        "movementSpeed": 320
+      },
+      "combat": null,
+      "audio": {
+        "bgmKey": "city",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 1 Warrior\nHP\n190/190\nMP\n80/80\n📍 Valeris City\nMute\ncity\nTravel\nEncounters\nJournal\nStatus\nSave Chronicle\nConclude"
+    },
+    "03-hagar-prompt": {
+      "world": {
+        "playerX": 450,
+        "playerY": 345,
+        "moving": false,
+        "animation": null,
+        "location": "Valeris City",
+        "musicKey": "city",
+        "combatBackgroundKey": "city_gate",
+        "nearbyPrompt": "E Talk: Blacksmith Hagar",
+        "interactionState": "nearby_npc",
+        "movementSpeed": 320
+      },
+      "combat": null,
+      "audio": {
+        "bgmKey": "city",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 1 Warrior\nHP\n190/190\nMP\n80/80\n📍 Valeris City\nMute\ncity\nTravel\nEncounters\nJournal\nStatus\nSave Chronicle\nConclude"
+    },
+    "04-hagar-only-panel": {
+      "world": {
+        "playerX": 680,
+        "playerY": 520,
+        "moving": false,
+        "animation": null,
+        "location": "Blacksmith Interior",
+        "musicKey": "interior",
+        "combatBackgroundKey": "city_gate",
+        "nearbyPrompt": "E Talk: Blacksmith Hagar",
+        "interactionState": "service_overlay",
+        "movementSpeed": 320
+      },
+      "combat": null,
+      "audio": {
+        "bgmKey": "interior",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 1 Warrior\nHP\n190/190\nMP\n80/80\n📍 Valeris City\nMute\ninterior\nTravel\nEncounters\nJournal\nStatus\nSave Chronicle\nConclude\n×\nQuest Journal\nCONTROLS: WASD Move · E Interact\nThe Blacksmith's Request\nNOT STARTED\n\nHagar needs you to test a new steel alloy.\n\nOBJECTIVES\n\n☐\nDiscuss the alloy with Hagar.\n0/1\n☐\nBuy a Steel Sword from Hagar for testing.\n0/1\n\nPOTENTIAL REWARDS\n\n💰 300g\n⭐ 400 XP\nHear storyAccept quest\nThe Master's Iron\nNOT STARTED\n\nBlacksmith Hagar needs high-grade iron ore for a royal request.\n\nOBJECTIVES\n\n☐\nSpeak with Hagar about the ore.\n0/1\n\nPOTENTIAL REWARDS\n\n💰 250g\n⭐ 350 XP\nHear storyAccept quest\nPeople nearby\nBlacksmith Hagar\n\nRoyal Blacksmith\n\nGreetOffer helpBrowse ShopSpeakAsk about questAsk local news\nBlacksmith Hagar\nThe speaker pauses, choosing their words with care. Though the world seems quiet, their purpose remains firm.\n\n[OFFLINE]Memories: 0 · CACHED\n\nContinue ▼\nFactions\nArcane Council\n\nMasters of magic and keepers of ancient scrolls.\n\nOUTSIDER · Reputation 0\n\nJoin faction\nHoly Church\n\nDedicated to healing and opposing darkness.\n\nOUTSIDER · Reputation 0\n\nJoin faction\nMerchant League\n\nA powerful guild controlling trade across Aurelia.\n\nOUTSIDER · Reputation 0\n\nJoin faction\nShadow Syndicate\n\nA secretive network of information and smuggling.\n\nOUTSIDER · Reputation 0\n\nJoin faction\nValerian Wardens\n\nElite scouts and protectors of the Kingdom of Valeria.\n\nOUTSIDER · Reputation 0\n\nJoin faction\nDungeons\nAncient Valerian Crypt\n\nResting place of the first kings of Valeria.\n\nRecommended level 5 · Boss alive\n\nEnter dungeon\nValeris Sewers\n\nA labyrinthine network beneath the capital.\n\nRecommended level 2 · Boss alive\n\nEnter dungeon\nChronicle\n\nNo journal entries yet."
+    },
+    "05-shop": {
+      "world": {
+        "playerX": 680,
+        "playerY": 520,
+        "moving": false,
+        "animation": null,
+        "location": "Blacksmith Interior",
+        "musicKey": "interior",
+        "combatBackgroundKey": "city_gate",
+        "nearbyPrompt": null,
+        "interactionState": "service_overlay",
+        "movementSpeed": 320
+      },
+      "combat": null,
+      "audio": {
+        "bgmKey": "interior",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 1 Warrior\nHP\n190/190\nMP\n80/80\n📍 Valeris City\nMute\ninterior\nBlacksmith Hagar\nThe speaker pauses, choosing their words with care. Though the world seems quiet, their purpose remains firm.\n\n[OFFLINE]Memories: 0 · CACHED\n\nContinue ▼\nTravel\nEncounters\nJournal\nStatus\nSave Chronicle\nConclude\nHagar's Forge\nClose\n\nHagar sells dependable arms and tools from his Valeris forge.\n\nYOUR GOLD: 💰 100g\nGreater Potion\n💰 50g\n\nA potent restorative that heals significantly.\n\nUNCOMMON\nBuy\nSteel Sword\n💰 450g\n\nA sharp, well-balanced steel sword.\n\nUNCOMMON\nInsufficient Gold"
+    },
+    "06-innkeeper-panel": {
+      "world": {
+        "playerX": 700,
+        "playerY": 540,
+        "moving": false,
+        "animation": null,
+        "location": "Inn Interior",
+        "musicKey": "interior",
+        "combatBackgroundKey": "city_gate",
+        "nearbyPrompt": "E Talk: Innkeeper Elena",
+        "interactionState": "service_overlay",
+        "movementSpeed": 320
+      },
+      "combat": null,
+      "audio": {
+        "bgmKey": "interior",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 1 Warrior\nHP\n190/190\nMP\n80/80\n📍 Valeris City\nMute\ninterior\nTravel\nEncounters\nJournal\nStatus\nSave Chronicle\nConclude\n×\nQuest Journal\nCONTROLS: WASD Move · E Interact\nThe Blacksmith's Request\nNOT STARTED\n\nHagar needs you to test a new steel alloy.\n\nOBJECTIVES\n\n☐\nDiscuss the alloy with Hagar.\n0/1\n☐\nBuy a Steel Sword from Hagar for testing.\n0/1\n\nPOTENTIAL REWARDS\n\n💰 300g\n⭐ 400 XP\nHear storyAccept quest\nThe Master's Iron\nNOT STARTED\n\nBlacksmith Hagar needs high-grade iron ore for a royal request.\n\nOBJECTIVES\n\n☐\nSpeak with Hagar about the ore.\n0/1\n\nPOTENTIAL REWARDS\n\n💰 250g\n⭐ 350 XP\nHear storyAccept quest\nPeople nearby\nInnkeeper Elena\n\nInnkeeper\n\nGreetOffer helpRest (50g)SpeakAsk about questAsk local news\nInnkeeper Elena\nThe speaker pauses, choosing their words with care. Though the world seems quiet, their purpose remains firm.\n\n[OFFLINE]Memories: 0 · CACHED\n\nContinue ▼\nFactions\nArcane Council\n\nMasters of magic and keepers of ancient scrolls.\n\nOUTSIDER · Reputation 0\n\nJoin faction\nHoly Church\n\nDedicated to healing and opposing darkness.\n\nOUTSIDER · Reputation 0\n\nJoin faction\nMerchant League\n\nA powerful guild controlling trade across Aurelia.\n\nOUTSIDER · Reputation 0\n\nJoin faction\nShadow Syndicate\n\nA secretive network of information and smuggling.\n\nOUTSIDER · Reputation 0\n\nJoin faction\nValerian Wardens\n\nElite scouts and protectors of the Kingdom of Valeria.\n\nOUTSIDER · Reputation 0\n\nJoin faction\nDungeons\nAncient Valerian Crypt\n\nResting place of the first kings of Valeria.\n\nRecommended level 5 · Boss alive\n\nEnter dungeon\nValeris Sewers\n\nA labyrinthine network beneath the capital.\n\nRecommended level 2 · Boss alive\n\nEnter dungeon\nChronicle\n\nNo journal entries yet."
+    },
+    "07-inn-rest": {
+      "world": {
+        "playerX": 700,
+        "playerY": 540,
+        "moving": false,
+        "animation": null,
+        "location": "Inn Interior",
+        "musicKey": "interior",
+        "combatBackgroundKey": "city_gate",
+        "nearbyPrompt": null,
+        "interactionState": "exploring",
+        "movementSpeed": 320
+      },
+      "combat": null,
+      "audio": {
+        "bgmKey": "interior",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 1 Warrior\nHP\n190/190\nMP\n80/80\n📍 Valeris City\nMute\ninterior\nRested at the Inn. Restored 0 HP and 0 MP.\nInnkeeper Elena\nThe speaker pauses, choosing their words with care. Though the world seems quiet, their purpose remains firm.\n\n[OFFLINE]Memories: 0 · CACHED\n\nContinue ▼\nTravel\nEncounters\nJournal\nStatus\nSave Chronicle\nConclude"
+    },
+    "08-valeris-outskirts": {
+      "world": {
+        "playerX": 260,
+        "playerY": 520,
+        "moving": false,
+        "animation": null,
+        "location": "Valeris Outskirts",
+        "musicKey": "outskirts",
+        "combatBackgroundKey": "forest",
+        "nearbyPrompt": null,
+        "interactionState": "exploring",
+        "movementSpeed": 320
+      },
+      "combat": null,
+      "audio": {
+        "bgmKey": "outskirts",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 1 Warrior\nHP\n190/190\nMP\n80/80\n📍 Valeris Outskirts\nMute\noutskirts\nTravel\nEncounters\nJournal\nStatus\nSave Chronicle\nConclude"
+    },
+    "09-greenwood-verge": {
+      "world": {
+        "playerX": 300,
+        "playerY": 560,
+        "moving": false,
+        "animation": null,
+        "location": "Greenwood Verge",
+        "musicKey": "forest",
+        "combatBackgroundKey": "forest",
+        "nearbyPrompt": "E Travel: Ancient Crossroads",
+        "interactionState": "exploring",
+        "movementSpeed": 320
+      },
+      "combat": null,
+      "audio": {
+        "bgmKey": "forest",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 1 Warrior\nHP\n190/190\nMP\n80/80\n📍 Greenwood Verge\nMute\nforest\nTravel\nEncounters\nJournal\nStatus\nSave Chronicle\nConclude"
+    },
+    "10-sylvan-branch": {
+      "world": {
+        "playerX": 280,
+        "playerY": 640,
+        "moving": false,
+        "animation": null,
+        "location": "Sylvan Branch",
+        "musicKey": "forest",
+        "combatBackgroundKey": "forest",
+        "nearbyPrompt": null,
+        "interactionState": "exploring",
+        "movementSpeed": 320
+      },
+      "combat": null,
+      "audio": {
+        "bgmKey": "forest",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 1 Warrior\nHP\n190/190\nMP\n80/80\n📍 Sylvan Branch\nMute\nforest\nTravel\nEncounters\nJournal\nStatus\nSave Chronicle\nConclude"
+    },
+    "11-combat": {
+      "world": {
+        "playerX": 280,
+        "playerY": 640,
+        "moving": false,
+        "animation": null,
+        "location": "Sylvan Branch",
+        "musicKey": "forest",
+        "combatBackgroundKey": "forest",
+        "nearbyPrompt": null,
+        "interactionState": "exploring",
+        "movementSpeed": 320
+      },
+      "combat": {
+        "status": "ACTIVE",
+        "playerHp": 189,
+        "enemyHp": 70,
+        "enemyTexture": "slime",
+        "playerTexture": "combat-player"
+      },
+      "audio": {
+        "bgmKey": "battle",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "ROUND 1 - BUZZING SHADOWS\nACTIVE\n[1]Giant Wasp attacks Final Vale and deals 1 damage.\n[1]Combat begins: Final Vale faces Giant Wasp.\nAttack\nPower Strike (0MP)\nItem (x5)\nGuard\nWait\nFlee"
+    },
+    "12-save": {
+      "world": {
+        "playerX": 280,
+        "playerY": 640,
+        "moving": false,
+        "animation": null,
+        "location": "Sylvan Branch",
+        "musicKey": "forest",
+        "combatBackgroundKey": "forest",
+        "nearbyPrompt": null,
+        "interactionState": "exploring",
+        "movementSpeed": 320
+      },
+      "combat": {
+        "status": "VICTORY",
+        "playerHp": 187,
+        "enemyHp": 0,
+        "enemyTexture": "slime",
+        "playerTexture": "combat-player"
+      },
+      "audio": {
+        "bgmKey": "forest",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 2 Warrior\nHP\n187/210\nMP\n80/80\n📍 Sylvan Branch\nMute\nforest\nTravel\nEncounters\nJournal\nStatus\n✓ Saved\nConclude"
+    },
+    "13-continue": {
+      "world": null,
+      "combat": null,
+      "audio": {
+        "bgmKey": "title",
+        "muted": false,
+        "volume": 0,
+        "ready": false,
+        "paused": null
+      },
+      "text": "Yggdrasil Chronicles\n\nV1.4 JRPG EXPERIENCE OVERHAUL\n\nContinue: Final Vale\nNew Game\nControls: WASD/Arrows to move, E to interact"
+    },
+    "14-loaded-save": {
+      "world": {
+        "playerX": 280,
+        "playerY": 640,
+        "moving": false,
+        "animation": null,
+        "location": "Sylvan Branch",
+        "musicKey": "forest",
+        "combatBackgroundKey": "forest",
+        "nearbyPrompt": null,
+        "interactionState": "exploring",
+        "movementSpeed": 320
+      },
+      "combat": null,
+      "audio": {
+        "bgmKey": "forest",
+        "muted": false,
+        "volume": 0,
+        "ready": true,
+        "paused": false
+      },
+      "text": "Final Vale\nLv 2 Warrior\nHP\n187/210\nMP\n80/80\n📍 Sylvan Branch\nMute\nforest\nTravel\nEncounters\nJournal\nStatus\nSave Chronicle\nConclude"
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": []
+}

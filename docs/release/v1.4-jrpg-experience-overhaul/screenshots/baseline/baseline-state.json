@@ -1,0 +1,32 @@
+{
+  "beforeMove": {
+    "playerX": 780,
+    "playerY": 560,
+    "moving": false,
+    "animation": null,
+    "location": "Valeris City",
+    "musicKey": "city",
+    "combatBackgroundKey": "city_gate",
+    "nearbyPrompt": null
+  },
+  "afterMove": {
+    "playerX": 769.9999999999999,
+    "playerY": 560,
+    "moving": false,
+    "animation": "player-walk",
+    "location": "Valeris City",
+    "musicKey": "city",
+    "combatBackgroundKey": "city_gate",
+    "nearbyPrompt": null
+  },
+  "finalWorld": null,
+  "audio": {
+    "bgmKey": "title",
+    "muted": false,
+    "volume": 0.35,
+    "ready": false,
+    "paused": null
+  },
+  "consoleErrors": [],
+  "pageErrors": []
+}

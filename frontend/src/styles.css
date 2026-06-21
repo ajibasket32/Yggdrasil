@@ -250,11 +250,11 @@ p {
 
 .hud-overlay {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  min-width: 260px;
-  max-width: 360px;
-  padding: 1rem;
+  top: 0.75rem;
+  left: 0.75rem;
+  width: 300px;
+  padding: 0.75rem;
+  opacity: 0.9;
 }
 
 .character-status-compact {
@@ -264,8 +264,8 @@ p {
 }
 
 .portrait-mini {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   border: 2px solid var(--jrpg-border);
   border-radius: 4px;
   background: #000;
@@ -333,7 +333,7 @@ p {
   grid-template-columns: auto 1fr auto;
   gap: 0.5rem;
   align-items: center;
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   font-size: 0.75rem;
 }
 
@@ -349,18 +349,22 @@ p {
 /* Action Bar (Command Menu) */
 .action-bar {
   position: absolute;
-  bottom: 2rem;
-  right: 2rem;
+  top: 0.75rem;
+  right: 0.75rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 200px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  width: min(520px, calc(100vw - 330px));
+  padding: 0.5rem !important;
+  opacity: 0.9;
 }
 
 .action-bar button {
-  text-align: left;
-  padding-left: 2rem;
-  font-size: 1.1rem;
+  text-align: center;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.85rem;
 }
 
 .action-bar button::before {
@@ -373,6 +377,10 @@ p {
 
 .action-bar button:hover::before {
   color: var(--jrpg-text-highlight);
+}
+
+.action-bar button::before {
+  content: "";
 }
 
 /* Narrative Box */
@@ -431,12 +439,12 @@ p {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.62);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(2px);
 }
 
 .menu-modal-content {
@@ -463,6 +471,15 @@ p {
 }
 
 /* Grid Layouts for Menus */
+.world-panel-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.npc-panel-active {
+  order: -1;
+}
+
 .split-panel {
   display: grid;
   grid-template-columns: 1fr 1fr;

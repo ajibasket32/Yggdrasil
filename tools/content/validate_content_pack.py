@@ -76,6 +76,7 @@ def validate_pack(pack_path: str) -> bool:
     item_ids = {item["id"] for item in pack.get("items", [])}
     enemy_ids = {enemy["id"] for enemy in pack.get("enemies", [])}
     locations_by_id = {loc["id"]: loc for loc in pack.get("locations", [])}
+    npcs_by_id = {npc["id"]: npc for npc in pack.get("npcs", [])}
 
     # Base game IDs for cross-pack/base-game references
     base_npc_ids = [
@@ -112,6 +113,12 @@ def validate_pack(pack_path: str) -> bool:
             )
         if not loc.get("asset_manifest_ref"):
             errors.append(f"Location {loc['name']} is missing asset provenance")
+        if not loc.get("tileset_ref"):
+            errors.append(f"Location {loc['name']} is missing a local tileset reference")
+        if not loc.get("entry_points") or not loc.get("exit_points"):
+            errors.append(f"Location {loc['name']} is missing entry/exit point validation data")
+        if loc.get("map_template") == "interior" and loc.get("region_type") == "wilderness":
+            errors.append(f"Interior location {loc['name']} cannot use wilderness region_type")
 
     # 3. Referential Integrity Checks
     for npc in pack.get("npcs", []):
@@ -151,6 +158,9 @@ def validate_pack(pack_path: str) -> bool:
     for shop in pack.get("shops", []):
         if shop["owner_npc_id"] not in all_npc_ids:
             errors.append(f"Shop {shop['name']} references unknown owner {shop['owner_npc_id']}")
+        owner = npcs_by_id.get(shop["owner_npc_id"])
+        if owner and owner.get("role") not in {"BLACKSMITH", "MERCHANT"}:
+            errors.append(f"Shop {shop['name']} owner must be a BLACKSMITH or MERCHANT")
         shop_location_id = shop.get("location_id")
         if shop_location_id:
             location = locations_by_id.get(shop_location_id)
@@ -166,6 +176,23 @@ def validate_pack(pack_path: str) -> bool:
         location = locations_by_id.get(inn["location_id"])
         if location and location.get("map_template") != "interior":
             errors.append(f"Inn {inn['name']} must use an interior location template")
+        has_keeper = any(
+            npc.get("role") == "INNKEEPER" and npc.get("home_location_id") == inn["location_id"]
+            for npc in pack.get("npcs", [])
+        )
+        if not has_keeper:
+            errors.append(f"Inn {inn['name']} requires an INNKEEPER NPC in the same location")
+
+    valid_zone_ids = {
+        zone
+        for loc in pack.get("locations", [])
+        for zone in loc.get("entry_points", []) + loc.get("exit_points", []) + loc.get("npc_zones", [])
+    }
+    for quest in pack.get("quests", []):
+        for i, step in enumerate(quest.get("steps", [])):
+            zone_id = step.get("map_zone_id")
+            if zone_id and zone_id not in valid_zone_ids:
+                errors.append(f"Quest {quest['title']} step {i} references invalid map zone {zone_id}")
 
     if errors:
         print(f"Validation failed for pack {pack['pack_id']}:")

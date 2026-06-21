@@ -35,13 +35,6 @@ describe("Shop and Inn Flow", () => {
       name: "Blacksmith Hagar",
       occupation: "Royal Blacksmith",
       role: "QUEST_GIVER",
-      available_actions: ["GREET", "OFFER_HELP"],
-    };
-    const merchant = {
-      ...npc,
-      id: "merchant-1",
-      name: "Merchant Silas",
-      role: "MERCHANT",
       available_actions: ["GREET", "OFFER_HELP", "SHOP"],
       shop_id: "shop-1",
     };
@@ -52,16 +45,16 @@ describe("Shop and Inn Flow", () => {
       role: "INNKEEPER",
       available_actions: ["GREET", "OFFER_HELP", "REST"],
     };
-    (gameApi.npcs as any).mockResolvedValue([hagar, merchant, innkeeper]);
+    (gameApi.npcs as any).mockResolvedValue([hagar, innkeeper]);
     (gameApi.dialogue as any).mockResolvedValue(narrative);
   });
 
   it("opens shop and completes a purchase", async () => {
     const mockShop = {
       id: "shop-1",
-      name: "Silas's Sundries",
+      name: "Hagar's Forge",
       description: "Test shop",
-      owner_npc_id: "merchant-1",
+      owner_npc_id: "hagar-1",
       items: [
         {
           item_id: "item-1",
@@ -81,13 +74,16 @@ describe("Shop and Inn Flow", () => {
     // Continue game
     fireEvent.click(await screen.findByText(/Continue:/));
 
-    // Open World Panel (Quests button in UI)
-    fireEvent.click(await screen.findByText("Quests"));
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "Canvas NPC Marker: Blacksmith Hagar",
+      }),
+    );
 
     // Open Shop
     fireEvent.click(await screen.findByText("Browse Shop"));
 
-    expect(await screen.findByText("Silas's Sundries")).toBeDefined();
+    expect(await screen.findByText("Hagar's Forge")).toBeDefined();
 
     // Buy item
     fireEvent.click(await screen.findByRole("button", { name: "Buy" }));
@@ -96,7 +92,7 @@ describe("Shop and Inn Flow", () => {
 
     // Close shop
     fireEvent.click(screen.getByRole("button", { name: "Close" }));
-    expect(screen.queryByText("Silas's Sundries")).toBeNull();
+    expect(screen.queryByText("Hagar's Forge")).toBeNull();
   });
 
   it("performs an inn rest", async () => {
@@ -108,7 +104,11 @@ describe("Shop and Inn Flow", () => {
     render(<App />);
 
     fireEvent.click(await screen.findByText(/Continue:/));
-    fireEvent.click(await screen.findByText("Quests"));
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "Canvas NPC Marker: Innkeeper Elena",
+      }),
+    );
 
     // Rest
     fireEvent.click(await screen.findByText("Rest (50g)"));
@@ -124,7 +124,11 @@ describe("Shop and Inn Flow", () => {
     render(<App />);
 
     fireEvent.click(await screen.findByText(/Continue:/));
-    fireEvent.click(await screen.findByText("Quests"));
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "Canvas NPC Marker: Innkeeper Elena",
+      }),
+    );
 
     const restButton = await screen.findByRole("button", {
       name: "Rest (Needs 50g)",
@@ -141,7 +145,11 @@ describe("Shop and Inn Flow", () => {
     render(<App />);
 
     fireEvent.click(await screen.findByText(/Continue:/));
-    fireEvent.click(await screen.findByText("Quests"));
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "Canvas NPC Marker: Innkeeper Elena",
+      }),
+    );
     fireEvent.click(await screen.findByText("Rest (50g)"));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
@@ -158,7 +166,11 @@ describe("Shop and Inn Flow", () => {
     render(<App />);
 
     fireEvent.click(await screen.findByText(/Continue:/));
-    fireEvent.click(await screen.findByText("Quests"));
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "Canvas NPC Marker: Blacksmith Hagar",
+      }),
+    );
     fireEvent.click(await screen.findByText("Browse Shop"));
 
     expect(await screen.findByText("Shop closed for inventory")).toBeDefined();
@@ -167,9 +179,9 @@ describe("Shop and Inn Flow", () => {
   it("handles purchase api errors", async () => {
     const mockShop = {
       id: "shop-1",
-      name: "Silas's Sundries",
+      name: "Hagar's Forge",
       description: "Test shop",
-      owner_npc_id: "merchant-1",
+      owner_npc_id: "hagar-1",
       items: [
         {
           item_id: "item-1",
@@ -189,11 +201,15 @@ describe("Shop and Inn Flow", () => {
     render(<App />);
 
     fireEvent.click(await screen.findByText(/Continue:/));
-    fireEvent.click(await screen.findByText("Quests"));
+    fireEvent.click(
+      await screen.findByRole("button", {
+        name: "Canvas NPC Marker: Blacksmith Hagar",
+      }),
+    );
     fireEvent.click(await screen.findByText("Browse Shop"));
 
     // Wait for shop to appear
-    await screen.findByText("Silas's Sundries");
+    await screen.findByText("Hagar's Forge");
 
     fireEvent.click(screen.getByRole("button", { name: "Buy" }));
 
@@ -214,7 +230,7 @@ describe("Shop and Inn Flow", () => {
 
     expect(await screen.findByText("Blacksmith Hagar")).toBeInTheDocument();
     expect(screen.queryByText(/Rest \(/)).toBeNull();
-    expect(screen.queryByText("Browse Shop")).toBeNull();
+    expect(screen.getByText("Browse Shop")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "×" }));
     fireEvent.click(

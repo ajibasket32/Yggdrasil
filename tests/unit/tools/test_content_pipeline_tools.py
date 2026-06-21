@@ -105,6 +105,28 @@ def test_validate_pack_rejects_duplicate_location_layouts(tmp_path: Path) -> Non
     assert any("reuse layout_hash" in error for error in report["errors"])
 
 
+def test_validate_pack_rejects_shop_without_merchant_context(tmp_path: Path) -> None:
+    pack_dir = tmp_path / "bad-shop"
+    assert run_pipeline(42, "sylvan_supply", str(pack_dir), False)
+    pack = json.loads((pack_dir / "pack.json").read_text(encoding="utf-8"))
+    pack["shops"] = [
+        {
+            "id": "80000000-0000-0000-0000-000000000099",
+            "owner_npc_id": pack["npcs"][0]["id"],
+            "name": "Bad Shop",
+            "items": [{"item_id": pack["items"][0]["id"], "price": 1}],
+        }
+    ]
+    (pack_dir / "pack.json").write_text(json.dumps(pack), encoding="utf-8")
+
+    assert not validate_pack(str(pack_dir))
+
+    report = json.loads(
+        (pack_dir / "validation_report.json").read_text(encoding="utf-8")
+    )
+    assert any("BLACKSMITH or MERCHANT" in error for error in report["errors"])
+
+
 def test_import_fails_when_validation_report_missing(tmp_path: Path) -> None:
     pack_dir = tmp_path / "generated"
     assert run_pipeline(42, "sylvan_supply", str(pack_dir), False)

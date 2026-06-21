@@ -45,6 +45,9 @@ describe("WorldScene", () => {
           setDepth: vi.fn(function (this: any) {
             return this;
           }),
+          setAlpha: vi.fn(function (this: any) {
+            return this;
+          }),
           setPosition: vi.fn(function (this: any) {
             return this;
           }),
@@ -107,6 +110,9 @@ describe("WorldScene", () => {
               return this;
             }),
             setDepth: vi.fn(function (this: any) {
+              return this;
+            }),
+            setAlpha: vi.fn(function (this: any) {
               return this;
             }),
             setPosition: vi.fn(function (this: any) {
