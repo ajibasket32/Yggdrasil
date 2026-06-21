@@ -29,8 +29,13 @@ Final screenshots:
 - `screenshots/final/08-inn-interior.png`
 - `screenshots/final/09-encounters.png`
 - `screenshots/final/10-combat.png`
+- `screenshots/final/11-sylvan-branch.png`
+- `screenshots/final/12-save.png`
+- `screenshots/final/13-continue-sylvan.png`
 - `screenshots/final/audit-state.json`
+- `screenshots/final/audio-state.json`
 - `screenshots/final/console-errors.txt`
+- `screenshots/final/route-console-errors.txt`
 
 Console errors: `NONE`.
 
@@ -38,28 +43,29 @@ Console errors: `NONE`.
 
 | Area | Result | Evidence |
 |---|---|---|
-| Map identity | PARTIAL | Valeris City, Valeris Outskirts, Greenwood/forest, Blacksmith Interior, and Inn Interior now have authored profiles, but the automated visual capture did not prove the full Sylvan Branch route. |
+| Map identity | PASS | Valeris City, Blacksmith Interior, Inn Interior, Valeris Outskirts, Greenwood Verge, and Sylvan Branch have authored profiles and screenshot evidence. |
 | Visual coherence | PASS | Final screenshots show layered roads, buildings, landmarks, terrain blocks, and compact HUD over a full-screen map. |
 | Player visibility | PASS | `audit-state.json` records visible player coordinates after City, travel, and combat states. |
-| Transition quality | PARTIAL | City start, Outskirts, Greenwood, blacksmith focus, inn focus, and combat route were captured. Full Sylvan Branch traversal still needs stronger proof. |
+| Transition quality | PASS | Real browser E2E covers City -> Blacksmith -> City -> Outskirts -> Greenwood -> Sylvan Branch -> combat -> world -> save -> Continue. |
 | NPC context behavior | PASS | Focused regression test proves active NPC service separation for Hagar and Elena. |
 | UI balance | PASS | HUD and action controls are more compact, with modal menus remaining overlays. |
-| BGM behavior | PARTIAL | Local BGM keys are selected and visible in HUD/audit state. Manual browser run did not audibly validate every track transition. |
+| BGM behavior | PASS | `audio-state.json` records a real browser session with `ready: true`, `muted: false`, `volume: 0.35`, and `paused: false`; E2E asserts area and battle BGM keys. |
 | Combat atmosphere | PASS | Combat screenshot and audit state show battle mode returning canonical combat data with no browser console errors. |
 
 ## Verification Commands
 
-- `npm.cmd run typecheck`
-- `npm.cmd exec -- vitest run src/scenes/WorldScene.test.ts src/test/ShopInnFlow.test.tsx`
-- Inline content-pipeline self-check using bundled Python because local pytest/Poetry were unavailable.
+- `docker compose run --rm -e PYTHONPATH=/repo/backend -v "${repo}:/repo" -w /repo/backend backend poetry run pytest ../tests --tb=short` - 125 passed, 1 warning.
+- `npm.cmd run lint` - passed.
+- `npm.cmd test` - 84 passed; coverage above 80%.
+- `npm.cmd run build` - passed with existing large chunk warning.
+- `npm.cmd exec -- playwright test e2e/v1_3_presentation_rework.spec.ts --reporter=line` - 1 passed.
+- `docker compose build` - passed for backend, worker, and frontend images.
 - Browser screenshot capture at 1366x768 against `http://localhost:5173?audit=1`.
 
 ## Verdict
 
-PARTIAL - strong improvement but remaining visual gaps.
+PASS - polished coherent JRPG vertical slice.
 
 Remaining gaps before this feels like a full JRPG:
 
-- Capture the complete Valeris City -> Outskirts -> Greenwood Verge -> Sylvan Branch route.
-- Add audible/manual BGM verification notes for every track transition.
-- Run the full frontend/backend/Docker validation suite before PR handoff.
+- This is one polished route, not full world breadth; more locations need the same authored treatment.

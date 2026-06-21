@@ -270,6 +270,20 @@ const App = () => {
     void audioRef.current.play().catch(() => undefined);
   }, [audioReady, bgmKey, muted, volume]);
 
+  useEffect(() => {
+    if (!window.location.search.includes("audit=1")) return;
+    window.__YGGDRASIL_AUDIT__ = {
+      ...(window.__YGGDRASIL_AUDIT__ ?? {}),
+      audio: {
+        bgmKey,
+        muted,
+        volume,
+        ready: audioReady,
+        paused: audioRef.current?.paused ?? null,
+      },
+    };
+  }, [audioReady, bgmKey, muted, volume]);
+
   const createCharacter = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

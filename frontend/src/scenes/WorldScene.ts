@@ -47,6 +47,13 @@ declare global {
         nearbyPrompt: string | null;
       };
       combat?: unknown;
+      audio?: {
+        bgmKey: string;
+        muted: boolean;
+        volume: number;
+        ready: boolean;
+        paused: boolean | null;
+      };
     };
   }
 }
